@@ -276,3 +276,17 @@ new GeoLocationHandler(bm).AttachTo("geolocate-button");
 
 locationControl.ping();
 messageBox.update();
+
+import { Routing } from "./Logic/Routing";
+import L from "leaflet";
+
+let routing = new Routing();
+console.log("Querying route");
+
+routing.queryRoute([{ lat: 50.812962, lng: 4.387968 }, { lat: 50.811115, lng: 4.381334 }], (geo => {
+    console.log(geo);
+    locationControl.data.lat = 50.812962;
+    locationControl.data.lon = 4.387968;
+    locationControl.ping();
+    L.GeoJSON.geometryToLayer(geo).addTo(bm.map)
+}), console.log);
