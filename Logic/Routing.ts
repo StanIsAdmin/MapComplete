@@ -1,16 +1,16 @@
-import { TagsFilter } from "./TagsFilter";
-import * as OsmToGeoJson from "osmtogeojson";
 import * as $ from "jquery";
-import { Basemap } from "./Basemap";
-import { UIEventSource } from "../UI/UIEventSource";
 
 /**
  * Interfaces routing.anyways.eu to get routes between waypoints
  */
 export class Routing {
     private _queryPrefix = "https://routing.anyways.eu/api/route?";
-    private _queryOptions = "&profile=pedestrian.shortest";
+    private _queryOptions: string
     private _queryApiKey = "&api-key=mwK4irCD1whXx1XEpLQN6qotuM6P-Rh8";
+
+    constructor(profile: string = "pedestrian.shortest") {
+        this._queryOptions = "&profile=" + profile;
+    }
 
     private buildQuery(locations: { lat: number, lng: number }[]) {
         return this._queryPrefix
