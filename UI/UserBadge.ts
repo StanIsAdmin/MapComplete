@@ -82,9 +82,7 @@ export class UserBadge extends UIElement {
             "<img class='small-userbadge-icon' src='./assets/gear.svg' alt='settings'>" +
             "</a> ";
 
-        return "<a href='https://www.openstreetmap.org/user/" + encodeURIComponent(user.name) + "' target='_blank'>" +
-            "<img id='profile-pic' src='" + user.img + "' alt='profile-pic'/> " +
-            "</a>" +
+        return "<div id='test'><img id='profile-pic' src='" + user.img + "' alt='profile-pic'/></div> " +
             "<div id='usertext'>" +
             "<p id='username'>" +
             "<a href='https://www.openstreetmap.org/user/" + user.name + "' target='_blank'>" + user.name + "</a>" +

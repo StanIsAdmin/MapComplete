@@ -5,7 +5,7 @@ html, body {
 }
 
 body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 form {
@@ -46,14 +46,13 @@ form {
 }
 
 .alert {
-    background-color: #fee4d1;
+    background-color: #FDC400;
+    color: white;
     font-weight: bold;
     border-radius: 1em;
-    padding: 0.3em;
+    padding: 0.1em 0.5em;
     margin: 0.25em;
     text-align: center;
-    padding-top: 0.15em;
-    padding-bottom: 0.15em;
 }
 
 
@@ -88,11 +87,16 @@ form {
     border-radius: 50%;
     opacity: 0;
     transition: opacity 500ms linear;
+    object-fit: cover;
+    cursor: pointer;
 }
+
 
 #username {
     text-decoration: none;
-    color: black;
+    color: white;
+    font-weight: bold;
+    padding-top: 0;
 }
 
 
@@ -107,22 +111,22 @@ form {
     height: 2.2em; /*SHould equal profile-pic height - padding*/
     z-index: 5000;
     text-align: left;
-    background-color: white;
+    background-color: #003B8B;
     background-size: 100%;
     display: block;
 
-    line-height: 0.75em;
+    line-height: 1.3em;
 }
 
 #usertext a {
     text-decoration: none;
-    color: black;
+    color: white;
 }
 
 #userbadge {
     display: inline-block;
     text-align: center;
-    background-color: white;
+    background-color: transparent;
     -webkit-border-radius: 2em;
     -moz-border-radius: 2em;
     border-radius: 2em;
@@ -134,6 +138,10 @@ form {
 
     min-width: 20em;
     pointer-events: all;
+}
+
+#userbadge img {
+    padding-right: 0.3em;
 }
 
 #userbadge-and-search {
@@ -188,7 +196,6 @@ form {
 
 #userbadge p {
     margin: 0;
-    padding-top: 0.2em;
     padding-bottom: 0.2em;
 }
 
@@ -206,7 +213,7 @@ form {
     z-index: 5000;
     transition: all 500ms linear;
     overflow: hidden;
-    pointer-events: none;
+    pointer-events: initial;
 }
 
 #messagesboxmobilewrapper {
@@ -351,7 +358,7 @@ form {
     padding: 2em;
     border-radius: 2em;
     z-index: 5000;
-    pointer-events: none;
+    pointer-events: all;
 
     opacity: 1;
     background-color: white;
