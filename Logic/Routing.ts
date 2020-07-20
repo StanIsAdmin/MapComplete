@@ -12,14 +12,14 @@ export class Routing {
         this._queryOptions = "&profile=" + profile;
     }
 
-    private buildQuery(locations: { lat: number, lng: number }[]) {
+    private buildQuery(locations: { lat: number, lon: number }[]) {
         return this._queryPrefix
-            + locations.map(loc => { return "loc=" + loc.lng + "," + loc.lat; }).join("&")
+            + locations.map(loc => { return "loc=" + loc.lon + "," + loc.lat; }).join("&")
             + this._queryOptions + this._queryApiKey;
     }
 
 
-    queryRoute(locations: { lat: number, lng: number }[], continuation: ((any) => void), onFail: ((reason) => void)): void {
+    queryRoute(locations: { lat: number, lon: number }[], continuation: ((any) => void), onFail: ((reason) => void)): void {
         let query = this.buildQuery(locations);
 
         $.getJSON(query,

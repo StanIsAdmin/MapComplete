@@ -277,18 +277,17 @@ new GeoLocationHandler(bm).AttachTo("geolocate-button");
 locationControl.ping();
 messageBox.update();
 
-import { Routing } from "./Logic/Routing";
+// SMALL TEST OF ROUTE CREATION AND DISPLAY
 import { RouteLayer } from "./Logic/RouteLayer";
+import { Route } from "./Logic/Route";
 
 
-let routing = new Routing();
-console.log("Querying route");
+locationControl.data.lat = 50.812962;
+locationControl.data.lon = 4.387968;
+locationControl.ping();
 
-routing.queryRoute([{ lat: 50.812962, lng: 4.387968 }, { lat: 50.811115, lng: 4.381334 }], (geo => {
-    console.log(geo);
-    locationControl.data.lat = 50.812962;
-    locationControl.data.lon = 4.387968;
-    locationControl.ping();
-    let routeLayer = new RouteLayer(geo);
-    routeLayer.asLayer().addTo(bm.map)
-}), console.log);
+let route = new Route([{ lat: 50.812962, lon: 4.387968 }, { lat: 50.811115, lon: 4.381334 }]);
+let event = new UIEventSource(route);
+let layer = new RouteLayer(event, bm);
+event.ping();
+setTimeout(function () { route.waypoints.push({ lat: 50.813962, lon: 4.388968 }); event.ping(); }, 10000);
