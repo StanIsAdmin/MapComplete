@@ -22,6 +22,7 @@ import { SearchAndGo } from "./UI/SearchAndGo";
 import { CollapseButton } from "./UI/Base/CollapseButton";
 import { AllKnownLayouts } from "./Customizations/AllKnownLayouts";
 import { All } from "./Customizations/Layouts/All";
+import { WFSLayer } from "./WFS/WFSLayer";
 
 
 
@@ -138,6 +139,8 @@ const bm = new Basemap("leafletDiv", locationControl, new VariableUiElement(
 
 // ------------- Setup the layers -------------------------------
 
+let wfsLayer = new WFSLayer(bm);
+
 const addButtons: {
     name: string,
     icon: string,
@@ -179,7 +182,6 @@ for (const layer of questSetToRender.layers) {
 }
 
 const layerUpdater = new LayerUpdater(bm, minZoom, flayers);
-
 
 // ------------------ Setup various UI elements ------------
 
