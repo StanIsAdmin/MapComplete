@@ -1,11 +1,12 @@
-import {UIElement} from "./UIElement";
-import {UIEventSource} from "./UIEventSource";
-import {Tag} from "../Logic/TagsFilter";
-import {FilteredLayer} from "../Logic/FilteredLayer";
-import {Changes} from "../Logic/Changes";
-import {FixedUiElement} from "./Base/FixedUiElement";
-import {Button} from "./Base/Button";
-import {UserDetails} from "../Logic/OsmConnection";
+import { UIElement } from "./UIElement";
+import { UIEventSource } from "./UIEventSource";
+import { Tag } from "../Logic/TagsFilter";
+import { FilteredLayer } from "../Logic/FilteredLayer";
+import { Changes } from "../Logic/Changes";
+import { FixedUiElement } from "./Base/FixedUiElement";
+import { Button } from "./Base/Button";
+import { UserDetails } from "../Logic/OsmConnection";
+import { Route } from "../Logic/Route";
 
 /**
  * Asks to add a feature at the last clicked location, at least if zoom is sufficient
@@ -18,14 +19,17 @@ export class SimpleAddUI extends UIElement {
     private _selectedElement: UIEventSource<any>;
     private _dataIsLoading: UIEventSource<boolean>;
     private _userDetails: UIEventSource<UserDetails>;
+    private _addToRouteButton: UIElement;
+    private _currentRoute: UIEventSource<Route>;
 
     constructor(zoomlevel: UIEventSource<{ zoom: number }>,
-                lastClickLocation: UIEventSource<{ lat: number, lon: number }>,
-                changes: Changes,
-                selectedElement: UIEventSource<any>,
-                dataIsLoading: UIEventSource<boolean>,
-                userDetails: UIEventSource<UserDetails>,
-                addButtons: { name: string; icon: string; tags: Tag[]; layerToAddTo: FilteredLayer }[],
+        lastClickLocation: UIEventSource<{ lat: number, lon: number }>,
+        changes: Changes,
+        selectedElement: UIEventSource<any>,
+        dataIsLoading: UIEventSource<boolean>,
+        userDetails: UIEventSource<UserDetails>,
+        route: UIEventSource<Route>,
+        addButtons: { name: string; icon: string; tags: Tag[]; layerToAddTo: FilteredLayer }[],
     ) {
         super(zoomlevel);
         this._zoomlevel = zoomlevel;
@@ -34,6 +38,8 @@ export class SimpleAddUI extends UIElement {
         this._selectedElement = selectedElement;
         this._dataIsLoading = dataIsLoading;
         this._userDetails = userDetails;
+        this._addToRouteButton = new Button(new FixedUiElement("Add to route"), this.AddWaypoint());
+        this._currentRoute = route;
         this.ListenTo(userDetails);
         this.ListenTo(dataIsLoading);
         this._addButtons = [];
@@ -60,8 +66,20 @@ export class SimpleAddUI extends UIElement {
         }
     }
 
+    private AddWaypoint() {
+        const self = this;
+        return () => {
+            self._currentRoute.data.waypoints.push(self._lastClickLocation.data);
+            console.log("Waypoints: " + self._currentRoute.data.waypoints)
+            self._currentRoute.ping();
+        }
+    }
+
     protected InnerRender(): string {
         const header = "<h2>Geen selectie</h2>" +
+
+            this._addToRouteButton.Render() +
+
             "Je klikte ergens waar er nog geen gezochte data is.<br/>";
         if (this._zoomlevel.data.zoom < 19) {
             return header + "Zoom verder in om een element toe te voegen.";
@@ -88,6 +106,7 @@ export class SimpleAddUI extends UIElement {
             button.Update();
         }
         this._userDetails.data.osmConnection.registerActivateOsmAUthenticationClass();
+        this._addToRouteButton.Update();
     }
 
 }

@@ -8,7 +8,7 @@ export class RouteLayer {
     private _route: UIEventSource<Route>;
     private _bm: Basemap;
     private _routing: Routing;
-    private _prevLayer: L.Layer;
+    private _layer: L.Layer;
 
     constructor(route: UIEventSource<Route>, bm: Basemap) {
         this._route = route;
@@ -22,11 +22,11 @@ export class RouteLayer {
     private renderOnMap() {
         const self = this;
         self._routing.queryRoute(self._route.data.waypoints, (geo) => {
-            if (self._prevLayer) {
-                self._bm.map.removeLayer(self._prevLayer);
+            if (self._layer) {
+                self._bm.map.removeLayer(self._layer);
             }
-            self._prevLayer = L.geoJSON(geo);
-            self._prevLayer.addTo(self._bm.map)
+            self._layer = L.geoJSON(geo);
+            self._layer.addTo(self._bm.map)
         }, console.log);
     }
 

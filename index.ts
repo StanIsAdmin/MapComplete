@@ -183,8 +183,17 @@ for (const layer of questSetToRender.layers) {
 const layerUpdater = new LayerUpdater(bm, minZoom, flayers);
 
 
-// ------------------ Setup various UI elements ------------
+// -------------- <ROUTE-TEST>
+import { RouteLayer } from "./Logic/RouteLayer";
+import { Route } from "./Logic/Route";
 
+let route = new Route([]);
+let event = new UIEventSource(route);
+let layer = new RouteLayer(event, bm);
+event.ping();
+// ------------- </ROUTE-TEST>
+
+// ------------------ Setup various UI elements ------------
 
 new StrayClickHandler(bm, selectedElement, leftMessage, () => {
     return new SimpleAddUI(bm.Location,
@@ -193,6 +202,7 @@ new StrayClickHandler(bm, selectedElement, leftMessage, () => {
         selectedElement,
         layerUpdater.runningQuery,
         osmConnection.userDetails,
+        event,
         addButtons);
 }
 );
@@ -276,18 +286,3 @@ new GeoLocationHandler(bm).AttachTo("geolocate-button");
 
 locationControl.ping();
 messageBox.update();
-
-// SMALL TEST OF ROUTE CREATION AND DISPLAY
-import { RouteLayer } from "./Logic/RouteLayer";
-import { Route } from "./Logic/Route";
-
-
-locationControl.data.lat = 50.812962;
-locationControl.data.lon = 4.387968;
-locationControl.ping();
-
-let route = new Route([{ lat: 50.812962, lon: 4.387968 }, { lat: 50.811115, lon: 4.381334 }]);
-let event = new UIEventSource(route);
-let layer = new RouteLayer(event, bm);
-event.ping();
-setTimeout(function () { route.waypoints.push({ lat: 50.813962, lon: 4.388968 }); event.ping(); }, 10000);
