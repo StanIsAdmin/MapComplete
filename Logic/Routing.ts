@@ -20,6 +20,9 @@ export class Routing {
 
 
     queryRoute(locations: { lat: number, lon: number }[], continuation: ((any) => void), onFail: ((reason) => void)): void {
+        if (locations.length < 2) {
+            return;
+        }
         let query = this.buildQuery(locations);
 
         $.getJSON(query,
