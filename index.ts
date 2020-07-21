@@ -22,7 +22,7 @@ import { SearchAndGo } from "./UI/SearchAndGo";
 import { CollapseButton } from "./UI/Base/CollapseButton";
 import { AllKnownLayouts } from "./Customizations/AllKnownLayouts";
 import { All } from "./Customizations/Layouts/All";
-import { WFSLayer } from "./WFS/WFSLayer";
+import { Playground } from "./WFS/Playground";
 
 
 
@@ -139,7 +139,7 @@ const bm = new Basemap("leafletDiv", locationControl, new VariableUiElement(
 
 // ------------- Setup the layers -------------------------------
 
-let wfsLayer = new WFSLayer(bm);
+let playgroundLayer = new Playground(bm);
 
 const addButtons: {
     name: string,

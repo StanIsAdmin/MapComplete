@@ -133,14 +133,14 @@ export class MultiPolygon extends Multi<Polygon> {
 }
 
 export class Feature extends GeoJSON {
-	private readonly geometry: Geometry | undefined;
+	private readonly geometry: Geometry;
 	private readonly id: string | undefined;
 	private readonly properties: object | undefined;
 	// TODO add properties field (The value of the properties member is an object (any JSON object or a JSON null value).)
 
 	constructor(id?: string, geometry?: Geometry, bbox?: Array<number>, properties?: object) {
 		super("Feature", bbox);
-		this.geometry = geometry;
+		this.geometry = geometry || null;
 		this.id = id;
 		this.properties = properties;
 	}

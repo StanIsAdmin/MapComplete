@@ -1,81 +1,49 @@
-import { LayerDefinition } from "../Customizations/LayerDefinition";
+import { Basemap } from "../Logic/Basemap";
+import { IFeatureCollection, Parser } from "./Parser";
+import L from "leaflet";
 
-export class Playground extends LayerDefinition {
-    constructor() {
-        super();
+export class Playground {
 
-        this.name = "artwork";
-        this.newElementTags = [new Tag("tourism", "artwork")];
-        this.icon = "./assets/statue.svg";
-        this.overpassFilter = new Tag("tourism", "artwork");
-        this.minzoom = 13;
-        this.questions = [
-            QuestionDefinition.radioAndTextQuestion("What kind of artwork is this?", 10, "artwork_type",
-                [
-                    { text: "A statue", value: "statue" },
-                    { text: "A bust (thus a statue, but only of the head and shoulders)", value: "bust" },
-                    { text: "A sculpture", value: "sculpture" },
-                    { text: "A mural painting", value: "mural" },
-                    { text: "A painting", value: "painting" },
-                    { text: "A graffiti", value: "graffiti" },
-                    { text: "A relief", value: "relief" },
-                    { text: "An installation", value: "installation" }]),
-            QuestionDefinition.textQuestion("Whom or what is depicted in this statue?", "subject", 20).addUnrequiredTag("subject:wikidata", "*"),
-            QuestionDefinition.textQuestion("Is there an inscription on this artwork?", "inscription", 16),
-            QuestionDefinition.textQuestion("What is the name of this artwork? If there is no explicit name, skip the question", "name", 15),
+    private readonly config: IFeatureCollection = {
+        tagName: "wfs:FeatureCollection",
+        bbox: {
+            tagName: "gml:boundedBy",
+            lowerCorner: { tagName: "gml:lowerCorner" },
+            upperCorner: { tagName: "gml:upperCorner" }
+        },
+        feature: {
+            tagName: "wfs:member",
+            geometry: {
+                tagName: "BELB:msGeometry",
+                point: {
+                    tagName: "gml:Point",
+                    coordinates: { tagName: "gml:pos" }
+                }
+            }
+        },
+        isLambert72: true,
+        nl: { name: "BELB:nom", description: "BELB:descriptie", address: { zipCode: "BELB:adresse_zip", street: "BELB:adresse_txt", municipality: "BELB:gemeente" }, extra: { age: "BELB:leeftijd" } },
+        fr: { name: "BELB:nom", description: "BELB:description", address: { zipCode: "BELB:adresse_zip", street: "BELB:adresse_txt", municipality: "BELB:commune" }, extra: { age: "BELB:age" } }
+    }
 
+    constructor(basemap: Basemap) {
+        let parser = new Parser("https://cors-anywhere.herokuapp.com/https://wfs.environnement.brussels/belb?SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAME=playground&SRSNAME=EPSG:31370", this.config);
+        parser.parse()
+            .then(fc => {
+                L.geoJSON(fc, {
+                    style: function (feature) {
+                        return {
+                            icon: new L.icon({
+                                iconUrl: "assets/bookcase.svg",
+                                iconSize: [40, 40]
+                            }),
+                            color: "#0000ff"
+                        }
+                    },
+                }).bindPopup(function (layer) {
+                    return JSON.stringify(layer.feature.properties);
+                }).addTo(basemap.map);
+            });
 
-        ];
-
-        this.style = function (tags) {
-            return {
-                icon: new L.icon({
-                    iconUrl: "assets/statue.svg",
-                    iconSize: [40, 40],
-                    text: "hi"
-                }),
-                color: "#0000ff"
-            };
-
-        }
-
-        this.elementsToShow = [
-
-
-            new TagMappingOptions(
-                {
-                    key: "name",
-                    template: "<h2>Artwork '{name}'</h2>",
-                    missing: "Artwork"
-                }),
-            new TagMappingOptions({
-                key: "artwork_type",
-                template: "This artwork is a {artwork_type}"
-            }),
-            new TagMappingOptions({
-                key: "artist_name",
-                template: "This artwork was made by {artist_name}"
-            }),
-            new TagMappingOptions({
-                key: "subject",
-                template: "This artwork depicts {subject}"
-            }),
-
-            new TagMappingOptions({
-                key: "subject:wikidata",
-                template: "<a href='https://www.wikidata.org/wiki/{subject:wikidata}' target='_blank'>See more data about the subject</a>"
-            }),
-
-            new TagMappingOptions({
-                key: "website",
-                template: "<a href='{website}' target='_blank'>Website of the statue</a>"
-            }),
-
-
-
-
-            new TagMappingOptions({ key: "image", template: "<img class='popupImg' alt='image' src='{image}' />" })
-
-        ];
     }
 }
