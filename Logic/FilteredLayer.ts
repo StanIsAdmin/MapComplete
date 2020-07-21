@@ -104,7 +104,7 @@ export class FilteredLayer {
 
         const notShadowed = [];
         for (const feature of leftoverFeatures) {
-            if (this._maxAllowedOverlap !== undefined && this._maxAllowedOverlap >= 0) {
+            if (this._maxAllowedOverlap !== undefined && this._maxAllowedOverlap > 0) {
                 if (GeoOperations.featureIsContainedInAny(feature, selfFeatures, this._maxAllowedOverlap)) {
                     // This feature is filtered away
                     continue;
@@ -120,16 +120,6 @@ export class FilteredLayer {
         };
     }
 
-
-    public updateStyle() {
-        if (this._geolayer === undefined) {
-            return;
-        }
-        const self = this;
-        this._geolayer.setStyle(function (feature) {
-            return self._style(feature.properties);
-        });
-    }
 
     public AddNewElement(element) {
         this._newElements.push(element);
@@ -197,7 +187,15 @@ export class FilteredLayer {
             onEachFeature: function (feature, layer) {
                 let eventSource = self._storage.addOrGetElement(feature);
                 eventSource.addCallback(function () {
-                    self.updateStyle();
+                    if (layer.setIcon) {
+                        layer.setIcon(self._style(feature.properties).icon)
+                    } else {
+                        console.log("UPdating", layer);
+
+                        self._geolayer.setStyle(function (feature) {
+                            return self._style(feature.properties);
+                        });
+                    }
                 });
 
 

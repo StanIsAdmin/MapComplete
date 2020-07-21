@@ -3,22 +3,19 @@ import {And, Or, Tag} from "../../Logic/TagsFilter";
 import {OperatorTag} from "../Questions/OperatorTag";
 import * as L from "leaflet";
 import FixedText from "../Questions/FixedText";
-import { BikeParkingType } from "../Questions/BikeParkingType";
+import ParkingType from "../Questions/bike/ParkingType";
+import {ImageCarouselWithUploadConstructor} from "../../UI/Image/ImageCarouselWithUpload";
+import BikeStationOperator from "../Questions/bike/StationOperator";
+import Translations from "../../UI/i18n/Translations";
+import ParkingOperator from "../Questions/bike/ParkingOperator";
 
-export class BikeParkings extends LayerDefinition {
 
+export default class BikeParkings extends LayerDefinition {
     constructor() {
         super();
-        this.name = "bike_parking";
-        this.icon = "./assets/bike_pump.svg";
-
-        this.overpassFilter = new Or([
-            new And([
-                new Tag("amenity", "bicycle_parking")
-            ])
-        ]);
-
-
+        this.name = Translations.t.cyclofix.parking.name.txt;
+        this.icon = "./assets/bike/parking.svg";
+        this.overpassFilter = new Tag("amenity", "bicycle_parking");
         this.newElementTags = [
             new Tag("amenity", "bicycle_parking"),
         ];
@@ -26,46 +23,26 @@ export class BikeParkings extends LayerDefinition {
 
         this.minzoom = 13;
         this.style = this.generateStyleFunction();
-        this.title = new FixedText("fietsparking");
+        this.title = new FixedText(Translations.t.cyclofix.parking.title)
         this.elementsToShow = [
-            new OperatorTag(),
-            new BikeParkingType()
+            new ImageCarouselWithUploadConstructor(),
+            //new ParkingOperator(),
+            new ParkingType()
         ];
 
     }
 
-
     private generateStyleFunction() {
         const self = this;
         return function (properties: any) {
-            // let questionSeverity = 0;
-            // for (const qd of self.elementsToShow) {
-            //     if (qd.IsQuestioning(properties)) {
-            //         questionSeverity = Math.max(questionSeverity, qd.options.priority ?? 0);
-            //     }
-            // }
-
-            // let colormapping = {
-            //     0: "#00bb00",
-            //     1: "#00ff00",
-            //     10: "#dddd00",
-            //     20: "#ff0000"
-            // };
-
-            // let colour = colormapping[questionSeverity];
-            // while (colour == undefined) {
-            //     questionSeverity--;
-            //     colour = colormapping[questionSeverity];
-            // }
-
             return {
                 color: "#00bb00",
-                icon: new L.icon({
+                icon: L.icon({
                     iconUrl: self.icon,
-                    iconSize: [40, 40]
+                    iconSize: [50, 50],
+                    iconAnchor: [25,50]
                 })
             };
         };
     }
-
 }

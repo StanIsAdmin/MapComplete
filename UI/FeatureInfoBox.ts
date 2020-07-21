@@ -10,7 +10,7 @@ import {TagRenderingOptions} from "../Customizations/TagRendering";
 import {OsmLink} from "../Customizations/Questions/OsmLink";
 import {WikipediaLink} from "../Customizations/Questions/WikipediaLink";
 import {And} from "../Logic/TagsFilter";
-import {TagDependantUIElement} from "../Customizations/UIElementConstructor";
+import {TagDependantUIElement, TagDependantUIElementConstructor} from "../Customizations/UIElementConstructor";
 
 export class FeatureInfoBox extends UIElement {
 
@@ -30,8 +30,8 @@ export class FeatureInfoBox extends UIElement {
 
     constructor(
         tagsES: UIEventSource<any>,
-        title: TagRenderingOptions,
-        elementsToShow: TagRenderingOptions[],
+        title: TagRenderingOptions | UIElement,
+        elementsToShow: TagDependantUIElementConstructor[],
         changes: Changes,
         userDetails: UIEventSource<UserDetails>
     ) {
@@ -41,12 +41,13 @@ export class FeatureInfoBox extends UIElement {
         this._userDetails = userDetails;
         this.ListenTo(userDetails);
 
+        const deps = {tags:this._tagsES , changes:this._changes}
         
         this._infoboxes = [];
         elementsToShow = elementsToShow ?? []
         for (const tagRenderingOption of elementsToShow) {
             this._infoboxes.push(
-                tagRenderingOption.construct(this._tagsES, this._changes));
+                tagRenderingOption.construct(deps));
         }
 
         title = title ?? new TagRenderingOptions(
@@ -55,10 +56,14 @@ export class FeatureInfoBox extends UIElement {
             }
         )
 
-        this._title = new TagRenderingOptions(title.options).construct(this._tagsES, this._changes);
-        this._osmLink =new OsmLink().construct(this._tagsES, this._changes);
-        this._wikipedialink = new WikipediaLink().construct(this._tagsES, this._changes);
-    
+        if (title instanceof UIElement) {
+            this._title = title;
+        } else {
+            this._title = new TagRenderingOptions(title.options).construct(deps);
+        }
+        this._osmLink = new OsmLink().construct(deps);
+        this._wikipedialink = new WikipediaLink().construct(deps);
+
 
     }
 
@@ -113,19 +118,7 @@ export class FeatureInfoBox extends UIElement {
             "" +
             "</div>";
     }
+    
+    
 
-    Activate() {
-        super.Activate();
-        for (const infobox of this._infoboxes) {
-            infobox.Activate();
-        }
-    }
-
-    Update() {
-        super.Update();
-        this._title.Update();
-        for (const infobox of this._infoboxes) {
-            infobox.Update();
-        }
-    }
 }

@@ -4,6 +4,8 @@ import {UIEventSource} from "./UIEventSource";
 import {Basemap} from "../Logic/Basemap";
 import L from "leaflet";
 import {FixedUiElement} from "./Base/FixedUiElement";
+import {VariableUiElement} from "./Base/VariableUIElement";
+import Translations from "./i18n/Translations";
 
 /**
  * Handles and updates the user badge
@@ -13,12 +15,16 @@ export class UserBadge extends UIElement {
     private _pendingChanges: UIElement;
     private _logout: UIElement;
     private _basemap: Basemap;
+    private _homeButton: UIElement;
+    private _languagePicker: UIElement;
 
 
     constructor(userDetails: UIEventSource<UserDetails>,
                 pendingChanges: UIElement,
+                languagePicker: UIElement,
                 basemap: Basemap) {
         super(userDetails);
+        this._languagePicker = languagePicker;
         this._userDetails = userDetails;
         this._pendingChanges = pendingChanges;
         this._basemap = basemap;
@@ -38,12 +44,27 @@ export class UserBadge extends UIElement {
             }
         });
 
+        this._homeButton = new VariableUiElement(
+            userDetails.map((userinfo) => {
+                if (userinfo.home) {
+                    return "<img id='home' src='./assets/home.svg' alt='home' class='small-userbadge-icon'> ";
+                }
+                return "";
+            })
+        ).onClick(() => {
+            const home = userDetails.data?.home;
+            if (home === undefined) {
+                return;
+            }
+            basemap.map.flyTo([home.lat, home.lon], 18);
+        });
+
     }
 
-    protected InnerRender(): string {
+    InnerRender(): string {
         const user = this._userDetails.data;
         if (!user.loggedIn) {
-            return "<div class='activate-osm-authentication'>Klik hier om aan te melden bij OSM</div>";
+            return "<div class='activate-osm-authentication'>" + Translations.t.general.loginWithOpenStreetMap.R()+ "</div>";
         }
         
         
@@ -66,9 +87,7 @@ export class UserBadge extends UIElement {
             dryrun = " <span class='alert'>TESTING</span>";
         }
 
-        let home = "";
         if (user.home !== undefined) {
-            home = "<img id='home' src='./assets/home.svg' alt='home' class='small-userbadge-icon'> ";
             const icon = L.icon({
                 iconUrl: 'assets/home.svg',
                 iconSize: [20, 20],
@@ -91,38 +110,19 @@ export class UserBadge extends UIElement {
             dryrun +
             "</p> " +
             "<p id='userstats'>" +
-            home +
+            this._homeButton.Render() +
             settings +
             messageSpan +
             "<span id='csCount'> " +
             "   <a href='https://www.openstreetmap.org/user/" + user.name + "/history' target='_blank'><img class='small-userbadge-icon' src='./assets/star.svg' alt='star'/> " + user.csCount +
             "</a></span> " +
             this._logout.Render() +
+            this._languagePicker.Render() +
             this._pendingChanges.Render() +
             "</p>" +
        
             "</div>";
     }
 
-    InnerUpdate(htmlElement: HTMLElement) {
-        this._pendingChanges.Update();
-        var btn = document.getElementById("home");
-        if (btn) {
-            const self = this;
-            btn.onclick = function () {
-                const home = self._userDetails?.data?.home;
-                if (home === undefined) {
-                    return;
-                }
-                self._basemap.map.flyTo([home.lat, home.lon], 18);
-
-            }
-        }
-        this._logout.Update();
-    }
-    
-    Activate() {
-        this._pendingChanges.Activate();
-    }
 
 }

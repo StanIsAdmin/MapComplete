@@ -1,8 +1,21 @@
-export class Regex implements TagsFilter {
+
+export abstract class TagsFilter {
+    abstract matches(tags: { k: string, v: string }[]): boolean
+    abstract asOverpass(): string[]
+    abstract substituteValues(tags: any) : TagsFilter;
+
+    matchesProperties(properties: any) : boolean{
+        return this.matches(TagUtils.proprtiesToKV(properties));
+    }
+}
+
+
+export class Regex extends TagsFilter {
     private _k: string;
     private _r: string;
 
     constructor(k: string, r: string) {
+        super();
         this._k = k;
         this._r = r;
     }
@@ -12,6 +25,10 @@ export class Regex implements TagsFilter {
     }
 
     matches(tags: { k: string; v: string }[]): boolean {
+        if(!(tags instanceof Array)){
+            throw "You used 'matches' on something that is not a list. Did you mean to use 'matchesProperties'?"
+        }
+        
         for (const tag of tags) {
             if (tag.k === this._k) {
                 if (tag.v === "") {
@@ -37,11 +54,12 @@ export class Regex implements TagsFilter {
 
 }
 
-export class Tag implements TagsFilter {
+export class Tag extends TagsFilter {
     public key: string;
     public value: string;
 
     constructor(key: string, value: string) {
+        super()
         this.key = key;
         this.value = value;
     }
@@ -85,11 +103,12 @@ export class Tag implements TagsFilter {
 
 }
 
-export class Or implements TagsFilter {
+export class Or extends TagsFilter {
 
     public or: TagsFilter[]
 
     constructor(or: TagsFilter[]) {
+        super();
         this.or = or;
     }
 
@@ -127,11 +146,12 @@ export class Or implements TagsFilter {
 
 }
 
-export class And implements TagsFilter {
+export class And extends TagsFilter {
 
     public and: TagsFilter[]
 
     constructor(and: TagsFilter[]) {
+        super();
         this.and = and;
     }
 
@@ -185,13 +205,28 @@ export class And implements TagsFilter {
     }
 }
 
-export interface TagsFilter {
-    matches(tags: { k: string, v: string }[]): boolean
-
-    asOverpass(): string[]
+export class Not extends TagsFilter{
+    private not: TagsFilter;
     
-    substituteValues(tags: any) : TagsFilter;
+    constructor(not: TagsFilter) {
+        super();
+        this.not = not;
+    }
+    
+    asOverpass(): string[] {
+        throw "Not supported yet"
+    }
+
+    matches(tags: { k: string; v: string }[]): boolean {
+        return !this.not.matches(tags);
+    }
+
+    substituteValues(tags: any): TagsFilter {
+        return new Not(this.not.substituteValues(tags));
+    }
+    
 }
+
 
 export class TagUtils {
 

@@ -7,11 +7,16 @@ import Cyclofix from "./Layouts/Cyclofix";
 import { WalkByBrussels } from "./Layouts/WalkByBrussels";
 import { All } from "./Layouts/All";
 import { Layout } from "./Layout";
+import {MetaMap} from "./Layouts/MetaMap";
+import {Widths} from "./Layers/Widths";
+import {StreetWidth} from "./Layouts/StreetWidth";
+import {NatureReserves} from "./Layers/NatureReserves";
+import {Natuurpunt} from "./Layouts/Natuurpunt";
 
 export class AllKnownLayouts {
-    public static allSets: any = AllKnownLayouts.AllLayouts();
+    public static allSets = AllKnownLayouts.AllLayouts();
 
-    private static AllLayouts(): any {
+    private static AllLayouts(): Map<string, Layout> {
         const all = new All();
         const layouts: Layout[] = [
             new Groen(),
@@ -19,12 +24,15 @@ export class AllKnownLayouts {
             new Cyclofix(),
             new Bookcases(),
             new WalkByBrussels(),
+            new MetaMap(),
+            new StreetWidth(),
+            new Natuurpunt(),
             all
             /*new Toilets(),
             new Statues(),
             */
         ];
-        const allSets = {};
+        const allSets: Map<string, Layout> = new Map();
         for (const layout of layouts) {
             allSets[layout.name] = layout;
             all.layers = all.layers.concat(layout.layers);
