@@ -1,7 +1,7 @@
 import {UIEventSource} from "./UIEventSource";
 
 export abstract class UIElement {
-
+    
     private static nextId: number = 0;
 
     public readonly id: string;
@@ -19,12 +19,13 @@ export abstract class UIElement {
 
     public ListenTo(source: UIEventSource<any>) {
         if (source === undefined) {
-            return;
+            return this;
         }
         const self = this;
         source.addCallback(() => {
             self.Update();
         })
+        return this;
     }
 
     private _onClick: () => void;
@@ -34,14 +35,13 @@ export abstract class UIElement {
         this.Update();
         return this;
     }
-
+    
     Update(): void {
         let element = document.getElementById(this.id);
-        if (element === null || element === undefined) {
+        if (element === undefined || element === null) {
             // The element is not painted
             return;
         }
-
         element.innerHTML = this.InnerRender();
         if (this._hideIfEmpty) {
             if (element.innerHTML === "") {
@@ -58,20 +58,22 @@ export abstract class UIElement {
             }
             element.style.pointerEvents = "all";
             element.style.cursor = "pointer";
-           /*
-            const childs = element.children;
-            for (let i = 0; i < childs.length; i++) {
-                const ch = childs[i];
-                console.log(ch);
-                ch.style.cursor = "pointer";
-                ch.onclick = () => {
-                    self._onClick();
-                }
-                ch.style.pointerEvents = "all";
-            }*/
         }
 
         this.InnerUpdate(element);
+
+        for (const i in this) {
+            const child = this[i];
+            if (child instanceof UIElement) {
+                child.Update();
+            } else if (child instanceof Array) {
+                for (const ch of child) {
+                    if (ch instanceof UIElement) {
+                        ch.Update();
+                    }
+                }
+            }
+        }
     }
     
     HideOnEmpty(hide : boolean){
@@ -81,7 +83,8 @@ export abstract class UIElement {
     }
     
     // Called after the HTML has been replaced. Can be used for css tricks
-    InnerUpdate(htmlElement : HTMLElement){}
+   protected InnerUpdate(htmlElement: HTMLElement) {
+   }
 
     Render(): string {
         return "<span class='uielement' id='" + this.id + "'>" + this.InnerRender() + "</span>"
@@ -89,20 +92,34 @@ export abstract class UIElement {
 
     AttachTo(divId: string) {
         let element = document.getElementById(divId);
-        if(element === null){
-            console.log("SEVERE: could not attach UIElement to ", divId);
-            return;
+        if (element === null) {
+            throw "SEVERE: could not attach UIElement to " + divId;
         }
         element.innerHTML = this.Render();
         this.Update();
         return this;
     }
 
-    protected abstract InnerRender(): string;
-    public Activate(): void {};
+    public abstract InnerRender(): string;
+
+    public Activate(): void {
+        for (const i in this) {
+            const child = this[i];
+            if (child instanceof UIElement) {
+                child.Activate();
+            } else if (child instanceof Array) {
+                for (const ch of child) {
+                    if (ch instanceof UIElement) {
+                        ch.Activate();
+                    }
+                }
+            }
+        }
+    };
 
     public IsEmpty(): boolean {
         return this.InnerRender() === "";
     }
-
 }
+
+

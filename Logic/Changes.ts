@@ -6,7 +6,6 @@ import {OsmConnection} from "./OsmConnection";
 import {OsmNode, OsmObject} from "./OsmObject";
 import {ElementStorage} from "./ElementStorage";
 import {UIEventSource} from "../UI/UIEventSource";
-import {Question, QuestionDefinition} from "./Question";
 import {And, Tag, TagsFilter} from "./TagsFilter";
 
 export class Changes {
@@ -117,7 +116,7 @@ console.log("Received change",key, value)
         return geojson;
     }
 
-    public uploadAll(optionalContinuation: (() => void)) {
+    public uploadAll(optionalContinuation: (() => void) = undefined) {
         const self = this;
 
         this.isSaving.setData(true);
