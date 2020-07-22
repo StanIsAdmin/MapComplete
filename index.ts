@@ -1,35 +1,38 @@
-import {OsmConnection} from "./Logic/OsmConnection";
-import {Changes} from "./Logic/Changes";
-import {ElementStorage} from "./Logic/ElementStorage";
-import {UIEventSource} from "./UI/UIEventSource";
-import {UserBadge} from "./UI/UserBadge";
-import {Basemap} from "./Logic/Basemap";
-import {PendingChanges} from "./UI/PendingChanges";
-import {CenterMessageBox} from "./UI/CenterMessageBox";
-import {Helpers} from "./Helpers";
-import {Tag, TagUtils} from "./Logic/TagsFilter";
-import {FilteredLayer} from "./Logic/FilteredLayer";
-import {LayerUpdater} from "./Logic/LayerUpdater";
-import {UIElement} from "./UI/UIElement";
-import {FullScreenMessageBoxHandler} from "./UI/FullScreenMessageBoxHandler";
-import {Overpass} from "./Logic/Overpass";
-import {FeatureInfoBox} from "./UI/FeatureInfoBox";
-import {GeoLocationHandler} from "./Logic/GeoLocationHandler";
-import {StrayClickHandler} from "./Logic/StrayClickHandler";
-import {SimpleAddUI} from "./UI/SimpleAddUI";
-import {VariableUiElement} from "./UI/Base/VariableUIElement";
-import {SearchAndGo} from "./UI/SearchAndGo";
-import {CollapseButton} from "./UI/Base/CollapseButton";
-import {AllKnownLayouts} from "./Customizations/AllKnownLayouts";
-import {All} from "./Customizations/Layouts/All";
+import { OsmConnection } from "./Logic/OsmConnection";
+import { Changes } from "./Logic/Changes";
+import { ElementStorage } from "./Logic/ElementStorage";
+import { UIEventSource } from "./UI/UIEventSource";
+import { UserBadge } from "./UI/UserBadge";
+import { Basemap } from "./Logic/Basemap";
+import { PendingChanges } from "./UI/PendingChanges";
+import { CenterMessageBox } from "./UI/CenterMessageBox";
+import { Helpers } from "./Helpers";
+import { Tag, TagUtils } from "./Logic/TagsFilter";
+import { FilteredLayer } from "./Logic/FilteredLayer";
+import { LayerUpdater } from "./Logic/LayerUpdater";
+import { UIElement } from "./UI/UIElement";
+import { FullScreenMessageBoxHandler } from "./UI/FullScreenMessageBoxHandler";
+import { Overpass } from "./Logic/Overpass";
+import { FeatureInfoBox } from "./UI/FeatureInfoBox";
+import { GeoLocationHandler } from "./Logic/GeoLocationHandler";
+import { StrayClickHandler } from "./Logic/StrayClickHandler";
+import { SimpleAddUI } from "./UI/SimpleAddUI";
+import { VariableUiElement } from "./UI/Base/VariableUIElement";
+import { SearchAndGo } from "./UI/SearchAndGo";
+import { CollapseButton } from "./UI/Base/CollapseButton";
+import { AllKnownLayouts } from "./Customizations/AllKnownLayouts";
+import { All } from "./Customizations/Layouts/All";
 import Translations from "./UI/i18n/Translations";
 import Translation from "./UI/i18n/Translation";
 import Locale from "./UI/i18n/Locale";
-import {Layout, WelcomeMessage} from "./Customizations/Layout";
-import {DropDown} from "./UI/Input/DropDown";
-import {FixedInputElement} from "./UI/Input/FixedInputElement";
-import {FixedUiElement} from "./UI/Base/FixedUiElement";
+import { Layout, WelcomeMessage } from "./Customizations/Layout";
+import { DropDown } from "./UI/Input/DropDown";
+import { FixedInputElement } from "./UI/Input/FixedInputElement";
+import { FixedUiElement } from "./UI/Base/FixedUiElement";
 import ParkingType from "./Customizations/Questions/bike/ParkingType";
+import { RouteLayer } from "./Logic/RouteLayer";
+import { Route } from "./Logic/Route";
+import { GeoOperations } from "./Logic/GeoOperations";
 
 
 // --------------------- Read the URL parameters -----------------
@@ -119,7 +122,7 @@ const secondsTillChangesAreSaved = new UIEventSource<number>(0);
 const fullScreenMessage = new UIEventSource<UIElement>(undefined);
 
 // The latest element that was selected - used to generate the right UI at the right place
-const selectedElement = new UIEventSource<{feature: any}>(undefined);
+const selectedElement = new UIEventSource<{ feature: any }>(undefined);
 
 
 const locationControl = new UIEventSource<{ lat: number, lon: number, zoom: number }>({
@@ -165,6 +168,11 @@ const bm = new Basemap("leafletDiv", locationControl, new VariableUiElement(
 ));
 
 
+// -------------- Setup the route  -----------------------------
+let route = new Route([]);
+let currentRoute = new UIEventSource(route);
+new RouteLayer(currentRoute, bm);
+
 // ------------- Setup the layers -------------------------------
 const addButtons: {
     name: UIElement,
@@ -180,15 +188,17 @@ let minZoom = 0;
 
 for (const layer of layoutToUse.layers) {
 
-    const generateInfo = (tagsES, feature) => {
+    const generateInfo = function (tagsES, feature, clickLocation: { lat: number, lon: number }) {
 
         return new FeatureInfoBox(
+            clickLocation,
             feature,
             tagsES,
             layer.title,
             layer.elementsToShow,
             changes,
-            osmConnection.userDetails
+            osmConnection.userDetails,
+            currentRoute
         )
     };
 
@@ -209,37 +219,25 @@ for (const layer of layoutToUse.layers) {
 const layerUpdater = new LayerUpdater(bm, minZoom, flayers);
 
 
-// -------------- <ROUTE-TEST>
-import { RouteLayer } from "./Logic/RouteLayer";
-import { Route } from "./Logic/Route";
-
-let route = new Route([]);
-
-
-
-
 // ------------------ Setup various UI elements ------------
 let languagePicker = new DropDown(" ", layoutToUse.supportedLanguages.map(lang => {
-        return {value: lang, shown: lang}
-    }
+    return { value: lang, shown: lang }
+}
 ), Locale.language).AttachTo("language-select");
 
 
 
-let currentRoute = new UIEventSource(route);
-new RouteLayer(currentRoute, bm);
-
 new StrayClickHandler(bm, selectedElement, fullScreenMessage, () => {
-        return new SimpleAddUI(
-            bm.Location,
-            bm.LastClickLocation,
-            changes,
-            selectedElement,
-            layerUpdater.runningQuery,
-            osmConnection.userDetails,
-            currentRoute,
-            addButtons);
-    }
+    return new SimpleAddUI(
+        bm.Location,
+        bm.LastClickLocation,
+        changes,
+        selectedElement,
+        layerUpdater.runningQuery,
+        osmConnection.userDetails,
+        currentRoute,
+        addButtons);
+}
 );
 
 /**
@@ -253,26 +251,28 @@ selectedElement.addCallback((feature) => {
         const applicable = layer.overpassFilter.matches(TagUtils.proprtiesToKV(data));
         if (applicable) {
             // This layer is the layer that gives the questions
-
+            const featureCenter = GeoOperations.centerpoint(feature.feature).geometry.coordinates;
             const featureBox = new FeatureInfoBox(
+                { lon: featureCenter[0], lat: featureCenter[1] },
                 feature.feature,
                 allElements.getElement(data.id),
                 layer.title,
                 layer.elementsToShow,
                 changes,
-                osmConnection.userDetails
+                osmConnection.userDetails,
+                currentRoute
             );
 
             fullScreenMessage.setData(featureBox);
             break;
         }
     }
-    }
+}
 );
 
 
 const pendingChanges = new PendingChanges(
-    changes, secondsTillChangesAreSaved,);
+    changes, secondsTillChangesAreSaved);
 
 new UserBadge(osmConnection.userDetails,
     pendingChanges,

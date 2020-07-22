@@ -6,7 +6,7 @@ import { Changes } from "./Changes";
 import L from "leaflet"
 import { GeoOperations } from "./GeoOperations";
 import { UIElement } from "../UI/UIElement";
-import {LayerDefinition} from "../Customizations/LayerDefinition";
+import { LayerDefinition } from "../Customizations/LayerDefinition";
 
 /***
  * A filtered layer is a layer which offers a 'set-data' function
@@ -41,8 +41,8 @@ export class FilteredLayer {
      * The leaflet layer object which should be removed on rerendering
      */
     private _geolayer;
-    private _selectedElement: UIEventSource<{feature: any}>;
-    private _showOnPopup: (tags: UIEventSource<any>, feature: any) => UIElement;
+    private _selectedElement: UIEventSource<{ feature: any }>;
+    private _showOnPopup: (tags: UIEventSource<any>, feature: any, clickLocation: { lat: number, lon: number }) => UIElement;
 
     constructor(
         name: string | UIElement,
@@ -52,8 +52,8 @@ export class FilteredLayer {
         maxAllowedOverlap: number,
         wayHandling: number,
         style: ((properties) => any),
-        selectedElement: UIEventSource<{feature: any}>,
-        showOnPopup: ((tags: UIEventSource<any>, feature: any) => UIElement)
+        selectedElement: UIEventSource<{ feature: any }>,
+        showOnPopup: ((tags: UIEventSource<any>, feature: any, clickLocation: { lat: number, lon: number }) => UIElement)
     ) {
         this._wayHandling = wayHandling;
         this._selectedElement = selectedElement;
@@ -70,7 +70,7 @@ export class FilteredLayer {
         this._style = style;
         this._storage = storage;
         this._maxAllowedOverlap = maxAllowedOverlap;
-        
+
         const self = this;
         this.isDisplayed.addCallback(function (isDisplayed) {
             if (self._geolayer !== undefined && self._geolayer !== null) {
@@ -96,10 +96,10 @@ export class FilteredLayer {
             var tags = TagUtils.proprtiesToKV(feature.properties);
             if (this.filters.matches(tags)) {
                 feature.properties["_surface"] = GeoOperations.surfaceAreaInSqMeters(feature);
-                if(feature.geometry.type !== "Point"){
-                    if(this._wayHandling === LayerDefinition.WAYHANDLING_CENTER_AND_WAY){
+                if (feature.geometry.type !== "Point") {
+                    if (this._wayHandling === LayerDefinition.WAYHANDLING_CENTER_AND_WAY) {
                         selfFeatures.push(GeoOperations.centerpoint(feature));
-                    }else if(this._wayHandling === LayerDefinition.WAYHANDLING_CENTER_ONLY){
+                    } else if (this._wayHandling === LayerDefinition.WAYHANDLING_CENTER_ONLY) {
                         feature = GeoOperations.centerpoint(feature);
                     }
                 }
@@ -214,8 +214,9 @@ export class FilteredLayer {
 
                 layer.on("click", function (e) {
                     console.log("Selected ", feature)
-                    self._selectedElement.setData({feature: feature});
-                    const uiElement = self._showOnPopup(eventSource, feature);
+                    self._selectedElement.setData({ feature: feature });
+                    const clickLocation = { lat: e.latlng.lat, lon: e.latlng.lng };
+                    const uiElement = self._showOnPopup(eventSource, feature, clickLocation);
                     const popup = L.popup()
                         .setContent(uiElement.Render())
                         .setLatLng(e.latlng)

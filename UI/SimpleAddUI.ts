@@ -23,13 +23,13 @@ export class SimpleAddUI extends UIElement {
     private _currentRoute: UIEventSource<Route>;
 
     constructor(zoomlevel: UIEventSource<{ zoom: number }>,
-                lastClickLocation: UIEventSource<{ lat: number, lon: number }>,
-                changes: Changes,
-                selectedElement: UIEventSource<{ feature: any }>,
-                dataIsLoading: UIEventSource<boolean>,
-                userDetails: UIEventSource<UserDetails>,
-                route: UIEventSource<Route>,
-                addButtons: { name: UIElement; icon: string; tags: Tag[]; layerToAddTo: FilteredLayer }[],
+        lastClickLocation: UIEventSource<{ lat: number, lon: number }>,
+        changes: Changes,
+        selectedElement: UIEventSource<{ feature: any }>,
+        dataIsLoading: UIEventSource<boolean>,
+        userDetails: UIEventSource<UserDetails>,
+        route: UIEventSource<Route>,
+        addButtons: { name: UIElement; icon: string; tags: Tag[]; layerToAddTo: FilteredLayer }[],
     ) {
         super(zoomlevel);
         this._zoomlevel = zoomlevel;
@@ -61,7 +61,7 @@ export class SimpleAddUI extends UIElement {
             const loc = self._lastClickLocation.data;
             let feature = self._changes.createElement(option.tags, loc.lat, loc.lon);
             option.layerToAddTo.AddNewElement(feature);
-            self._selectedElement.setData({feature: feature});
+            self._selectedElement.setData({ feature: feature });
         }
     }
 
@@ -79,7 +79,7 @@ export class SimpleAddUI extends UIElement {
 
 
             "You clicked somewhere where no data is known yet.<br/>" +
-            this._addToRouteButton.Render()+"<br/>";
+            this._addToRouteButton.Render() + "<br/>";
         if (!this._userDetails.data.loggedIn) {
             return header + "<a class='activate-osm-authentication'>Please log in to add a new point</a>"
         }

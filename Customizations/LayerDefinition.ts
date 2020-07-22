@@ -1,13 +1,13 @@
-import {Tag, TagsFilter} from "../Logic/TagsFilter";
-import {UIElement} from "../UI/UIElement";
-import {Basemap} from "../Logic/Basemap";
-import {ElementStorage} from "../Logic/ElementStorage";
-import {UIEventSource} from "../UI/UIEventSource";
-import {FilteredLayer} from "../Logic/FilteredLayer";
-import {Changes} from "../Logic/Changes";
-import {UserDetails} from "../Logic/OsmConnection";
-import {TagRenderingOptions} from "./TagRendering";
-import {TagDependantUIElementConstructor} from "./UIElementConstructor";
+import { Tag, TagsFilter } from "../Logic/TagsFilter";
+import { UIElement } from "../UI/UIElement";
+import { Basemap } from "../Logic/Basemap";
+import { ElementStorage } from "../Logic/ElementStorage";
+import { UIEventSource } from "../UI/UIEventSource";
+import { FilteredLayer } from "../Logic/FilteredLayer";
+import { Changes } from "../Logic/Changes";
+import { UserDetails } from "../Logic/OsmConnection";
+import { TagRenderingOptions } from "./TagRendering";
+import { TagDependantUIElementConstructor } from "./UIElementConstructor";
 
 export class LayerDefinition {
 
@@ -76,11 +76,11 @@ export class LayerDefinition {
      * If true, then ways (and polygons) will be converted to a 'point' at the center instead before further processing
      */
     wayHandling: number = 0;
-    
+
     static WAYHANDLING_DEFAULT = 0;
     static WAYHANDLING_CENTER_ONLY = 1;
     static WAYHANDLING_CENTER_AND_WAY = 2;
-    
+
     constructor(options: {
         name: string,
         newElementTags: Tag[],
@@ -112,8 +112,8 @@ export class LayerDefinition {
     }
 
     asLayer(basemap: Basemap, allElements: ElementStorage, changes: Changes, userDetails: UIEventSource<UserDetails>,
-            selectedElement: UIEventSource<{feature: any}>,
-            showOnPopup: (tags: UIEventSource<(any)>, feature: any) => UIElement):
+        selectedElement: UIEventSource<{ feature: any }>,
+        showOnPopup: (tags: UIEventSource<(any)>, feature: any, clickLocation: { lat: number, lon: number }) => UIElement):
         FilteredLayer {
         return new FilteredLayer(
             this.name,
