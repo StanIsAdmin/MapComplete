@@ -64,6 +64,48 @@ form {
 }
 
 
+/**************** DISABLE HORIZONTAL MODE ****************/
+
+#turn h1 {
+    text-align: center;
+}
+
+#turn {
+    display: none;
+}
+
+@media only screen and (orientation:landscape) and (max-device-width: 850px) and (max-device-height: 450px) {
+    div:not(#turn) {
+        opacity: 0;
+    }
+    
+    body {
+        overflow: hidden;
+    }
+    
+    #centermessage {
+        visibility: hidden;
+    }
+    
+    #turn {
+        display: block;
+    }
+}
+
+@media only screen and (orientation:portrait) {
+    div:not(#turn) {
+        opacity: 1;
+    }
+    
+    #turn {
+        display: none;
+    }
+    
+    #centermessage {
+        visibility: visible;
+    }
+}
+
 /**************** USER BADGE ****************/
 
 .small-userbadge-icon {
@@ -95,11 +137,10 @@ form {
     color: black;
 }
 
-
 #usertext {
     width: auto;
     margin:0;
-    
+
     padding: 0.9em;
     padding-left: 4.7em; /* Should be half of profile-pic's width + actual padding (same as padding-right)*/
     padding-right: 1.5em;
@@ -315,13 +356,13 @@ form {
 }
 
 #to-the-map h2{
-    
+
     position: absolute;
     height: 4em;
-    
+
     padding: 0.5em;
     margin: 0;
-    
+
     padding-right: 2em;
     padding-top: 1em;
     text-align: center;
@@ -329,7 +370,7 @@ form {
     color: white;
     background-color: #7ebc6f;
     cursor: pointer;
-    
+
 }
 
 
@@ -370,7 +411,6 @@ form {
 
 
     text-align: center;
-    horiz-align: center;
     font-weight: bold;
 }
 
@@ -449,7 +489,7 @@ form {
     right: 0;
     transform: translate(0, -50%);
     border-radius: 1em;
-    
+
 
     z-index: 5060;
 
