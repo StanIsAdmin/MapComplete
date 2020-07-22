@@ -5,6 +5,7 @@ import * as L from "leaflet";
 import FixedText from "../Questions/FixedText";
 import {TagRenderingOptions} from "../TagRendering";
 import {ImageCarouselWithUploadConstructor} from "../../UI/Image/ImageCarouselWithUpload";
+import Translations from "../../UI/i18n/Translations";
 
 export class DrinkingWater extends LayerDefinition {
 
@@ -28,7 +29,7 @@ export class DrinkingWater extends LayerDefinition {
 
         this.minzoom = 13;
         this.style = this.generateStyleFunction();
-        this.title = new FixedText("Drinking water");
+        this.title = new FixedText(Translations.t.WalkByBrussels.drinkingwater.title);
         this.elementsToShow = [
             new OperatorTag(),
         ];

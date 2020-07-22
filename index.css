@@ -56,54 +56,10 @@ form {
     padding-bottom: 0.15em;
 }
 
-
 .activate-osm-authentication {
     cursor: pointer;
     color: blue;
     text-decoration: underline;
-}
-
-
-/**************** DISABLE HORIZONTAL MODE ****************/
-
-#turn h1 {
-    text-align: center;
-}
-
-#turn {
-    display: none;
-}
-
-@media only screen and (orientation:landscape) and (max-device-width: 850px) and (max-device-height: 450px) {
-    div:not(#turn) {
-        opacity: 0;
-    }
-    
-    body {
-        overflow: hidden;
-    }
-    
-    #centermessage {
-        visibility: hidden;
-    }
-    
-    #turn {
-        display: block;
-    }
-}
-
-@media only screen and (orientation:portrait) {
-    div:not(#turn) {
-        opacity: 1;
-    }
-    
-    #turn {
-        display: none;
-    }
-    
-    #centermessage {
-        visibility: visible;
-    }
 }
 
 /**************** USER BADGE ****************/

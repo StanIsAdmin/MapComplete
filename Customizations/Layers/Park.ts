@@ -8,23 +8,25 @@ import {NameQuestion} from "../Questions/NameQuestion";
 import {NameInline} from "../Questions/NameInline";
 import {DescriptionQuestion} from "../Questions/DescriptionQuestion";
 import {ImageCarouselWithUploadConstructor} from "../../UI/Image/ImageCarouselWithUpload";
+import Translations from "../../UI/i18n/Translations";
+
 
 export class Park extends LayerDefinition {
 
 
     private accessByDefault = new TagRenderingOptions({
-        question: "Is dit park publiek toegankelijk?",
+        question: Translations.t.WalkByBrussels.park.accessibility.question,
         mappings: [
-            {k: new Tag("access", "yes"), txt: "Publiek toegankelijk"},
-            {k: new Tag("access", ""), txt: "Publiek toegankelijk"},
-            {k: new Tag("access", "no"), txt: "Niet publiek toegankelijk"},
-            {k: new Tag("access", "private"), txt: "Niet publiek toegankelijk, want privaat"},
-            {k: new Tag("access", "guided"), txt: "Enkel toegankelijk met een gids of op een activiteit"},
+            {k: new Tag("access", "yes"), txt: Translations.t.WalkByBrussels.park.accessibility.yes},
+            {k: new Tag("access", ""), txt: Translations.t.WalkByBrussels.park.accessibility.empty},
+            {k: new Tag("access", "no"), txt: Translations.t.WalkByBrussels.park.accessibility.no},
+            {k: new Tag("access", "private"), txt: Translations.t.WalkByBrussels.park.accessibility.private},
+            {k: new Tag("access", "guided"), txt: Translations.t.WalkByBrussels.park.accessibility.guided},
         ],
         freeform: {
             key: "access",
-            renderTemplate: "Dit park is niet toegankelijk: {access}",
-            template: "De toegankelijkheid van dit park is: $$$"
+            renderTemplate: Translations.t.WalkByBrussels.park.accessibility.freeform,
+            template: Translations.t.WalkByBrussels.park.accessibility.template
         },
         priority: 20
     })
@@ -32,14 +34,14 @@ export class Park extends LayerDefinition {
     private operatorByDefault = new
 
     TagRenderingOptions({
-        question: "Wie beheert dit park?",
+        question: Translations.t.WalkByBrussels.park.operator.question,
         freeform: {
             key: "operator",
-            renderTemplate: "Dit park wordt beheerd door {operator}",
+            renderTemplate: Translations.t.WalkByBrussels.park.operator.freeform,
             template: "$$$",
         },
         mappings: [{
-            k: null, txt: "De gemeente beheert dit park"
+            k: null, txt: Translations.t.WalkByBrussels.park.operator.template
         }],
         priority: 15
     });
