@@ -22,7 +22,7 @@ export class FilteredLayer {
     public readonly name: string | UIElement;
     public readonly filters: TagsFilter;
     public readonly isDisplayed: UIEventSource<boolean> = new UIEventSource(true);
-
+    public readonly layerDef: LayerDefinition;
     private readonly _map: Basemap;
     private readonly _maxAllowedOverlap: number;
 
@@ -45,32 +45,28 @@ export class FilteredLayer {
     private _showOnPopup: (tags: UIEventSource<any>, feature: any, clickLocation: { lat: number, lon: number }) => UIElement;
 
     constructor(
-        name: string | UIElement,
+        layerDef: LayerDefinition,
         map: Basemap, storage: ElementStorage,
         changes: Changes,
-        filters: TagsFilter,
-        maxAllowedOverlap: number,
-        wayHandling: number,
-        style: ((properties) => any),
         selectedElement: UIEventSource<{ feature: any }>,
         showOnPopup: ((tags: UIEventSource<any>, feature: any, clickLocation: { lat: number, lon: number }) => UIElement)
     ) {
-        this._wayHandling = wayHandling;
+        this.layerDef = layerDef;
+
+        this._wayHandling = layerDef.wayHandling;
         this._selectedElement = selectedElement;
         this._showOnPopup = showOnPopup;
-
-        if (style === undefined) {
-            style = function () {
-                return {};
+        this._style = layerDef.style;
+        if (this._style === undefined) {
+            this._style = function () {
+                return {icon: "", color: "#000000"};
             }
         }
         this.name = name;
         this._map = map;
-        this.filters = filters;
-        this._style = style;
+        this.filters = layerDef.overpassFilter;
         this._storage = storage;
-        this._maxAllowedOverlap = maxAllowedOverlap;
-
+        this._maxAllowedOverlap = layerDef.maxAllowedOverlapPercentage;
         const self = this;
         this.isDisplayed.addCallback(function (isDisplayed) {
             if (self._geolayer !== undefined && self._geolayer !== null) {

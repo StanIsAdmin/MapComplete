@@ -116,12 +116,8 @@ export class LayerDefinition {
         showOnPopup: (tags: UIEventSource<(any)>, feature: any, clickLocation: { lat: number, lon: number }) => UIElement):
         FilteredLayer {
         return new FilteredLayer(
-            this.name,
+            this,
             basemap, allElements, changes,
-            this.overpassFilter,
-            this.maxAllowedOverlapPercentage,
-            this.wayHandling,
-            this.style,
             selectedElement,
             showOnPopup);
 
