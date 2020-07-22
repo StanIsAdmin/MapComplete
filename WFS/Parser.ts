@@ -1,9 +1,11 @@
 import { FeatureCollection, BoundingBox, Feature, Geometry, Point } from '../GeoJSON';
 import proj4 from "proj4";
+import osmgeojson from "osm-and-geojson";
 
 export class Parser {
     private readonly src: string;
     private readonly config: IFeatureCollection;
+    private fc: FeatureCollection;
 
     constructor(src: string, config: IFeatureCollection) {
         this.src = src;
@@ -15,8 +17,27 @@ export class Parser {
         let res = await fetch(this.src, { headers: { "Content-Type": "application/xml" } });
         let data = await res.text();
         let doc = parser.parseFromString(data, "application/xml");
-        return this.featureCollection(doc.getElementsByTagName(this.config.tagName)[0]);
+        this.fc = this.featureCollection(doc.getElementsByTagName(this.config.tagName)[0])
+        return this.fc;
     }
+
+    toOSM() {
+        const clone = JSON.parse(JSON.stringify(this.fc));
+        clone.features.forEach(element => {
+            const flatten = this.flattenObject(element.properties);
+            element.properties = flatten;
+        });
+        return osmgeojson.geojson2osm(clone);
+    }
+
+    //#Source https://bit.ly/2neWfJ2 
+    private flattenObject = (obj, prefix = '') =>
+        Object.keys(obj).reduce((acc, k) => {
+            const pre = prefix.length ? prefix + '_' : '';
+            if (typeof obj[k] === 'object') Object.assign(acc, this.flattenObject(obj[k], pre + k));
+            else acc[pre + k] = obj[k];
+            return acc;
+        }, {});
 
     private featureCollection(featureCollection: Element): FeatureCollection {
         const fc = new FeatureCollection(undefined, this.bbox(featureCollection.getElementsByTagName(this.config.bbox.tagName)[0]).getBbox());
