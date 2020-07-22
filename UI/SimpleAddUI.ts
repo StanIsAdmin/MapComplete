@@ -68,8 +68,7 @@ export class SimpleAddUI extends UIElement {
     private AddWaypoint() {
         const self = this;
         return () => {
-            self._currentRoute.data.waypoints.push(self._lastClickLocation.data);
-            console.log("Waypoints: " + self._currentRoute.data.waypoints)
+            self._currentRoute.data.AddWaypoint(self._lastClickLocation.data);
             self._currentRoute.ping();
         }
     }

@@ -169,7 +169,7 @@ const bm = new Basemap("leafletDiv", locationControl, new VariableUiElement(
 
 
 // -------------- Setup the route  -----------------------------
-let route = new Route([]);
+let route = new Route([], []);
 let currentRoute = new UIEventSource(route);
 new RouteLayer(currentRoute, bm);
 

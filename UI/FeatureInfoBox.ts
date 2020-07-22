@@ -107,8 +107,7 @@ export class FeatureInfoBox extends UIElement {
     private AddWaypoint() {
         const self = this;
         return () => {
-            self._currentRoute.data.waypoints.push(self._lastClickLocation);
-            console.log("Waypoints: ", self._currentRoute.data.waypoints)
+            self._currentRoute.data.AddWaypoint(self._lastClickLocation, self._feature.id);
             self._currentRoute.ping();
         }
     }
