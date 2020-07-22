@@ -20,6 +20,7 @@ Furthermore, it shows images present in the `image` tag or, if a `wikidata` or `
 - [Buurtnatuur.be](http://buurntatuur.be), developed for the Belgian [Green party](https://www.groen.be/). They also funded the initial development!
 - [Cyclofix](https://pietervdvn.github.io/MapComplete/index.html?quests=pomp), further development on [Open Summer of Code](https://summerofcode.be/) funded by [Brussels Mobility](https://mobilite-mobiliteit.brussels/en)
 - [Bookcases](https://pietervdvn.github.io/MapComplete/index.html?quests=bookcases#element) cause I like to collect them.
+- [Map of Maps](https://pietervdvn.github.io/MapComplete/index.html?layout=metamap#element), after a tweet
 
 Have a theme idea? Drop it in the [issues](https://github.com/pietervdvn/MapComplete/issues)
 
@@ -53,6 +54,9 @@ When viewing, the data is loaded from overpass. The data is then converted (in t
 
 When a map feature is clicked, a popup shows the information, images and questions that are relevant for that object.
 The answers given by the user are sent (after a few seconds) to OpenStreetMap directly - if the user is logged in. If not logged in, the user is prompted to do so. 
+
+
+The UI-event-source is a class where the entire system is built upon, it acts as an observable object: another object can register for changes to update when needed.
 
 
 ### Searching images

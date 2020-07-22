@@ -1,30 +1,31 @@
-import { OsmConnection } from "./Logic/OsmConnection";
-import { Changes } from "./Logic/Changes";
-import { ElementStorage } from "./Logic/ElementStorage";
-import { UIEventSource } from "./UI/UIEventSource";
-import { UserBadge } from "./UI/UserBadge";
-import { Basemap } from "./Logic/Basemap";
-import { PendingChanges } from "./UI/PendingChanges";
-import { CenterMessageBox } from "./UI/CenterMessageBox";
-import { Helpers } from "./Helpers";
-import { Tag, TagUtils } from "./Logic/TagsFilter";
-import { FilteredLayer } from "./Logic/FilteredLayer";
-import { LayerUpdater } from "./Logic/LayerUpdater";
-import { UIElement } from "./UI/UIElement";
-import { MessageBoxHandler } from "./UI/MessageBoxHandler";
-import { Overpass } from "./Logic/Overpass";
-import { FeatureInfoBox } from "./UI/FeatureInfoBox";
-import { GeoLocationHandler } from "./Logic/GeoLocationHandler";
-import { StrayClickHandler } from "./Logic/StrayClickHandler";
-import { SimpleAddUI } from "./UI/SimpleAddUI";
-import { VariableUiElement } from "./UI/Base/VariableUIElement";
-import { SearchAndGo } from "./UI/SearchAndGo";
-import { CollapseButton } from "./UI/Base/CollapseButton";
-import { AllKnownLayouts } from "./Customizations/AllKnownLayouts";
-import { All } from "./Customizations/Layouts/All";
-import { Playground } from "./WFS/Playground";
-
-
+import {OsmConnection} from "./Logic/OsmConnection";
+import {Changes} from "./Logic/Changes";
+import {ElementStorage} from "./Logic/ElementStorage";
+import {UIEventSource} from "./UI/UIEventSource";
+import {UserBadge} from "./UI/UserBadge";
+import {Basemap} from "./Logic/Basemap";
+import {PendingChanges} from "./UI/PendingChanges";
+import {CenterMessageBox} from "./UI/CenterMessageBox";
+import {Helpers} from "./Helpers";
+import {Tag, TagUtils} from "./Logic/TagsFilter";
+import {FilteredLayer} from "./Logic/FilteredLayer";
+import {LayerUpdater} from "./Logic/LayerUpdater";
+import {UIElement} from "./UI/UIElement";
+import {FeatureInfoBox} from "./UI/FeatureInfoBox";
+import {GeoLocationHandler} from "./Logic/GeoLocationHandler";
+import {StrayClickHandler} from "./Logic/StrayClickHandler";
+import {SimpleAddUI} from "./UI/SimpleAddUI";
+import {VariableUiElement} from "./UI/Base/VariableUIElement";
+import {SearchAndGo} from "./UI/SearchAndGo";
+import {CollapseButton} from "./UI/Base/CollapseButton";
+import {AllKnownLayouts} from "./Customizations/AllKnownLayouts";
+import {Playground} from "./WFS/Playground";
+import {FullScreenMessageBoxHandler} from "./UI/FullScreenMessageBoxHandler";
+import Translations from "./UI/i18n/Translations";
+import Locale from "./UI/i18n/Locale";
+import {Layout, WelcomeMessage} from "./Customizations/Layout";
+import {DropDown} from "./UI/Input/DropDown";
+import {FixedUiElement} from "./UI/Base/FixedUiElement";
 
 
 // --------------------- Read the URL parameters -----------------
@@ -44,53 +45,62 @@ if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
     dryRun = true;
     // If you have a testfile somewhere, enable this to spoof overpass
     // This should be hosted independantly, e.g. with `cd assets; webfsd -p 8080` + a CORS plugin to disable cors rules
-    Overpass.testUrl = null; // "http://127.0.0.1:8080/test.json";
+    //Overpass.testUrl = "http://127.0.0.1:8080/streetwidths.geojson";
 }
 
 
 // ----------------- SELECT THE RIGHT QUESTSET -----------------
 
 
-let defaultQuest = "buurtnatuur"
+let defaultLayout = "buurtnatuur"
 
+
+// Run over all questsets. If a part of the URL matches a searched-for part in the layout, it'll take that as the default
 for (const k in AllKnownLayouts.allSets) {
     const layout = AllKnownLayouts.allSets[k];
     const possibleParts = layout.locationContains ?? [];
-    console.log(layout.locationContains)
     for (const locationMatch of possibleParts) {
         if (locationMatch === "") {
             continue
         }
-        console.log(layout.name, " -> ", locationMatch, window.location.href.indexOf(locationMatch))
         if (window.location.href.toLowerCase().indexOf(locationMatch.toLowerCase()) >= 0) {
-            defaultQuest = layout.name;
-            console.log("Detected a default by URL: ", layout.name, "matches", locationMatch)
+            defaultLayout = layout.name;
         }
     }
 }
 
+// Read the query string to grap settings
+let paramDict: any = {};
 if (window.location.search) {
     const params = window.location.search.substr(1).split("&");
-    const paramDict: any = {};
     for (const param of params) {
         var kv = param.split("=");
         paramDict[kv[0]] = kv[1];
     }
-    if (paramDict.quests) {
-        defaultQuest = paramDict.quests
-    }
-    if (paramDict.test) {
-        dryRun = true;
-    }
 }
 
-const questSetToRender = AllKnownLayouts.allSets[defaultQuest];
-console.log("Using quests: ", questSetToRender.name);
+if (paramDict.layout) {
+    defaultLayout = paramDict.layout
+}
 
-document.title = questSetToRender.title;
+if (paramDict.test) {
+    dryRun = paramDict.test === "true";
+}
+
+const layoutToUse: Layout = AllKnownLayouts.allSets[defaultLayout];
+console.log("Using layout: ", layoutToUse.name);
+
+document.title = layoutToUse.title.InnerRender();
+Locale.language.addCallback(e => {
+    document.title = layoutToUse.title.InnerRender();
+})
 
 
 // ----------------- Setup a few event sources -------------
+
+
+// const LanguageSelect = document.getElementById('language-select') as HTMLOptionElement
+// eLanguageSelect.addEventListener('selectionchange')
 
 
 // The message that should be shown at the center of the screen
@@ -99,25 +109,39 @@ const centerMessage = new UIEventSource<string>("");
 // The countdown: if set to e.g. ten, it'll start counting down. When reaching zero, changes will be saved. NB: this is implemented later, not in the eventSource
 const secondsTillChangesAreSaved = new UIEventSource<number>(0);
 
-const leftMessage = new UIEventSource<() => UIElement>(undefined);
+// const leftMessage = new UIEventSource<() => UIElement>(undefined);
 
-const selectedElement = new UIEventSource<any>(undefined);
+// This message is shown full screen on mobile devices
+const fullScreenMessage = new UIEventSource<UIElement>(undefined);
+
+// The latest element that was selected - used to generate the right UI at the right place
+const selectedElement = new UIEventSource<{feature: any}>(undefined);
 
 
 const locationControl = new UIEventSource<{ lat: number, lon: number, zoom: number }>({
-    zoom: questSetToRender.startzoom,
-    lat: questSetToRender.startLat,
-    lon: questSetToRender.startLon
+    zoom: layoutToUse.startzoom,
+    lat: layoutToUse.startLat,
+    lon: layoutToUse.startLon
 });
 
 
 // ----------------- Prepare the important objects -----------------
 
+const osmConnection = new OsmConnection(dryRun);
+
+
+Locale.language.syncWith(osmConnection.GetPreference("language"));
+
+// @ts-ignore
+window.setLanguage = function (language: string) {
+    Locale.language.setData(language)
+}
+
+
 const saveTimeout = 30000; // After this many milliseconds without changes, saves are sent of to OSM
 const allElements = new ElementStorage();
-const osmConnection = new OsmConnection(dryRun);
 const changes = new Changes(
-    "Beantwoorden van vragen met #MapComplete voor vragenset #" + questSetToRender.name,
+    "Beantwoorden van vragen met #MapComplete voor vragenset #" + layoutToUse.name,
     osmConnection, allElements);
 const bm = new Basemap("leafletDiv", locationControl, new VariableUiElement(
     locationControl.map((location) => {
@@ -142,7 +166,7 @@ const bm = new Basemap("leafletDiv", locationControl, new VariableUiElement(
 let playgroundLayer = new Playground(bm);
 
 const addButtons: {
-    name: string,
+    name: UIElement,
     icon: string,
     tags: Tag[],
     layerToAddTo: FilteredLayer
@@ -153,11 +177,12 @@ const flayers: FilteredLayer[] = []
 
 let minZoom = 0;
 
-for (const layer of questSetToRender.layers) {
+for (const layer of layoutToUse.layers) {
 
-    const generateInfo = (tagsES) => {
+    const generateInfo = (tagsES, feature) => {
 
         return new FeatureInfoBox(
+            feature,
             tagsES,
             layer.title,
             layer.elementsToShow,
@@ -168,11 +193,10 @@ for (const layer of questSetToRender.layers) {
 
     minZoom = Math.max(minZoom, layer.minzoom);
 
-    const flayer = layer.asLayer(bm, allElements, changes, osmConnection.userDetails, selectedElement,
-        generateInfo);
+    const flayer = layer.asLayer(bm, allElements, changes, osmConnection.userDetails, selectedElement, generateInfo);
 
     const addButton = {
-        name: layer.name,
+        name: Translations.W(layer.name),
         icon: layer.icon,
         tags: layer.newElementTags,
         layerToAddTo: flayer
@@ -185,74 +209,77 @@ const layerUpdater = new LayerUpdater(bm, minZoom, flayers);
 
 // ------------------ Setup various UI elements ------------
 
+let languagePicker = new DropDown(" ", layoutToUse.supportedLanguages.map(lang => {
+        return {value: lang, shown: lang}
+    }
+), Locale.language).AttachTo("language-select");
 
-new StrayClickHandler(bm, selectedElement, leftMessage, () => {
-    return new SimpleAddUI(bm.Location,
-        bm.LastClickLocation,
-        changes,
-        selectedElement,
-        layerUpdater.runningQuery,
-        osmConnection.userDetails,
-        addButtons);
-}
+
+new StrayClickHandler(bm, selectedElement, fullScreenMessage, () => {
+        return new SimpleAddUI(bm.Location,
+            bm.LastClickLocation,
+            changes,
+            selectedElement,
+            layerUpdater.runningQuery,
+            osmConnection.userDetails,
+            addButtons);
+    }
 );
 
 /**
- * Show the questions and information for the selected element on the leftMessage
+ * Show the questions and information for the selected element on the fullScreen
  */
-selectedElement.addCallback((data) => {
+selectedElement.addCallback((feature) => {
+    const data = feature.feature.properties;
     // Which is the applicable set?
-    for (const layer of questSetToRender.layers) {
+    for (const layer of layoutToUse.layers) {
 
         const applicable = layer.overpassFilter.matches(TagUtils.proprtiesToKV(data));
         if (applicable) {
             // This layer is the layer that gives the questions
-            leftMessage.setData(() =>
-                new FeatureInfoBox(
-                    allElements.getElement(data.id),
-                    layer.title,
-                    layer.elementsToShow,
-                    changes,
-                    osmConnection.userDetails
-                ));
+
+            const featureBox = new FeatureInfoBox(
+                feature.feature,
+                allElements.getElement(data.id),
+                layer.title,
+                layer.elementsToShow,
+                changes,
+                osmConnection.userDetails
+            );
+
+            fullScreenMessage.setData(featureBox);
             break;
         }
     }
-}
+    }
 );
 
 
 const pendingChanges = new PendingChanges(
-    changes.pendingChangesES, secondsTillChangesAreSaved, changes.isSaving);
+    changes, secondsTillChangesAreSaved,);
 
-new UserBadge(osmConnection.userDetails, pendingChanges, bm)
+new UserBadge(osmConnection.userDetails,
+    pendingChanges,
+    new FixedUiElement(""),
+    bm)
     .AttachTo('userbadge');
 
 new SearchAndGo(bm).AttachTo("searchbox");
 
 new CollapseButton("messagesbox")
     .AttachTo("collapseButton");
-
-var welcomeMessage = () => {
-    return new VariableUiElement(
-        osmConnection.userDetails.map((userdetails) => {
-            var login = questSetToRender.gettingStartedPlzLogin;
-            if (userdetails.loggedIn) {
-                login = questSetToRender.welcomeBackMessage;
-            }
-            return "<div id='welcomeMessage'>" +
-                questSetToRender.welcomeMessage + login + questSetToRender.welcomeTail +
-                "</div>";
-        }),
-        function () {
-            osmConnection.registerActivateOsmAUthenticationClass()
-        });
-}
-leftMessage.setData(welcomeMessage);
-welcomeMessage().AttachTo("messagesbox");
+new WelcomeMessage(layoutToUse, osmConnection).AttachTo("messagesbox");
+fullScreenMessage.setData(
+    new WelcomeMessage(layoutToUse, osmConnection)
+);
 
 
-var messageBox = new MessageBoxHandler(leftMessage, () => { selectedElement.setData(undefined) });
+new FullScreenMessageBoxHandler(fullScreenMessage, () => {
+    selectedElement.setData(undefined)
+}).update();
+
+// fullScreenMessage.setData(generateWelcomeMessage());
+
 
 new CenterMessageBox(
     minZoom,
@@ -275,4 +302,3 @@ new GeoLocationHandler(bm).AttachTo("geolocate-button");
 // --------------- Send a ping to start various action --------
 
 locationControl.ping();
-messageBox.update();

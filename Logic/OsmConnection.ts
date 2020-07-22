@@ -17,7 +17,6 @@ export class UserDetails {
 
 export class OsmConnection {
 
-
     private auth = new osmAuth({
         oauth_consumer_key: 'hivV7ec2o49Two8g9h8Is1VIiVOgxQ1iYexCbvem',
         oauth_secret: 'wDBRTCem0vxD7txrg1y6p5r8nvmz8tAhET7zDASI',
@@ -123,11 +122,13 @@ export class OsmConnection {
     public preferenceSources : any = {}
     
     public GetPreference(key: string) : UIEventSource<string>{
-        if(this.preferenceSources[key] !== undefined){
+        key = "mapcomplete-"+key;
+        if (this.preferenceSources[key] !== undefined) {
             return this.preferenceSources[key];
         }
-        this.UpdatePreferences();
-        console.log("Getting preference object", key, "currently upstreamed as ",this.preferences.data[key]  );
+        if (this.userDetails.data.loggedIn) {
+            this.UpdatePreferences();
+        }
         const pref = new UIEventSource<string>(this.preferences.data[key]);
         pref.addCallback((v) => {
             this.SetPreference(key, v);

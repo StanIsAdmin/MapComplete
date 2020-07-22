@@ -1,11 +1,12 @@
-import {Basemap} from "./Basemap";
-import {TagsFilter, TagUtils} from "./TagsFilter";
-import {UIEventSource} from "../UI/UIEventSource";
-import {ElementStorage} from "./ElementStorage";
-import {Changes} from "./Changes";
+import { Basemap } from "./Basemap";
+import { TagsFilter, TagUtils } from "./TagsFilter";
+import { UIEventSource } from "../UI/UIEventSource";
+import { ElementStorage } from "./ElementStorage";
+import { Changes } from "./Changes";
 import L from "leaflet"
-import {GeoOperations} from "./GeoOperations";
-import {UIElement} from "../UI/UIElement";
+import { GeoOperations } from "./GeoOperations";
+import { UIElement } from "../UI/UIElement";
+import {LayerDefinition} from "../Customizations/LayerDefinition";
 
 /***
  * A filtered layer is a layer which offers a 'set-data' function
@@ -18,8 +19,9 @@ import {UIElement} from "../UI/UIElement";
  */
 export class FilteredLayer {
 
-    public readonly name: string;
+    public readonly name: string | UIElement;
     public readonly filters: TagsFilter;
+    public readonly isDisplayed: UIEventSource<boolean> = new UIEventSource(true);
 
     private readonly _map: Basemap;
     private readonly _maxAllowedOverlap: number;
@@ -31,6 +33,7 @@ export class FilteredLayer {
     /** The featurecollection from overpass
      */
     private _dataFromOverpass;
+    private _wayHandling: number;
     /** List of new elements, geojson features
      */
     private _newElements = [];
@@ -38,19 +41,21 @@ export class FilteredLayer {
      * The leaflet layer object which should be removed on rerendering
      */
     private _geolayer;
-    private _selectedElement: UIEventSource<any>;
-    private _showOnPopup: (tags: UIEventSource<any>) => UIElement;
+    private _selectedElement: UIEventSource<{feature: any}>;
+    private _showOnPopup: (tags: UIEventSource<any>, feature: any) => UIElement;
 
     constructor(
-        name: string,
+        name: string | UIElement,
         map: Basemap, storage: ElementStorage,
         changes: Changes,
         filters: TagsFilter,
         maxAllowedOverlap: number,
+        wayHandling: number,
         style: ((properties) => any),
-        selectedElement: UIEventSource<any>,
-        showOnPopup: ((tags: UIEventSource<any>) => UIElement)
+        selectedElement: UIEventSource<{feature: any}>,
+        showOnPopup: ((tags: UIEventSource<any>, feature: any) => UIElement)
     ) {
+        this._wayHandling = wayHandling;
         this._selectedElement = selectedElement;
         this._showOnPopup = showOnPopup;
 
@@ -65,6 +70,17 @@ export class FilteredLayer {
         this._style = style;
         this._storage = storage;
         this._maxAllowedOverlap = maxAllowedOverlap;
+        
+        const self = this;
+        this.isDisplayed.addCallback(function (isDisplayed) {
+            if (self._geolayer !== undefined && self._geolayer !== null) {
+                if (isDisplayed) {
+                    self._geolayer.addTo(self._map.map);
+                } else {
+                    self._map.map.removeLayer(self._geolayer);
+                }
+            }
+        })
     }
 
 
@@ -75,10 +91,18 @@ export class FilteredLayer {
     public SetApplicableData(geojson: any): any {
         const leftoverFeatures = [];
         const selfFeatures = [];
-        for (const feature of geojson.features) {
+        for (let feature of geojson.features) {
             // feature.properties contains all the properties
             var tags = TagUtils.proprtiesToKV(feature.properties);
             if (this.filters.matches(tags)) {
+                feature.properties["_surface"] = GeoOperations.surfaceAreaInSqMeters(feature);
+                if(feature.geometry.type !== "Point"){
+                    if(this._wayHandling === LayerDefinition.WAYHANDLING_CENTER_AND_WAY){
+                        selfFeatures.push(GeoOperations.centerpoint(feature));
+                    }else if(this._wayHandling === LayerDefinition.WAYHANDLING_CENTER_ONLY){
+                        feature = GeoOperations.centerpoint(feature);
+                    }
+                }
                 selfFeatures.push(feature);
             } else {
                 leftoverFeatures.push(feature);
@@ -93,7 +117,7 @@ export class FilteredLayer {
 
         const notShadowed = [];
         for (const feature of leftoverFeatures) {
-            if (this._maxAllowedOverlap !== undefined && this._maxAllowedOverlap >= 0) {
+            if (this._maxAllowedOverlap !== undefined && this._maxAllowedOverlap > 0) {
                 if (GeoOperations.featureIsContainedInAny(feature, selfFeatures, this._maxAllowedOverlap)) {
                     // This feature is filtered away
                     continue;
@@ -109,16 +133,6 @@ export class FilteredLayer {
         };
     }
 
-
-    public updateStyle() {
-        if (this._geolayer === undefined) {
-            return;
-        }
-        const self = this;
-        this._geolayer.setStyle(function (feature) {
-            return self._style(feature.properties);
-        });
-    }
 
     public AddNewElement(element) {
         this._newElements.push(element);
@@ -174,7 +188,7 @@ export class FilteredLayer {
                         radius: 25,
                         color: style.color
                     });
-                    
+
                 } else {
                     marker = L.marker(latLng, {
                         icon: style.icon
@@ -186,14 +200,22 @@ export class FilteredLayer {
             onEachFeature: function (feature, layer) {
                 let eventSource = self._storage.addOrGetElement(feature);
                 eventSource.addCallback(function () {
-                    self.updateStyle();
+                    if (layer.setIcon) {
+                        layer.setIcon(self._style(feature.properties).icon)
+                    } else {
+                        console.log("UPdating", layer);
+
+                        self._geolayer.setStyle(function (feature) {
+                            return self._style(feature.properties);
+                        });
+                    }
                 });
 
 
                 layer.on("click", function (e) {
                     console.log("Selected ", feature)
-                    self._selectedElement.setData(feature.properties);
-                    const uiElement = self._showOnPopup(eventSource);
+                    self._selectedElement.setData({feature: feature});
+                    const uiElement = self._showOnPopup(eventSource, feature);
                     const popup = L.popup()
                         .setContent(uiElement.Render())
                         .setLatLng(e.latlng)
@@ -206,7 +228,9 @@ export class FilteredLayer {
             }
         });
 
-        this._geolayer.addTo(this._map.map);
+        if (this.isDisplayed.data) {
+            this._geolayer.addTo(this._map.map);
+        }
     }
 
 
