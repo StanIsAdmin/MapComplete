@@ -169,9 +169,17 @@ const bm = new Basemap("leafletDiv", locationControl, new VariableUiElement(
 
 
 // -------------- Setup the route  -----------------------------
-let route = new Route([], []);
+let route: Route;
+if (paramDict.route) {
+    route = Route.RouteFromString(paramDict.route)
+} else {
+    route = new Route([], [])
+}
 let currentRoute = new UIEventSource(route);
+// currentRoute.addCallback()
 new RouteLayer(currentRoute, bm);
+currentRoute.ping();
+
 
 // ------------- Setup the layers -------------------------------
 const addButtons: {

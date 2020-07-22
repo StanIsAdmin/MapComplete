@@ -13,8 +13,7 @@ export class Route {
 
     public AddWaypoint(coord: { lat: number, lon: number }, interest: string = "") {
         this.waypoints.push(coord);
-        console.log("Waypoints: ", this.WaypointsAsString());
-        console.log(Route.RouteFromString(this.WaypointsAsString()))
+        console.log("Waypoints: ", this.waypoints);
         this.interests.push(interest);
         console.log("Interests: ", this.interests);
     }
