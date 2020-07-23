@@ -160,4 +160,5 @@ interface IProperties {
     picture?: string;
     address?: object;
     extra?: object;
+    [propName: string]: any
 }

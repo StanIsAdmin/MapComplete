@@ -46,12 +46,22 @@ export class Playground {
                         }
                     },
                 }).bindPopup(function (layer) {
-                    let tagRenderings = [
-                        new TagRenderingOptions({question: "Descriptie?", freeform: {key: "description", renderTemplate: "Description: {description}", template: ""}, }),
-                        new TagRenderingOptions({freeform: {key: "zipCode", renderTemplate: "ZipCode: {zipCode}", template: ""}}),
+                    let lang = "nl";
+
+                    let renderedTags = {nl:[
+                        new TagRenderingOptions({freeform: {key: "description", renderTemplate: "Descriptie: {description}", template: ""}, }),
+                        new TagRenderingOptions({freeform: {key: "street", renderTemplate: "Straat: {street}", template: ""}}),
+                        new TagRenderingOptions({freeform: {key: "zipCode", renderTemplate: "Postcode: {zipCode}", template: ""}}),
+                        new TagRenderingOptions({freeform: {key: "municipality", renderTemplate: "Gemeente: {municipality}", template: ""}}),
+                        new TagRenderingOptions({freeform: {key: "age", renderTemplate: "Leeftijd: {age}", template: ""}}),
+                    ], fr: [
+                        new TagRenderingOptions({freeform: {key: "description", renderTemplate: "Description: {description}", template: ""}, }),
+                        new TagRenderingOptions({freeform: {key: "street", renderTemplate: "Rue: {street}", template: ""}}),
+                        new TagRenderingOptions({freeform: {key: "zipCode", renderTemplate: "Code postal: {zipCode}", template: ""}}),
+                        new TagRenderingOptions({freeform: {key: "municipality", renderTemplate: "Commune: {municipality}", template: ""}}),
                         new TagRenderingOptions({freeform: {key: "age", renderTemplate: "Age: {age}", template: ""}}),
-                    ];
-                    return new FeatureInfoBox(layer.feature, new UIEventSource(layer.feature.properties.nl),new TagRenderingOptions({freeform: {key: "name", renderTemplate: "{name}", template: ""}}), tagRenderings, undefined, undefined).Render();
+                    ]};
+                    return new FeatureInfoBox(layer.feature, new UIEventSource(layer.feature.properties[lang]),new TagRenderingOptions({freeform: {key: "name", renderTemplate: "{name}", template: ""}}), renderedTags[lang], undefined, undefined).Render();
                 }).addTo(basemap.map);
             });
 
