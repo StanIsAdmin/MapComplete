@@ -19,7 +19,6 @@ import {VariableUiElement} from "./UI/Base/VariableUIElement";
 import {SearchAndGo} from "./UI/SearchAndGo";
 import {CollapseButton} from "./UI/Base/CollapseButton";
 import {AllKnownLayouts} from "./Customizations/AllKnownLayouts";
-import {Playground} from "./WFS/Playground";
 import {FullScreenMessageBoxHandler} from "./UI/FullScreenMessageBoxHandler";
 import Translations from "./UI/i18n/Translations";
 import Locale from "./UI/i18n/Locale";
@@ -162,8 +161,6 @@ const bm = new Basemap("leafletDiv", locationControl, new VariableUiElement(
 
 
 // ------------- Setup the layers -------------------------------
-
-let playgroundLayer = new Playground(bm);
 
 const addButtons: {
     name: UIElement,
