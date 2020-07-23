@@ -28,9 +28,7 @@ export class Button extends UIElement {
     InnerUpdate(htmlElement: HTMLElement) {
         super.InnerUpdate(htmlElement);
         const self = this;
-        console.log("Update for ", htmlElement)
         document.getElementById("button-"+this.id).onclick = function(){
-            console.log("Clicked");
             self._onclick();
         }
     }

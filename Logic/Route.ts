@@ -13,9 +13,7 @@ export class Route {
 
     public AddWaypoint(coord: { lat: number, lon: number }, interest: string = "") {
         this.waypoints.push(coord);
-        console.log("Waypoints: ", this.waypoints);
         this.interests.push(interest);
-        console.log("Interests: ", this.interests);
     }
 
     public WaypointsAsString() {
@@ -27,12 +25,19 @@ export class Route {
     }
 
     public static RouteFromString(waypoints: string): Route {
-        let coordsString = waypoints.split(this.latlngSeparator);
+        waypoints = decodeURIComponent(waypoints);
+        if(waypoints === undefined){
+            return new Route([], []);
+        }
+        let coordsString = waypoints.split(Route.latlngSeparator);
         let coords: { lat: number, lon: number }[] = [];
         let interests: string[] = [];
         for (let coord of coordsString) {
-            let [lat, lon] = coord.split(Route.coordSeparator);
-            coords.push({ lat: Number(lat), lon: Number(lon) })
+            let [lat, lon] = coord.split(Route.coordSeparator).map(parseFloat);
+            if(isNaN(lat) || isNaN(lon)){
+                return new Route([],[])
+            }
+            coords.push({ lat: lat, lon: lon })
             interests.push("");
         }
         return new Route(coords, interests);

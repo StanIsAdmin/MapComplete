@@ -172,17 +172,18 @@ const bm = new Basemap("leafletDiv", locationControl, new VariableUiElement(
 
 
 // -------------- Setup the route  -----------------------------
-let route: Route;
-if (paramDict.route) {
-    route = Route.RouteFromString(paramDict.route)
-} else {
-    route = new Route([], [])
-}
-let currentRoute = new UIEventSource(route);
-// currentRoute.addCallback()
-new RouteLayer(currentRoute, bm);
-currentRoute.ping();
-
+const route = QueryParameters.GetQueryParameter("route").map(
+    Route.RouteFromString,
+    [],
+    (route: Route) => {
+        if(route.waypoints.length == 0){
+            return undefined;
+        }
+        return route?.WaypointsAsString()
+    }
+)
+new RouteLayer(route, bm);
+route.ping();
 
 // ------------- Setup the layers -------------------------------
 const addButtons: {
@@ -209,7 +210,7 @@ for (const layer of layoutToUse.layers) {
             layer.elementsToShow,
             changes,
             osmConnection.userDetails,
-            currentRoute
+            route
         )
     };
 
@@ -273,7 +274,7 @@ new StrayClickHandler(bm, selectedElement, fullScreenMessage, () => {
         selectedElement,
         layerUpdater.runningQuery,
         osmConnection.userDetails,
-        currentRoute,
+        route,
         addButtons);
 }
 );
@@ -298,7 +299,7 @@ selectedElement.addCallback((feature) => {
                 layer.elementsToShow,
                 changes,
                 osmConnection.userDetails,
-                currentRoute
+                route
             );
 
             fullScreenMessage.setData(featureBox);
