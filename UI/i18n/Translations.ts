@@ -296,6 +296,12 @@ export default class Translations {
                     yes: new T({en: 'This shop offers tools for DIY repair', nl: 'Deze winkel biedt gereedschap aan om je fiets zelf te herstellen', fr: 'TODO: fr'}),
                     no: new T({en: 'This shop doesn\'t offer tools for DIY repair', nl: 'Deze winkel biedt geen gereedschap aan om je fiets zelf te herstellen', fr: 'TODO: fr'}),
                 }
+            },
+            drinking_water: {
+                title: new T({
+                    en: 'Drinking water',
+                    nl: "Drinkbaar water"
+                })
             }
         },
         image: {
@@ -332,7 +338,7 @@ export default class Translations {
             loginWithOpenStreetMap: new T({en: "Login with OpenStreetMap", nl: "Aanmelden met OpenStreetMap"}),
             getStarted: new T({
                 en: "<span class='activate-osm-authentication'>Login with OpenStreetMap</span> or <a href='https://www.openstreetmap.org/user/new' target='_blank'>make a free account to get started</a>",
-                nl: "<span class='activate-osm-authentication'>Meld je aan met je OpenStreetMap-account</span> of <a href='https://www.openstreetmap.org/user/new' target='_blank'>maak snel en gratis een account om te beginnen/a>",
+                nl: "<span class='activate-osm-authentication'>Meld je aan met je OpenStreetMap-account</span> of <a href='https://www.openstreetmap.org/user/new' target='_blank'>maak snel en gratis een account om te beginnen</a>",
             }),
             welcomeBack: new T({
                 en: "You are logged in, welcome back!",
