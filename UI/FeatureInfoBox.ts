@@ -113,7 +113,7 @@ export class FeatureInfoBox extends UIElement {
 
         let questionsHtml = "";
 
-        if (this._userDetails.data.loggedIn && questions.length > 0) {
+        if (this._userDetails && this._userDetails.data.loggedIn && questions.length > 0) {
             // We select the most important question and render that one
             let mostImportantQuestion;
             let score = -1000;

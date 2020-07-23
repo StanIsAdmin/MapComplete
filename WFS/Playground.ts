@@ -1,6 +1,11 @@
 import { Basemap } from "../Logic/Basemap";
 import { IFeatureCollection, Parser } from "./Parser";
 import L from "leaflet";
+import {FeatureInfoBox} from "../UI/FeatureInfoBox";
+import { UIEventSource } from "../UI/UIEventSource";
+import { FixedUiElement } from "../UI/Base/FixedUiElement";
+import { TagRenderingOptions } from "../Customizations/TagRendering";
+
 
 export class Playground {
 
@@ -22,8 +27,8 @@ export class Playground {
             }
         },
         isLambert72: true,
-        nl: { name: "BELB:nom", description: "BELB:descriptie", address: { zipCode: "BELB:adresse_zip", street: "BELB:adresse_txt", municipality: "BELB:gemeente" }, extra: { age: "BELB:leeftijd" } },
-        fr: { name: "BELB:nom", description: "BELB:description", address: { zipCode: "BELB:adresse_zip", street: "BELB:adresse_txt", municipality: "BELB:commune" }, extra: { age: "BELB:age" } }
+        nl: { name: "BELB:nom", description: "BELB:descriptie", zipCode: "BELB:adresse_zip", street: "BELB:adresse_txt", municipality: "BELB:gemeente", age: "BELB:leeftijd" },
+        fr: { name: "BELB:nom", description: "BELB:description", zipCode: "BELB:adresse_zip", street: "BELB:adresse_txt", municipality: "BELB:commune", age: "BELB:age" }
     }
 
     constructor(basemap: Basemap) {
@@ -41,7 +46,12 @@ export class Playground {
                         }
                     },
                 }).bindPopup(function (layer) {
-                    return JSON.stringify(layer.feature.properties);
+                    let tagRenderings = [
+                        new TagRenderingOptions({question: "Descriptie?", freeform: {key: "description", renderTemplate: "Description: {description}", template: ""}, }),
+                        new TagRenderingOptions({freeform: {key: "zipCode", renderTemplate: "ZipCode: {zipCode}", template: ""}}),
+                        new TagRenderingOptions({freeform: {key: "age", renderTemplate: "Age: {age}", template: ""}}),
+                    ];
+                    return new FeatureInfoBox(layer.feature, new UIEventSource(layer.feature.properties.nl),new TagRenderingOptions({freeform: {key: "name", renderTemplate: "{name}", template: ""}}), tagRenderings, undefined, undefined).Render();
                 }).addTo(basemap.map);
             });
 
