@@ -532,6 +532,58 @@ export default class Translations {
             }
         },
         other_questions: {
+            access: {
+                question: new T({
+                    en: "Is this area accessible?",
+                    nl: "Is dit gebied toegankelijk?",
+                    fr: "Cette zone est-elle accessible?"
+                }),
+                primer: new T({
+                    en: "This zone is ",
+                    nl: "Dit gebied is ",
+                    fr: "Cette zone est"
+                }),
+                template: new T({
+                    en: "Something else: $$$",
+                    nl: "Iets anders: $$$",
+                    fr: "Autre chose: $$$"
+                }),
+                render_template: new T({
+                    en: "The accessibility of this area is: {access:description}",
+                    nl: "De toegankelijkheid van dit gebied is: {access:description}",
+                    fr: "L'accessibilité de cette zone est: {access:description}"
+                }),
+                yes: new T({
+                    en: "publicly accessible",
+                    nl: "publiek toegankelijk",
+                    fr: "accessible au public"
+                }),
+                no: new T({
+                    en: "not accessible",
+                    nl: "niet toegankelijk",
+                    fr: "pas accessible"
+                }),
+                private: new T({
+                    en: "not accessible, because private area",
+                    nl: "niet toegankelijk, want privegebied",
+                    fr: "non accessible, car espace privé"
+                }),
+                permissive: new T({
+                    en: "accessible, but it is private",
+                    nl: "toegankelijk, maar het is privegebied",
+                    fr: "accessible, mais c'est privé"
+                }),
+                guided: new T({
+                    en: "only with guide or by activity",
+                    nl: "enkel met gids of op activiteit",
+                    fr: "uniquement avec guide ou par activité"
+                }),
+                with_payment: new T({
+                    en: "accessible with payment",
+                    nl: "toegankelijk mits betaling",
+                    fr: "accessible avec paiement"
+                })
+            },
             name_question: {
                 question: new T({
                     en: "What is the <i>official</i> name of this area?",
@@ -553,7 +605,39 @@ export default class Translations {
                     nl: "Dit gebied heeft geen naam",
                     fr: "Cette zone n'a pas de nom"
                 })
-            }
+            },
+            operator: {
+                question: new T({
+                    en: "Who manages this area?",
+                    nl: "Wie beheert dit gebied?",
+                    fr: "Qui gère cette zone?"
+                }),
+                template: new T({
+                    en: "This area is managed by $$$",
+                    nl: "Dit gebied wordt beheerd door $$$",
+                    fr: "Cete zone est gérée par $$$"
+                }),
+                render_template: new T({
+                    en: "This area is managed by {operator}",
+                    nl: "Dit gebied wordt beheerd door {operator}",
+                    fr: "Cette zone est gérée par {operator}"
+                }),
+                natuurpunt: new T({
+                    en: "Natuurpunt",
+                    nl: "Natuurpunt",
+                    fr: "Natuurpunt"
+                }),
+                ANB: new T({
+                    en: "the Nature and Forest Agency (ANB/DNF)",
+                    nl: "het Agentschap Natuur en Bos (ANB/DNF)",
+                    fr: "le Département de la Nature et des Forêts (ANB/DNF)"
+                }),
+                private: new T({
+                    en: "Management by a private person",
+                    nl: "Beheer door een privépersoon",
+                    fr: "Gestion par une personne privée"
+                })
+            },
         },
         image: {
             addPicture: new T({ en: 'Add picture', nl: 'Voeg foto toe', fr: 'TODO: fr' }),
@@ -639,6 +723,16 @@ export default class Translations {
                 en: "Skip this question",
                 nl: "Vraag overslaan",
                 fr: "Sauter cette question"
+            }),
+            specify: new T({
+                en: "Specify",
+                nl: "Specifieer",
+                fr: "Spécifier"
+            }),
+            organisation: new T({
+                en: "organization",
+                nl: "organisatie",
+                fr: "organisation"
             }),
             oneSkippedQuestion: new T({
                 en: "One question is skipped",
