@@ -9,6 +9,7 @@ import { NameInline } from "../Questions/NameInline";
 import { DescriptionQuestion } from "../Questions/DescriptionQuestion";
 import { ImageCarouselWithUploadConstructor } from "../../UI/Image/ImageCarouselWithUpload";
 import Translations from "../../UI/i18n/Translations";
+import FixedText from "../Questions/FixedText";
 
 
 export class Park extends LayerDefinition {
@@ -49,7 +50,8 @@ export class Park extends LayerDefinition {
 
     constructor() {
         super();
-        this.name = "park";
+        const to = Translations.t.walkbybrussels.park;
+        this.name = to.name;
         this.icon = "./assets/tree_white_background.svg";
         this.overpassFilter =
             new Or([new Tag("leisure", "park"), new Tag("landuse", "village_green")]);
@@ -59,7 +61,7 @@ export class Park extends LayerDefinition {
 
         this.minzoom = 13;
         this.style = this.generateStyleFunction();
-        this.title = new NameInline("park");
+        this.title = new FixedText(to.name);
         this.elementsToShow = [
             new ImageCarouselWithUploadConstructor(),
             new NameQuestion(),

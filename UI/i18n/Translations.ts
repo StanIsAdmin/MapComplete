@@ -368,6 +368,11 @@ export default class Translations {
                 }
             },
             park: {
+                name: new T({
+                    en: "park",
+                    nl: "park",
+                    fr: "parc"
+                }),
                 operator: {
                     question: new T({
                         en: 'Who manages this park?',
