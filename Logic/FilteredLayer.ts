@@ -81,6 +81,7 @@ export class FilteredLayer {
             }
         })
 
+        // Fetch and render non overpass datasets
         if(this.layerDef.data) {
             this.layerDef.data.then(data => {
                 this.RenderLayer({type: 'FeatureCollection', features: data['features']});
@@ -278,6 +279,7 @@ export class FilteredLayer {
             }
         });
 
+        // First condition is to force render non overpass datasets
         if (this.layerDef.data || this.isDisplayed.data) {
             this._geolayer.addTo(this._map.map);
         }

@@ -4,7 +4,6 @@ import {Or, TagsFilter} from "./TagsFilter";
 import {UIEventSource} from "../UI/UIEventSource";
 import {FilteredLayer} from "./FilteredLayer";
 
-
 export class LayerUpdater {
     private _map: Basemap;
     private _layers: FilteredLayer[];
@@ -33,6 +32,7 @@ export class LayerUpdater {
         this._minzoom = minzoom;
         var filters: TagsFilter[] = [];
         for (const layer of layers) {
+            if(layer.layerDef.data) continue;
             filters.push(layer.filters);
         }
         this._overpass = new Overpass(new Or(filters));
@@ -51,13 +51,13 @@ export class LayerUpdater {
             if (layers.length === 0) {
                 self.runningQuery.setData(false);
 
-                if (geojson.features.length > 0) {
+                if (geojson && geojson.features.length > 0) {
                     console.log("Got some leftovers: ", geojson)
                 }
                 return;
             }
+            if(layers[0].layerDef.data) return renderLayers(layers.slice(1, layers.length));
             window.setTimeout(() => {
-
                 const layer = layers[0];
                 const rest = layers.slice(1, layers.length);
                 geojson = layer.SetApplicableData(geojson);
@@ -96,6 +96,7 @@ export class LayerUpdater {
         var bbox = this.buildBboxFor();
         this.runningQuery.setData(true);
         const self = this;
+
         this._overpass.queryGeoJson(bbox,
             function (data) {
                 self.handleData(data)
@@ -104,7 +105,6 @@ export class LayerUpdater {
                 self.handleFail(reason)
             }
         );
-
     }
 
     private buildBboxFor(): string {
