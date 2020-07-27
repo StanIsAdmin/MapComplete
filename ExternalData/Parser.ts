@@ -1,6 +1,5 @@
 import { FeatureCollection, BoundingBox, Feature, Geometry, Point } from '../GeoJSON';
 import proj4 from "proj4";
-import osmgeojson from "osm-and-geojson";
 
 export class Parser {
     private readonly src: string;
@@ -21,24 +20,6 @@ export class Parser {
         return this.fc;
     }
 
-    toOSM() {
-        const clone = JSON.parse(JSON.stringify(this.fc));
-        clone.features.forEach(element => {
-            const flatten = this.flattenObject(element.properties);
-            element.properties = flatten;
-        });
-        return osmgeojson.geojson2osm(clone);
-    }
-
-    //#Source https://bit.ly/2neWfJ2 
-    private flattenObject = (obj, prefix = '') =>
-        Object.keys(obj).reduce((acc, k) => {
-            const pre = prefix.length ? prefix + '_' : '';
-            if (typeof obj[k] === 'object') Object.assign(acc, this.flattenObject(obj[k], pre + k));
-            else acc[pre + k] = obj[k];
-            return acc;
-        }, {});
-
     private featureCollection(featureCollection: Element): FeatureCollection {
         const fc = new FeatureCollection(undefined, this.bbox(featureCollection.getElementsByTagName(this.config.bbox.tagName)[0]).getBbox());
         let featureElts = featureCollection.getElementsByTagName(this.config.feature.tagName);
@@ -50,12 +31,9 @@ export class Parser {
     }
 
     private feature(featureElt: Element): Feature {
-        let extractedProps = {};
-        let { nl, fr } = this.config;
+        let { properties } = this.config;
         let { geometry, id } = this.config.feature;
-        for (let [lang, props] of Object.entries({ nl, fr })) {
-            extractedProps[lang] = this.extractProps(props, featureElt);
-        }
+        let extractedProps = this.extractProps(properties, featureElt);
         return new Feature(featureElt.getAttribute(id) || undefined,
             this.geometry(featureElt.getElementsByTagName(geometry.tagName)[0]),
             this.bbox(featureElt.getElementsByTagName(this.config.bbox.tagName)[0]).getBbox(), extractedProps);
@@ -123,8 +101,7 @@ export interface IFeatureCollection extends ITagName {
     feature: IFeature;
     bbox?: IBBox;
     isLambert72?: boolean;
-    nl?: IProperties;
-    fr?: IProperties;
+    properties: IProperties
 }
 
 interface IPosition {
