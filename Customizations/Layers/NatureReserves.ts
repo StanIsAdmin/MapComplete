@@ -12,8 +12,8 @@ export class NatureReserves extends LayerDefinition {
     
     constructor(moreQuests: boolean = false) {
         super();
-        this.name = "natuurgebied";
-        this.icon = "./assets/tree_white_background.svg";
+        this.name = "Natuurgebied";
+        this.icon = "";
         this.overpassFilter =
             new Or([new Tag("leisure", "nature_reserve"), new Tag("boundary", "protected_area")]);
         this.maxAllowedOverlapPercentage = 10;
@@ -25,13 +25,13 @@ export class NatureReserves extends LayerDefinition {
         this.style = this.generateStyleFunction();
         this.elementsToShow = [
             new ImageCarouselWithUploadConstructor(),
-            new TagRenderingOptions({
+         /*   new TagRenderingOptions({
                 freeform: {
                     key: "_surface",
                     renderTemplate: "{_surface}m²",
                     template: "$$$"
                 }
-            }),
+            }),*/
             new NameQuestion(),
             new AccessTag(),
             new OperatorTag(),
@@ -72,7 +72,7 @@ export class NatureReserves extends LayerDefinition {
                     freeform: {
                         renderTemplate: "Bij problemen of vragen, de conservator kan bereikt worden via " +
                             "<a href='mailto:{email}'>{email}</a>",
-                        template: "$$$",
+                        template: "$email$",
                         key: "email"
                     }
                 }),
@@ -83,7 +83,7 @@ export class NatureReserves extends LayerDefinition {
                     freeform: {
                         renderTemplate: "Bij problemen of vragen, de {conservator} kan bereikt worden via " +
                             "<a href='tel:{phone}'>{phone}</a>",
-                        template: "$$$",
+                        template: "$phone$",
                         key: "phone"
                     }
 

@@ -45,7 +45,9 @@ export class UIEventSource<T>{
     }
     
     public map<J>(f: ((T) => J),
-                  extraSources: UIEventSource<any>[] = []): UIEventSource<J> {
+                  extraSources: UIEventSource<any>[] = [],
+                  g: ((J) => T) = undefined
+                  ): UIEventSource<J> {
         const self = this;
 
         const update = function () {
@@ -61,13 +63,21 @@ export class UIEventSource<T>{
             f(this.data)
         );
         
+        if(g !== undefined){
+            newSource.addCallback(
+                (latestJ) => {
+                    this.setData(g(latestJ));
+                }
+            )
+        }
+        
 
         return newSource;
 
     }
 
     
-    public syncWith(otherSource: UIEventSource<T>){
+    public syncWith(otherSource: UIEventSource<T>) : UIEventSource<T>{
         this.addCallback((latest) => otherSource.setData(latest));
         const self = this;
         otherSource.addCallback((latest) => self.setData(latest));
@@ -76,6 +86,7 @@ export class UIEventSource<T>{
         }else{
             otherSource.setData(this.data);
         }
+        return this;
     }
-
+    
 }

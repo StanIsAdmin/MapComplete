@@ -1,20 +1,23 @@
-import {UIElement} from "./UIElement";
-import {UIEventSource} from "./UIEventSource";
-import {QuestionPicker} from "./QuestionPicker";
-import {OsmImageUploadHandler} from "../Logic/OsmImageUploadHandler";
-import {ImageCarousel} from "./Image/ImageCarousel";
-import {Changes} from "../Logic/Changes";
-import {UserDetails} from "../Logic/OsmConnection";
-import {VerticalCombine} from "./Base/VerticalCombine";
-import {TagRenderingOptions} from "../Customizations/TagRendering";
-import {OsmLink} from "../Customizations/Questions/OsmLink";
-import {WikipediaLink} from "../Customizations/Questions/WikipediaLink";
-import {And} from "../Logic/TagsFilter";
-import {TagDependantUIElement, TagDependantUIElementConstructor} from "../Customizations/UIElementConstructor";
+import { UIElement } from "./UIElement";
+import { UIEventSource } from "./UIEventSource";
+import { QuestionPicker } from "./QuestionPicker";
+import { OsmImageUploadHandler } from "../Logic/OsmImageUploadHandler";
+import { ImageCarousel } from "./Image/ImageCarousel";
+import { Changes } from "../Logic/Changes";
+import { UserDetails } from "../Logic/OsmConnection";
+import { VerticalCombine } from "./Base/VerticalCombine";
+import { TagRenderingOptions } from "../Customizations/TagRendering";
+import { OsmLink } from "../Customizations/Questions/OsmLink";
+import { WikipediaLink } from "../Customizations/Questions/WikipediaLink";
+import { And } from "../Logic/TagsFilter";
+import { Button } from "./Base/Button";
+import { TagDependantUIElement, TagDependantUIElementConstructor } from "../Customizations/UIElementConstructor";
 import Translations from "./i18n/Translations";
+import { FixedUiElement } from "./Base/FixedUiElement";
+import { Route } from "../Logic/Route";
 
 export class FeatureInfoBox extends UIElement {
-
+    private _lastClickLocation: { lat: number; lon: number };
     /**
      * The actual GEOJSON-object, with geometry and stuff
      */
@@ -35,25 +38,33 @@ export class FeatureInfoBox extends UIElement {
     private _infoboxes: TagDependantUIElement[];
     private _questions: QuestionPicker;
 
+    private _addToRouteButton: UIElement;
+    private _currentRoute: UIEventSource<Route>;
+
     private _oneSkipped = Translations.t.general.oneSkippedQuestion.Clone();
     private _someSkipped = Translations.t.general.skippedQuestions.Clone();
 
     constructor(
+        lastClickLocation: { lat: number, lon: number },
         feature: any,
         tagsES: UIEventSource<any>,
         title: TagRenderingOptions | UIElement,
         elementsToShow: TagDependantUIElementConstructor[],
         changes: Changes,
-        userDetails: UIEventSource<UserDetails>
+        userDetails: UIEventSource<UserDetails>,
+        route: UIEventSource<Route>
     ) {
         super(tagsES);
+        this._lastClickLocation = lastClickLocation;
         this._feature = feature;
         this._tagsES = tagsES;
         this._changes = changes;
         this._userDetails = userDetails;
+        this._addToRouteButton = new Button(new FixedUiElement("Add to route"), this.AddWaypoint());
+        this._currentRoute = route;
         this.ListenTo(userDetails);
 
-        const deps = {tags: this._tagsES, changes: this._changes}
+        const deps = { tags: this._tagsES, changes: this._changes }
 
         this._infoboxes = [];
         elementsToShow = elementsToShow ?? []
@@ -78,7 +89,7 @@ export class FeatureInfoBox extends UIElement {
 
         title = title ?? new TagRenderingOptions(
             {
-                mappings: [{k: new And([]), txt: ""}]
+                mappings: [{ k: new And([]), txt: "" }]
             }
         )
 
@@ -93,6 +104,14 @@ export class FeatureInfoBox extends UIElement {
 
     }
 
+    private AddWaypoint() {
+        const self = this;
+        return () => {
+            self._currentRoute.data.AddWaypoint(self._lastClickLocation, self._feature.id);
+            self._currentRoute.ping();
+        }
+    }
+
     InnerRender(): string {
 
 
@@ -104,7 +123,7 @@ export class FeatureInfoBox extends UIElement {
                 info.push(infobox);
             } else if (infobox.IsQuestioning()) {
                 questions.push(infobox);
-            } else {
+            } else if(infobox.IsSkipped()){
                 // This question is neither known nor questioning -> it was skipped
                 skippedQuestions++;
             }
@@ -145,13 +164,9 @@ export class FeatureInfoBox extends UIElement {
             new VerticalCombine(info, "infobox-information ").Render() +
 
             questionsHtml +
+            this._addToRouteButton.Render();
 
-
-            "</div>" +
-            "" +
-            "</div>";
+       
     }
-    
-    
 
 }

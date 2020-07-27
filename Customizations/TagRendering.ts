@@ -15,8 +15,32 @@ import {FixedInputElement} from "../UI/Input/FixedInputElement";
 import {RadioButton} from "../UI/Input/RadioButton";
 import Translations from "../UI/i18n/Translations";
 import Locale from "../UI/i18n/Locale";
+import * as EmailValidator from 'email-validator';
+import {parsePhoneNumberFromString} from 'libphonenumber-js'
+
 
 export class TagRenderingOptions implements TagDependantUIElementConstructor {
+
+
+    public static inputValidation = {
+        "$": (str) => true,
+        "string": (str) => true,
+        "int": (str) => str.indexOf(".") < 0 && !isNaN(Number(str)),
+        "nat": (str) => str.indexOf(".") < 0 && !isNaN(Number(str)) && Number(str) > 0,
+        "float": (str) => !isNaN(Number(str)),
+        "pfloat": (str) => !isNaN(Number(str)) && Number(str) > 0,
+        "email": (str) => EmailValidator.validate(str),
+        "phone": (str, country) => {
+            return parsePhoneNumberFromString(str, country.toUpperCase())?.isValid() ?? false;
+        },
+    }
+    
+    public static formatting = {
+        "phone": (str, country) => {
+           console.log("country formatting", country)
+            return parsePhoneNumberFromString(str, country.toUpperCase()).formatInternational()
+        }
+    }
 
     /**
      * Notes: by not giving a 'question', one disables the question form alltogether
@@ -189,9 +213,7 @@ class TagRendering extends UIElement implements TagDependantUIElement {
         this._userDetails = changes && changes.login.userDetails;
         this.ListenTo(this._userDetails);
 
-        if (options.question !== undefined) {
-            this._question = Translations.W(options.question);
-        }
+       
         this._priority = options.priority ?? 0;
         this._tagsPreprocessor = function (properties) {
             if (options.tagsPreprocessor === undefined) {
@@ -204,6 +226,10 @@ class TagRendering extends UIElement implements TagDependantUIElement {
             options.tagsPreprocessor(newTags);
             return newTags;
         };
+
+        if (options.question !== undefined) {
+            this._question = this.ApplyTemplate(options.question);
+        }
         
         this._mapping = [];
         this._freeform = options.freeform;
@@ -312,7 +338,7 @@ class TagRendering extends UIElement implements TagDependantUIElement {
 
 
         if (elements.length == 0) {
-            console.warn("WARNING: no tagrendering with following options:", options);
+            //console.warn("WARNING: no tagrendering with following options:", options);
             return new FixedInputElement("This should not happen: no tag renderings defined", undefined);
         }
         if (elements.length == 1) {
@@ -334,13 +360,25 @@ class TagRendering extends UIElement implements TagDependantUIElement {
             return undefined;
         }
 
+        const prepost = Translations.W(freeform.template).InnerRender().split("$");
+        const type = prepost[1];
+
+        let isValid = TagRenderingOptions.inputValidation[type];
+        if (isValid === undefined) {
+            isValid = (str) => true;
+        }
+        let formatter = TagRenderingOptions.formatting[type] ?? ((str) => str);
 
         const pickString =
-            (string) => {
+            (string: any) => {
                 if (string === "" || string === undefined) {
                     return undefined;
                 }
-                const tag = new Tag(freeform.key, string);
+                if (!isValid(string, this._source.data._country)) {
+                    return undefined;
+                }
+                const tag = new Tag(freeform.key, formatter(string, this._source.data._country));
+                
                 if (freeform.extraTags === undefined) {
                     return tag;
                 }
@@ -369,8 +407,7 @@ class TagRendering extends UIElement implements TagDependantUIElement {
             toString: toString
         });
 
-        const prepost = Translations.W(freeform.template).InnerRender().split("$$$");
-        return new InputElementWrapper(prepost[0], textField, prepost[1]);
+        return new InputElementWrapper(prepost[0], textField, prepost[2]);
     }
 
 
@@ -384,6 +421,10 @@ class TagRendering extends UIElement implements TagDependantUIElement {
         }
 
         return this._freeform !== undefined && this._source.data[this._freeform.key] !== undefined;
+    }
+
+    IsSkipped(): boolean {
+        return this._questionSkipped.data;
     }
 
     private CurrentValue(): TagsFilter {
@@ -459,7 +500,8 @@ class TagRendering extends UIElement implements TagDependantUIElement {
         if (this.IsQuestioning() || this._editMode.data) {
             // Not yet known or questioning, we have to ask a question
 
-            const question = this._question.Render();
+            const question =
+                this.ApplyTemplate(this._question).Render();
 
             return "<div class='question'>" +
                 "<span class='question-text'>" + question + "</span>" +
@@ -497,20 +539,25 @@ class TagRendering extends UIElement implements TagDependantUIElement {
     }
 
     private ApplyTemplate(template: string | UIElement): UIElement {
-        if(template === undefined || template === null){
+        if (template === undefined || template === null) {
             throw "Trying to apply a template, but the template is null/undefined"
         }
-        const tags = this._tagsPreprocessor(this._source.data);
-        if (template instanceof UIElement) {
-            template = template.Render();
-        }
-        return new FixedUiElement(TagUtils.ApplyTemplate(template, tags));
+        
+        const contents = Translations.W(template).map(contents => 
+            {
+                let templateStr = "";
+                if (template instanceof UIElement) {
+                    templateStr = template.Render();
+                } else {
+                    templateStr = template;
+                }
+                const tags = this._tagsPreprocessor(this._source.data);
+                return TagUtils.ApplyTemplate(templateStr, tags);
+            }, [this._source]
+        );
+        return new VariableUiElement(contents);
     }
 
 
-    InnerUpdate(htmlElement: HTMLElement) {
-        super.InnerUpdate(htmlElement);
-        this._questionElement.Update(); // Another manual update for them
-    }
-
+ 
 }

@@ -1,6 +1,5 @@
 import {LayerDefinition} from "../LayerDefinition";
 import {And, Tag, TagsFilter, Or} from "../../Logic/TagsFilter";
-import * as L from "leaflet";
 import BikeStationChain from "../Questions/bike/StationChain";
 import BikeStationPumpTools from "../Questions/bike/StationPumpTools";
 import BikeStationStand from "../Questions/bike/StationStand";
@@ -24,7 +23,7 @@ export default class BikeStations extends LayerDefinition {
     constructor() {
         super();
         this.name = Translations.t.cyclofix.station.name;
-        this.icon = "./assets/wrench.svg";
+        this.icon = "./assets/bike/repair_station_pump.svg";
 
         this.overpassFilter = new And([
             new Tag("amenity", "bicycle_repair_station")
@@ -72,18 +71,18 @@ export default class BikeStations extends LayerDefinition {
                 if (isOperational) {
                     iconName = "pump.svg"
                 } else {
-                    iconName = "broken_pump.svg"
+                    iconName = "broken_pump_2.svg"
                 }
             }
 
             const iconUrl = `./assets/bike/${iconName}`
             return {
                 color: "#00bb00",
-                icon: L.icon({
+                icon: {
                     iconUrl: iconUrl,
                     iconSize: [50, 50],
-                    iconAnchor: [25,50]
-                })
+                    iconAnchor: [25, 50]
+                }
             };
         };
     }

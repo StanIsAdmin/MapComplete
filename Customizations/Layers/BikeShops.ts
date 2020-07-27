@@ -3,7 +3,6 @@ import Translations from "../../UI/i18n/Translations";
 import {And, Tag} from "../../Logic/TagsFilter";
 import FixedText from "../Questions/FixedText";
 import { ImageCarouselWithUploadConstructor } from "../../UI/Image/ImageCarouselWithUpload";
-import * as L from "leaflet";
 import ShopRetail from "../Questions/bike/ShopRetail";
 import ShopPump from "../Questions/bike/ShopPump";
 import ShopRental from "../Questions/bike/ShopRental";
@@ -12,6 +11,7 @@ import ShopDiy from "../Questions/bike/ShopDiy";
 import ShopName from "../Questions/bike/ShopName";
 import ShopSecondHand from "../Questions/bike/ShopSecondHand";
 import { TagRenderingOptions } from "../TagRendering";
+import {PhoneNumberQuestion} from "../Questions/PhoneNumberQuestion";
 
 
 export default class BikeShops extends LayerDefinition {
@@ -51,6 +51,7 @@ export default class BikeShops extends LayerDefinition {
         this.elementsToShow = [
             new ImageCarouselWithUploadConstructor(),
             new ShopName(),
+            new PhoneNumberQuestion("{name}"),
             new ShopRetail(),
             new ShopRental(),
             new ShopRepair(),
@@ -71,11 +72,11 @@ export default class BikeShops extends LayerDefinition {
 
             return {
                 color: "#00bb00",
-                icon: L.icon({
-                    iconUrl: self.icon,
+                icon: {
+                    iconUrl: icon,
                     iconSize: [50, 50],
                     iconAnchor: [25, 50]
-                })
+                }
             }
         }
     }

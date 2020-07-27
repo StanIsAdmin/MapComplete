@@ -4,7 +4,6 @@ import {UIEventSource} from "./UI/UIEventSource";
 
 export class Helpers {
 
-
     static DoEvery(millis: number, f: (() => void)) {
         window.setTimeout(
             function () {
@@ -56,7 +55,6 @@ export class Helpers {
     * -> WHen uploading is done, the window is closed anyway
      */
     static LastEffortSave(changes: Changes) {
-
         window.addEventListener("beforeunload", function (e) {
             // Quickly save everyting!
             if (changes.pendingChangesES.data == 0) {
@@ -71,6 +69,21 @@ export class Helpers {
             (e || window.event).returnValue = confirmationMessage; //Gecko + IE
             return confirmationMessage;                            //Webkit, Safari, Chrome
         });
+
+
+        document.addEventListener('visibilitychange',() => {
+            if(document.visibilityState === "visible"){
+                return;
+            }
+            if (changes.pendingChangesES.data == 0) {
+                return;
+            }
+
+            console.log("Upmoading: loss of focus")
+            changes.uploadAll(function () {
+                window.close()
+            });
+        })
 
     }
     
