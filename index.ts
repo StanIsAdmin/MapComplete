@@ -34,7 +34,8 @@ import {Img} from "./UI/Img";
 import {QueryParameters} from "./Logic/QueryParameters";
 import {Utils} from "./Utils";
 import {LocalStorageSource} from "./Logic/LocalStorageSource";
-
+import {Playground} from './ExternalData/Playground';
+import {RemarkableTree} from './ExternalData/RemarkableTree';
 
 // --------------------- Special actions based on the parameters -----------------
 
@@ -186,6 +187,9 @@ new RouteLayer(route, bm);
 route.ping();
 
 // ------------- Setup the layers -------------------------------
+
+let playgrounds = new Playground(bm);
+//let rm = new RemarkableTree(bm);
 
 const addButtons: {
     name: UIElement,

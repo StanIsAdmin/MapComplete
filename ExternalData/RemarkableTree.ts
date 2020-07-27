@@ -6,6 +6,7 @@ import { UIEventSource } from "../UI/UIEventSource";
 import { TagRenderingOptions } from "../Customizations/TagRendering";
 import { ImageCarousel } from "../UI/Image/ImageCarousel";
 import { SimpleImageElement } from "../UI/Image/SimpleImageElement";
+import Translation from "../UI/i18n/Translation";
 
 
 export class RemarkableTree {
@@ -24,22 +25,15 @@ export class RemarkableTree {
                         }
                     },
                 }).bindPopup(function (layer) {
-                    let lang = "nl";
+                    let titles = new TagRenderingOptions({freeform: {key: "NOM_NL", renderTemplate: new Translation({nl: "Opmerkelijke boom", fr: "Arbre remarquable"}), template: ""}, });
 
-                    let titles = {
-                        nl: new TagRenderingOptions({freeform: {key: "title", renderTemplate: "Opmerkelijke boom", template: ""}, }),
-                        fr: new TagRenderingOptions({freeform: {key: "title", renderTemplate: "Arbre remarquable", template: ""}, })
-
-                    }
-
-                    let renderedTags = {nl:[
+                    let renderedTags = [
                         new TagRenderingOptions({freeform: {key: "FIRSTIMAGE", renderTemplate: new SimpleImageElement(new UIEventSource("{FIRSTIMAGE}")), template: ""}, }),
-                        new TagRenderingOptions({freeform: {key: "NOM_NL", renderTemplate: "Naam: {NOM_NL}", template: ""}, }),
-                    ], fr: [
-                        new TagRenderingOptions({freeform: {key: "FIRSTIMAGE", renderTemplate: new SimpleImageElement(new UIEventSource("{FIRSTIMAGE}")), template: ""}, }),
-                        new TagRenderingOptions({freeform: {key: "NOM_FR", renderTemplate: "Non: {NOM_FR}", template: ""}, }),
-                    ]};
-                    return new FeatureInfoBox(layer.feature, new UIEventSource(layer.feature.properties),titles[lang], renderedTags[lang], undefined, undefined).Render();
+                        new TagRenderingOptions({freeform: {key: "NOM_NL", renderTemplate: new Translation({nl: "Naam: {NOM_NL}", fr: "Nom : {NOM_FR}"}), template: ""}, }),
+                        new TagRenderingOptions({freeform: {key: "CIRCONFERENCE", renderTemplate: new Translation({nl: "Omtrek: {CIRCONFERENCE}", fr: "Circonférence : {CIRCONFERENCE}"}), template: ""}, }),
+                    ]
+
+                    return new FeatureInfoBox(undefined, layer.feature, new UIEventSource(layer.feature.properties),titles, renderedTags, undefined, undefined, undefined).Render();
                 }).addTo(basemap.map);
             });
 
