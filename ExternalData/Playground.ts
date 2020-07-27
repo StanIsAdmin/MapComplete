@@ -55,7 +55,7 @@ export class Playground extends BaseLayerDefinition {
         }
         this.title = new TagRenderingOptions({ freeform: { key: 'name', renderTemplate: this.translations.title, template: '' } });
         this.icon = "assets/walkbybrussels/playground_black.svg";
-        this.elementsToShow = this.elementsToShow = [
+        this.elementsToShow = [
             new TagRenderingOptions({ freeform: { key: "name", renderTemplate: this.translations.name, template: "" } }),
             new TagRenderingOptions({ freeform: { key: "nl_description", renderTemplate: this.translations.description, template: "" }, }),
             new TagRenderingOptions({ freeform: { key: "street", renderTemplate: this.translations.street, template: "" } }),
@@ -65,40 +65,5 @@ export class Playground extends BaseLayerDefinition {
         ];
         let parser = new Parser("https://cors-anywhere.herokuapp.com/https://wfs.environnement.brussels/belb?SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAME=playground&SRSNAME=EPSG:31370", this.config);
         this.data = parser.parse();
-        //parser.parse()
-        //.then(fc => {
-        // this.geojson = fc;
-        // this.elementsToShow = [
-        //     new TagRenderingOptions({ freeform: { key: "name", renderTemplate: this.translations.name, template: "" } }),
-        //     new TagRenderingOptions({ freeform: { key: "nl_description", renderTemplate: this.translations.description, template: "" }, }),
-        //     new TagRenderingOptions({ freeform: { key: "street", renderTemplate: this.translations.street, template: "" } }),
-        //     new TagRenderingOptions({ freeform: { key: "zipCode", renderTemplate: this.translations.zipCode, template: "" } }),
-        //     new TagRenderingOptions({ freeform: { key: "nl_municipality", renderTemplate: this.translations.municipality, template: "" } }),
-        //     new TagRenderingOptions({ freeform: { key: "nl_age", renderTemplate: this.translations.age, template: "" } }),
-        // ];
-        // L.geoJSON(fc, {
-        //     pointToLayer: function (feature, latlng) {
-        //         return L.marker(latlng, {
-        //             icon: new L.Icon({
-        //                 iconSize: [27, 27],
-        //                 iconAnchor: [13, 27],
-        //                 popupAnchor: [-1, -27],
-        //                 iconUrl: "./assets/walkbybrussels/playground_black.svg",
-        //             })
-        //         });
-        //     }
-        // }).bindPopup((layer) => {
-        //     let renderedTags = [
-        //         new TagRenderingOptions({ freeform: { key: "name", renderTemplate: this.translations.name, template: "" } }),
-        //         new TagRenderingOptions({ freeform: { key: "nl_description", renderTemplate: this.translations.description, template: "" }, }),
-        //         new TagRenderingOptions({ freeform: { key: "street", renderTemplate: this.translations.street, template: "" } }),
-        //         new TagRenderingOptions({ freeform: { key: "zipCode", renderTemplate: this.translations.zipCode, template: "" } }),
-        //         new TagRenderingOptions({ freeform: { key: "nl_municipality", renderTemplate: this.translations.municipality, template: "" } }),
-        //         new TagRenderingOptions({ freeform: { key: "nl_age", renderTemplate: this.translations.age, template: "" } }),
-        //     ];
-        //     return new FeatureInfoBox(undefined, layer.feature, new UIEventSource(layer.feature.properties), new TagRenderingOptions({ freeform: { key: 'name', renderTemplate: this.translations.title, template: '' } }), renderedTags, undefined, undefined, undefined).Render();
-        // }).addTo(basemap.map);
-        //});
-
     }
 }
