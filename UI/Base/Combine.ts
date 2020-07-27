@@ -3,6 +3,7 @@ import Translations from "../i18n/Translations";
 
 export default class Combine extends UIElement {
     private uiElements: (string | UIElement)[];
+    private clas: string = undefined;
 
     constructor(uiElements: (string | UIElement)[]) {
         super(undefined);
@@ -21,7 +22,7 @@ export default class Combine extends UIElement {
         return elements;
     }
 
-    protected InnerUpdate(htmlElement: HTMLElement) {
+    InnerUpdate(htmlElement: HTMLElement) {
         for (const element of this.uiElements) {
             if (element instanceof UIElement) {
                 element.Update();

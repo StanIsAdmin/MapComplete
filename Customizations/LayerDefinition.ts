@@ -1,13 +1,13 @@
-import {Tag, TagsFilter} from "../Logic/TagsFilter";
-import {UIElement} from "../UI/UIElement";
-import {Basemap} from "../Logic/Basemap";
-import {ElementStorage} from "../Logic/ElementStorage";
-import {UIEventSource} from "../UI/UIEventSource";
-import {FilteredLayer} from "../Logic/FilteredLayer";
-import {Changes} from "../Logic/Changes";
-import {UserDetails} from "../Logic/OsmConnection";
-import {TagRenderingOptions} from "./TagRendering";
-import {TagDependantUIElementConstructor} from "./UIElementConstructor";
+import { Tag, TagsFilter } from "../Logic/TagsFilter";
+import { UIElement } from "../UI/UIElement";
+import { Basemap } from "../Logic/Basemap";
+import { ElementStorage } from "../Logic/ElementStorage";
+import { UIEventSource } from "../UI/UIEventSource";
+import { FilteredLayer } from "../Logic/FilteredLayer";
+import { Changes } from "../Logic/Changes";
+import { UserDetails } from "../Logic/OsmConnection";
+import { TagRenderingOptions } from "./TagRendering";
+import { TagDependantUIElementConstructor } from "./UIElementConstructor";
 
 export class LayerDefinition {
 
@@ -16,6 +16,12 @@ export class LayerDefinition {
      * This name is shown in the 'add XXX button'
      */
     name: string | UIElement;
+
+    /***
+     * This is shown under the 'add new' button to indicate what kind of feature one is adding.
+     */
+    description: string | UIElement
+
     /**
      * These tags are added whenever a new point is added by the user on the map.
      * This is the ideal place to add extra info, such as "fixme=added by MapComplete, geometry should be checked"
@@ -64,7 +70,10 @@ export class LayerDefinition {
      */
     style: (tags: any) => {
         color: string,
-        icon: any,
+        icon: { 
+            iconUrl: string,
+            iconSize: number[],
+        },
     };
 
     /**
@@ -76,13 +85,14 @@ export class LayerDefinition {
      * If true, then ways (and polygons) will be converted to a 'point' at the center instead before further processing
      */
     wayHandling: number = 0;
-    
+
     static WAYHANDLING_DEFAULT = 0;
     static WAYHANDLING_CENTER_ONLY = 1;
     static WAYHANDLING_CENTER_AND_WAY = 2;
-    
+
     constructor(options: {
-        name: string,
+        name: string | UIElement,
+        description: string | UIElement,
         newElementTags: Tag[],
         icon: string,
         minzoom: number,
@@ -100,6 +110,7 @@ export class LayerDefinition {
             return;
         }
         this.name = options.name;
+        this.description = options.description;
         this.maxAllowedOverlapPercentage = options.maxAllowedOverlapPercentage ?? 0;
         this.newElementTags = options.newElementTags;
         this.icon = options.icon;
@@ -109,22 +120,6 @@ export class LayerDefinition {
         this.elementsToShow = options.elementsToShow;
         this.style = options.style;
         this.wayHandling = options.wayHandling ?? LayerDefinition.WAYHANDLING_DEFAULT;
-    }
-
-    asLayer(basemap: Basemap, allElements: ElementStorage, changes: Changes, userDetails: UIEventSource<UserDetails>,
-            selectedElement: UIEventSource<{feature: any}>,
-            showOnPopup: (tags: UIEventSource<(any)>, feature: any) => UIElement):
-        FilteredLayer {
-        return new FilteredLayer(
-            this.name,
-            basemap, allElements, changes,
-            this.overpassFilter,
-            this.maxAllowedOverlapPercentage,
-            this.wayHandling,
-            this.style,
-            selectedElement,
-            showOnPopup);
-
     }
 
 }

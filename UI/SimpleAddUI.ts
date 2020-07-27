@@ -6,6 +6,9 @@ import {Changes} from "../Logic/Changes";
 import {FixedUiElement} from "./Base/FixedUiElement";
 import {Button} from "./Base/Button";
 import {UserDetails} from "../Logic/OsmConnection";
+import {Route} from "../Logic/Route";
+import Translations from "./i18n/Translations";
+import Combine from "./Base/Combine";
 
 /**
  * Asks to add a feature at the last clicked location, at least if zoom is sufficient
@@ -15,17 +18,20 @@ export class SimpleAddUI extends UIElement {
     private _addButtons: UIElement[];
     private _lastClickLocation: UIEventSource<{ lat: number; lon: number }>;
     private _changes: Changes;
-    private _selectedElement: UIEventSource<{feature: any}>;
+    private _selectedElement: UIEventSource<{ feature: any }>;
     private _dataIsLoading: UIEventSource<boolean>;
     private _userDetails: UIEventSource<UserDetails>;
+    private _addToRouteButton: UIElement;
+    private _currentRoute: UIEventSource<Route>;
 
     constructor(zoomlevel: UIEventSource<{ zoom: number }>,
-                lastClickLocation: UIEventSource<{ lat: number, lon: number }>,
-                changes: Changes,
-                selectedElement: UIEventSource<{feature: any}>,
-                dataIsLoading: UIEventSource<boolean>,
-                userDetails: UIEventSource<UserDetails>,
-                addButtons: { name: UIElement; icon: string; tags: Tag[]; layerToAddTo: FilteredLayer }[],
+        lastClickLocation: UIEventSource<{ lat: number, lon: number }>,
+        changes: Changes,
+        selectedElement: UIEventSource<{ feature: any }>,
+        dataIsLoading: UIEventSource<boolean>,
+        userDetails: UIEventSource<UserDetails>,
+        route: UIEventSource<Route>,
+        addButtons: { name: UIElement; icon: string; tags: Tag[]; layerToAddTo: FilteredLayer }[],
     ) {
         super(zoomlevel);
         this._zoomlevel = zoomlevel;
@@ -34,6 +40,8 @@ export class SimpleAddUI extends UIElement {
         this._selectedElement = selectedElement;
         this._dataIsLoading = dataIsLoading;
         this._userDetails = userDetails;
+        this._addToRouteButton = new Button(new FixedUiElement("Add to route"), this.AddWaypoint());
+        this._currentRoute = route;
         this.ListenTo(userDetails);
         this.ListenTo(dataIsLoading);
         this._addButtons = [];
@@ -42,36 +50,44 @@ export class SimpleAddUI extends UIElement {
             // <button type='button'> looks SO retarded
             // the default type of button is 'submit', which performs a POST and page reload
             const button =
-                new Button(new FixedUiElement("Add a " + option.name.Render() + " here"),
+                new Button(Translations.t.general.add.addNew.Subs({category: option.name}),
                     this.CreatePoint(option));
             this._addButtons.push(button);
         }
     }
 
-    private CreatePoint(option: {icon: string; tags: Tag[]; layerToAddTo: FilteredLayer }) {
+    private CreatePoint(option: { icon: string; tags: Tag[]; layerToAddTo: FilteredLayer }) {
         const self = this;
         return () => {
 
             const loc = self._lastClickLocation.data;
             let feature = self._changes.createElement(option.tags, loc.lat, loc.lon);
             option.layerToAddTo.AddNewElement(feature);
-            self._selectedElement.setData({feature: feature});
+            self._selectedElement.setData({ feature: feature });
+        }
+    }
+
+    private AddWaypoint() {
+        const self = this;
+        return () => {
+            self._currentRoute.data.AddWaypoint(self._lastClickLocation.data);
+            self._currentRoute.ping();
         }
     }
 
     InnerRender(): string {
-        const header = "<h2>No data here</h2>" +
-            "You clicked somewhere where no data is known yet.<br/>";
+        const header = Translations.t.general.add.header.Render() + this._addToRouteButton.Render() + "<br/>";
+
         if (!this._userDetails.data.loggedIn) {
-            return header + "<a class='activate-osm-authentication'>Please log in to add a new point</a>"
+            return new Combine([header, Translations.t.general.add.pleaseLogin]).Render()
         }
 
         if (this._zoomlevel.data.zoom < 19) {
-            return header + "Zoom in further to add a point.";
+            return new Combine([header, Translations.t.general.add.zoomInFurther]).Render()
         }
 
         if (this._dataIsLoading.data) {
-            return header + "The data is still loading. Please wait a bit before you add a new point";
+            return new Combine([header, Translations.t.general.add.stillLoading]).Render()
         }
 
         var html = "";
@@ -83,6 +99,7 @@ export class SimpleAddUI extends UIElement {
 
     InnerUpdate(htmlElement: HTMLElement) {
         this._userDetails.data.osmConnection.registerActivateOsmAUthenticationClass();
+        this._addToRouteButton.Update();
     }
 
 }

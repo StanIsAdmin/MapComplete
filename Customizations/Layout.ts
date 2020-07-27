@@ -14,7 +14,11 @@ import {UIEventSource} from "../UI/UIEventSource";
 export class Layout {
 
     public name: string;
+    public icon: string = "./assets/logo.svg";
     public title: UIElement;
+    public description: string | UIElement = Translations.t.general.about;
+    public socialImage: string = ""
+    
     public layers: LayerDefinition[];
     public welcomeMessage: UIElement;
     public gettingStartedPlzLogin: UIElement;
@@ -55,7 +59,7 @@ export class Layout {
         welcomeTail: UIElement | string = ""
     ) {
         this.supportedLanguages = supportedLanguages;
-        this.title = typeof (title) === 'string' ? new FixedUiElement(title) : title;
+        this.title = Translations.W(title)
         this.startLon = startLon;
         this.startLat = startLat;
         this.startzoom = startzoom;
@@ -73,6 +77,7 @@ export class Layout {
 export class WelcomeMessage extends UIElement {
     private readonly layout: Layout;
     private readonly userDetails: UIEventSource<UserDetails>;
+    private languagePicker: UIElement;
     private osmConnection: OsmConnection;
 
     private readonly description: UIElement;
@@ -81,37 +86,31 @@ export class WelcomeMessage extends UIElement {
     private readonly tail: UIElement;
 
 
-    constructor(layout: Layout, osmConnection: OsmConnection) {
+    constructor(layout: Layout,
+                languagePicker: UIElement,
+                osmConnection: OsmConnection) {
         super(osmConnection.userDetails);
+        this.languagePicker = languagePicker;
         this.ListenTo(Locale.language);
         this.osmConnection = osmConnection;
         this.layout = layout;
         this.userDetails = osmConnection.userDetails;
 
         this.description = layout.welcomeMessage;
-        console.log("   >>>>",this.description, "DESCR ")
         this.plzLogIn = layout.gettingStartedPlzLogin;
         this.welcomeBack = layout.welcomeBackMessage;
         this.tail = layout.welcomeTail;
     }
 
     InnerRender(): string {
-        return "<div id='welcomeMessage'>" +
+        return "<span id='welcomeMessage'>" +
             this.description.Render() +
-            "<br/>"+
             (this.userDetails.data.loggedIn ? this.welcomeBack : this.plzLogIn).Render() +
-            "<br/>"+
             this.tail.Render() +
-            "</div>"
+            "<br/>" +
+            this.languagePicker.Render() +
+            "</span>";
 
-            ;
-        /*
-        return new VariableUiElement(
-            this.userDetails.map((userdetails) => {
-            }),
-            function () {
-               
-            }).ListenTo(Locale.language);*/
     }
 
     protected InnerUpdate(htmlElement: HTMLElement) {

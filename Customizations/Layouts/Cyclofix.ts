@@ -10,21 +10,23 @@ import Combine from "../../UI/Base/Combine";
 export default class Cyclofix extends Layout {
     constructor() {
         super(
-            "pomp",
+            "cyclofix",
             ["en", "nl", "fr"],
             Translations.t.cyclofix.title,
             [new BikeServices(), new BikeShops(), new DrinkingWater(), new BikeParkings()],
             16,
             50.8465573,
             4.3516970,
-               /* Translations.t.cyclofix.title/*/
             new Combine([
                 "<h3>",
                 Translations.t.cyclofix.title,
                 "</h3><br/><p>",
                 Translations.t.cyclofix.description,
                 "</p>"
-            ])//*/
+            ])
         );
+        this.icon = "./assets/bike/logo.svg"
+        this.description = "Easily search and contribute bicycle data nearby";
+        this.socialImage = "./assets/bike/cyclofix.jpeg"
     }
 }

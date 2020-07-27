@@ -3,8 +3,8 @@ import { And, Or, Tag } from "../../Logic/TagsFilter";
 import { OperatorTag } from "../Questions/OperatorTag";
 import * as L from "leaflet";
 import FixedText from "../Questions/FixedText";
-import { TagRenderingOptions } from "../TagRendering";
-import { ImageCarouselWithUploadConstructor } from "../../UI/Image/ImageCarouselWithUpload";
+import {TagRenderingOptions} from "../TagRendering";
+import {ImageCarouselWithUploadConstructor} from "../../UI/Image/ImageCarouselWithUpload";
 import Translations from "../../UI/i18n/Translations";
 
 export class DrinkingWater extends LayerDefinition {
@@ -53,11 +53,11 @@ export class DrinkingWater extends LayerDefinition {
 
             return {
                 color: "#00bb00",
-                icon: new L.icon({
+                icon: {
                     iconUrl: self.icon,
                     iconSize: [50, 50],
-                    iconAnchor: [25, 50]
-                })
+                    iconAnchor: [25,50]
+                }
             };
         };
     }

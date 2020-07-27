@@ -2,14 +2,15 @@ import {NatureReserves} from "../Layers/NatureReserves";
 import {Park} from "../Layers/Park";
 import {Bos} from "../Layers/Bos";
 import {Layout} from "../Layout";
+import {Viewpoint} from "../Layers/Viewpoint";
 
 export class Groen extends Layout {
     
     constructor() {
         super("buurtnatuur",
             ["nl"],
-            "Buurtnatuur",
-            [new NatureReserves(), new Park(), new Bos()],
+            "Buurtnatuur.be",
+            [new NatureReserves(), new Park(), new Bos(), new Viewpoint()],
             10,
             50.8435,
             4.3688,
@@ -39,16 +40,21 @@ export class Groen extends Layout {
             "<li>Je kan altijd een vraag overslaan als je het antwoord niet weet of niet zeker bent</li>" +
             "<li>Je kan altijd een foto toevoegen</li>" +
             "<li>Je kan ook zelf een gebied toevoegen door op de kaart te klikken</li>" +
+            "<li>Open buurtnatuur.be <b>op je smartphone</b> om al wandelend foto's te maken en vragen te beantwoorden</li>" +
             "</ul>" +
             "<small>" +
             "<p>" +
             "De oorspronkelijke data komt van <b>OpenStreetMap</b> en je antwoorden worden daar bewaard.<br/> Omdat iedereen vrij kan meewerken aan dit project, kunnen we niet garanderen dat er geen fouten opduiken." +
+            "Kan je hier niet aanpassen wat je wilt, dan kan je dat zelf via OpenStreetMap.org doen. Groen kan <b>geen enkele verantwoordelijkheid</b> nemen over de kaart." +
             "</p>" +
             "Je privacy is belangrijk. We tellen wel hoeveel gebruikers deze website bezoeken. We plaatsen een cookie waar geen persoonlijke informatie in bewaard wordt. " +
             "Als je inlogt, komt er een tweede cookie bij met je inloggegevens." +
             "</small>"
         );
         
+        this.icon = "assets/groen.svg"
         this.locationContains = ["buurtnatuur.be"]
+        this.socialImage = "assets/BuurtnatuurFront.jpg"
+        this.description = "Met deze tool kan je natuur in je buurt in kaart brengen en meer informatie geven over je favoriete plekje"
     }
 }

@@ -20,16 +20,9 @@ export class WalkByBrussels extends Layout {
             4.3688,
 
 
-            "        <h3>Walk By Brussels</h3>\n" +
-            "\n" +
-            "<p>" +
-            "Search for and add points of interest, look for new routes!"
-
-            ,
-            "  <p>Start by <a href=\"https://www.openstreetmap.org/user/new\" target=\"_blank\">creating an account\n" +
-            "            </a> or by " +
-            "            <span onclick=\"authOsm()\" class=\"activate-osm-authentication\">logging in</span>.</p>",
-            "Start by clicking a pin and answering the questions");
+            "<h3>Drinking water</h3>\n" +
+            "Help with creating a map of drinking water points!"
+);
     }
 
 }

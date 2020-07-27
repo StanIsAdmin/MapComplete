@@ -1,24 +1,20 @@
 import {UIEventSource} from "../UIEventSource";
-import {OsmConnection} from "../../Logic/OsmConnection";
+import {LocalStorageSource} from "../../Logic/LocalStorageSource";
+import {DropDown} from "../Input/DropDown";
+import {Layout} from "../../Customizations/Layout";
+import {UIElement} from "../UIElement";
 
 
 export default class Locale {
-    public static language: UIEventSource<string> = Locale.getInitialLanguage();
+    public static language: UIEventSource<string> = LocalStorageSource.Get('language', "en");
 
-    private static getInitialLanguage() {
-        // The key to save in local storage
-        const LANGUAGE_KEY = 'language'
+    public static CreateLanguagePicker(layoutToUse: Layout, label: string | UIElement = "") {
 
-        const lng = new UIEventSource("en");
-        const saved = localStorage.getItem(LANGUAGE_KEY);
-        lng.setData(saved);
-
-
-        lng.addCallback(data => {
-            console.log("Selected language", data);
-            localStorage.setItem(LANGUAGE_KEY, data)
-        });
-
-        return lng;
+        return new DropDown(label, layoutToUse.supportedLanguages.map(lang => {
+                return {value: lang, shown: lang}
+            }
+        ), Locale.language);
     }
 }
+
+

@@ -17,7 +17,6 @@ export class AllKnownLayouts {
     public static allSets = AllKnownLayouts.AllLayouts();
 
     private static AllLayouts(): Map<string, Layout> {
-        const all = new All();
         const layouts: Layout[] = [
             new Groen(),
             new GRB(),
@@ -27,15 +26,29 @@ export class AllKnownLayouts {
             new MetaMap(),
             new StreetWidth(),
             new Natuurpunt(),
-            all
             /*new Toilets(),
             new Statues(),
             */
         ];
+
+
+        const all = new All();
+        const knownKeys = []
+        for (const layout of layouts) {
+            for (const layer of layout.layers) {
+                const key = layer.overpassFilter.asOverpass().join("");
+                if (knownKeys.indexOf(key) >= 0) {
+                    continue;
+                }
+                knownKeys.push(key);
+                all.layers.push(layer);
+            }
+        }
+        layouts.push(all)
+
         const allSets: Map<string, Layout> = new Map();
         for (const layout of layouts) {
             allSets[layout.name] = layout;
-            all.layers = all.layers.concat(layout.layers);
         }
         return allSets;
     }
