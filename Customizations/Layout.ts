@@ -109,16 +109,8 @@ export class WelcomeMessage extends UIElement {
             this.tail.Render() +
             "<br/>" +
             this.languagePicker.Render() +
-            "</span>"
+            "</span>";
 
-            ;
-        /*
-        return new VariableUiElement(
-            this.userDetails.map((userdetails) => {
-            }),
-            function () {
-               
-            }).ListenTo(Locale.language);*/
     }
 
     protected InnerUpdate(htmlElement: HTMLElement) {
