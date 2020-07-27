@@ -3,13 +3,15 @@ import { And, Or, Tag } from "../../Logic/TagsFilter";
 import { OperatorTag } from "../Questions/OperatorTag";
 import * as L from "leaflet";
 import FixedText from "../Questions/FixedText";
+import Translations from "../../UI/i18n/Translations";
 
 export class Viewpoint extends LayerDefinition {
 
     constructor() {
         super();
-        this.name = "viewpoint";
-        this.icon = "./assets/bug.svg";
+        const to = Translations.t.walkbybrussels.viewpoint;
+        this.name = to.name;
+        this.icon = "./assets/walkbybrussels/viewpoint.svg";
 
         this.overpassFilter = new Or([
             new And([
@@ -25,11 +27,9 @@ export class Viewpoint extends LayerDefinition {
 
         this.minzoom = 13;
         this.style = this.generateStyleFunction();
-        this.title = new FixedText("Viewpoints");
+        this.title = new FixedText(to.title);
         this.elementsToShow = [
-            new OperatorTag(),
         ];
-        this.elementsToShow = [];
 
     }
 

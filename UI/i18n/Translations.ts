@@ -320,7 +320,7 @@ export default class Translations {
                     render: new T({
                         en: 'This is artwork of the type: {artwork_type}',
                         nl: 'TODO: nl',
-                        fr: "Ceci est un travail d'art de type: {artwork_type}"
+                        fr: "Oeuvre d'art de type: {artwork_type}"
                     }),
                     template: new T({ en: 'Some other type: $$$', nl: 'Een ander type: $$$', fr: 'Un autre type: $$$' }),
                     question: new T({
@@ -434,6 +434,10 @@ export default class Translations {
                         fr: 'Y a-t-il des détails que nous devrions connaître à ce sujet '
                     })
                 }
+            },
+            viewpoint: {
+                name: new T({ en: 'viewpoint', nl: 'TODO: nl', fr: "point de vue" }),
+                title: new T({ en: 'Viewpoint', nl: 'TODO: nl', fr: "Point de vue" }),
             }
         },
         image: {

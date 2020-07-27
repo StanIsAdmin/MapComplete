@@ -12,8 +12,8 @@ export default class ArtworkType extends TagRenderingOptions {
             freeform: {
                 key: "artwork_type",
                 extraTags: new Tag("fixme", "Freeform artwork_type= tag used: possibly a wrong value"),
-                template: to.template.txt,
-                renderTemplate: to.render.txt,
+                template: to.template,
+                renderTemplate: to.render,
                 placeholder: Translations.t.cyclofix.freeFormPlaceholder,
             },
             mappings: [
