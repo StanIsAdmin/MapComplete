@@ -1,4 +1,4 @@
-import {LayerDefinition} from "./LayerDefinition";
+import {LayerDefinition, BaseLayerDefinition} from "./LayerDefinition";
 import {UIElement} from "../UI/UIElement";
 import {FixedUiElement} from "../UI/Base/FixedUiElement";
 import Translation from "../UI/i18n/Translation";
@@ -19,7 +19,7 @@ export class Layout {
     public description: string | UIElement = Translations.t.general.about;
     public socialImage: string = ""
     
-    public layers: LayerDefinition[];
+    public layers: BaseLayerDefinition[];
     public welcomeMessage: UIElement;
     public gettingStartedPlzLogin: UIElement;
     public welcomeBackMessage: UIElement;
@@ -49,7 +49,7 @@ export class Layout {
         name: string,
         supportedLanguages: string[],
         title: UIElement | string,
-        layers: LayerDefinition[],
+        layers: BaseLayerDefinition[],
         startzoom: number,
         startLat: number,
         startLon: number,

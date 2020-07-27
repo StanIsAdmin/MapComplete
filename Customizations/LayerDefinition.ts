@@ -9,8 +9,16 @@ import { UserDetails } from "../Logic/OsmConnection";
 import { TagRenderingOptions } from "./TagRendering";
 import { TagDependantUIElementConstructor } from "./UIElementConstructor";
 
-export class LayerDefinition {
+export class BaseLayerDefinition {
+    /**
+     * This is meant to serve as icon in the buttons
+     */
+    icon: string;
 
+    /**
+     * A promise that returns the data in geojson.
+     */
+    data?: Promise<object>;
 
     /**
      * This name is shown in the 'add XXX button'
@@ -27,36 +35,17 @@ export class LayerDefinition {
      * This is the ideal place to add extra info, such as "fixme=added by MapComplete, geometry should be checked"
      */
     newElementTags: Tag[]
-    /**
-     * Not really used anymore
-     * This is meant to serve as icon in the buttons
-     */
-    icon: string;
+
     /**
      * Only show this layer starting at this zoom level
      */
     minzoom: number;
 
     /**
-     * This tagfilter is used to query overpass.
-     * Examples are:
-     * 
-     * new Tag("amenity","drinking_water")
-     * 
-     * or a query for bicycle pumps which have two tagging schemes:
-     * new Or([ 
-     *  new Tag("service:bicycle:pump","yes") ,
-     *  new And([
-     *      new Tag("amenity","compressed_air"), 
-     *      new Tag("bicycle","yes")])
-     *  ])
-     */
-    overpassFilter: TagsFilter;
-
-    /**
      * This UIElement is rendered as title element in the popup
      */
     title: TagRenderingOptions;
+
     /**
      * These are the questions/shown attributes in the popup
      */
@@ -70,7 +59,7 @@ export class LayerDefinition {
      */
     style: (tags: any) => {
         color: string,
-        icon: { 
+        icon: {
             iconUrl: string,
             iconSize: number[],
         },
@@ -86,9 +75,60 @@ export class LayerDefinition {
      */
     wayHandling: number = 0;
 
-    static WAYHANDLING_DEFAULT = 0;
-    static WAYHANDLING_CENTER_ONLY = 1;
-    static WAYHANDLING_CENTER_AND_WAY = 2;
+    static WAYHANDLING_DEFAULT: number = 0;
+    static WAYHANDLING_CENTER_ONLY: number = 1;
+    static WAYHANDLING_CENTER_AND_WAY: number = 2;
+
+    constructor(options: {
+        name: string | UIElement,
+        description: string | UIElement,
+        minzoom: number,
+        overpassFilter: TagsFilter,
+        title?: TagRenderingOptions,
+        newElementTags: Tag[],
+        elementsToShow?: TagDependantUIElementConstructor[],
+        maxAllowedOverlapPercentage?: number,
+        wayHandling?: number,
+        style?: (tags: any) => {
+            color: string,
+            icon: any
+        },
+        data?: Promise<object>,
+        icon: string,
+    } = undefined) {
+        if (options === undefined) {
+            return;
+        }
+        this.name = options.name;
+        this.description = options.description;
+        this.maxAllowedOverlapPercentage = options.maxAllowedOverlapPercentage ?? 0;
+        this.minzoom = options.minzoom;
+        this.title = options.title;
+        this.style = options.style;
+        this.newElementTags = options.newElementTags;
+        this.elementsToShow = options.elementsToShow;
+        this.wayHandling = options.wayHandling ?? LayerDefinition.WAYHANDLING_DEFAULT;
+        this.data = options.data;
+        this.icon = options.icon;
+    }
+}
+
+export class LayerDefinition extends BaseLayerDefinition {
+    /**
+     * This tagfilter is used to query overpass.
+     * Examples are:
+     * 
+     * new Tag("amenity","drinking_water")
+     * 
+     * or a query for bicycle pumps which have two tagging schemes:
+     * new Or([ 
+     *  new Tag("service:bicycle:pump","yes") ,
+     *  new And([
+     *      new Tag("amenity","compressed_air"), 
+     *      new Tag("bicycle","yes")])
+     *  ])
+     */
+    overpassFilter: TagsFilter;
 
     constructor(options: {
         name: string | UIElement,
@@ -106,20 +146,9 @@ export class LayerDefinition {
             icon: any
         }
     } = undefined) {
-        if (options === undefined) {
-            return;
-        }
-        this.name = options.name;
-        this.description = options.description;
-        this.maxAllowedOverlapPercentage = options.maxAllowedOverlapPercentage ?? 0;
-        this.newElementTags = options.newElementTags;
-        this.icon = options.icon;
-        this.minzoom = options.minzoom;
+        super(options);
+        if (options == undefined) return;
         this.overpassFilter = options.overpassFilter;
-        this.title = options.title;
-        this.elementsToShow = options.elementsToShow;
-        this.style = options.style;
-        this.wayHandling = options.wayHandling ?? LayerDefinition.WAYHANDLING_DEFAULT;
     }
 
 }
