@@ -1,15 +1,15 @@
 import { TagRenderingOptions } from "../TagRendering";
 import Translations from "../../UI/i18n/Translations";
+import Combine from "../../UI/Base/Combine";
+import Translation from "../../UI/i18n/Translation";
 
 
 export class DescriptionQuestion extends TagRenderingOptions {
 
-    constructor(category: string) {
+    constructor(category: Translation) {
         super({
-            question: Translations.t.walkbybrussels.park.description.question + category + "?<br>" +
-                "<span class='question-subtext'>Je hoeft niet te herhalen wat je net hebt aangeduid.<br/>" +
-                "Een <i>naam</i> wordt in de volgende stap gevraagd.<br/>" +
-                "Voel je vrij om dit veld over te slaan.</span>",
+            question: new Combine([Translations.t.walkbybrussels.park.description.question, category, "?<br>",
+                "<span class='question-subtext'>", Translations.t.walkbybrussels.park.description.question_subtext, "</span>"]),
             freeform: {
                 key: "description:0",
                 renderTemplate: "{description:0}",

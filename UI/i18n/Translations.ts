@@ -523,6 +523,11 @@ export default class Translations {
                         en: 'Are there any details we should know about this ',
                         nl: 'Zijn er bijzonderheden die we moeten weten over dit ',
                         fr: 'Y a-t-il des détails que nous devrions connaître à ce sujet '
+                    }),
+                    question_subtext: new T({
+                        en: "You don't have to repeat what you just indicated.<br/> A <i>name</i> will be asked in the next step.<br/> Feel free to skip this field.",
+                        nl: "Je hoeft niet te herhalen wat je net hebt aangeduid.<br/>Een <i>naam</i> wordt in de volgende stap gevraagd.<br/>Voel je vrij om dit veld over te slaan.",
+                        fr: "Vous n'êtes pas obligé de répéter ce que vous venez d'indiquer.<br/> Un <i>nom</i> vous sera demandé à l'étape suivante.<br/> N'hésitez pas à ignorer ce champ."
                     })
                 }
             },

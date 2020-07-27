@@ -25,7 +25,7 @@ export class NatureReserves extends LayerDefinition {
         this.newElementTags = [new Tag("leisure", "nature_reserve"),
         new Tag("fixme", "Toegevoegd met MapComplete, geometry nog uit te tekenen")]
         this.minzoom = 13;
-        this.title = new FixedText(to.name);
+        this.title = new FixedText(to.title);
         this.style = this.generateStyleFunction();
         this.elementsToShow = [
             new ImageCarouselWithUploadConstructor(),
@@ -39,7 +39,7 @@ export class NatureReserves extends LayerDefinition {
             new NameQuestion(),
             new AccessTag(),
             new OperatorTag(),
-            new DescriptionQuestion("natuurgebied")
+            new DescriptionQuestion(to.name)
         ];
 
 
