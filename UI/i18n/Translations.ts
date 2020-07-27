@@ -531,6 +531,30 @@ export default class Translations {
                 title: new T({ en: 'Viewpoint', nl: 'TODO: nl', fr: "Point de vue" }),
             }
         },
+        other_questions: {
+            name_question: {
+                question: new T({
+                    en: "What is the <i>official</i> name of this area?",
+                    nl: "Wat is de <i>officiële</i> naam van dit gebied?",
+                    fr: "Quel est le nom <i>officiel</i> de cette zone?"
+                }),
+                question_subtext: new T({
+                    en: "It is not recommended to come up with a name yourself.<br/> You can give a description of the area in a next step.<br/>",
+                    nl: "Zelf een naam bedenken wordt afgeraden.<br/>Een beschrijving van het gebied geven kan in een volgende stap.<br/>",
+                    fr: "Il n'est pas recommandé de trouver un nom vous-même.<br/>Vous pouvez donner une description de la zone à l'étape suivante.<br/>"
+                }),
+                template: new T({
+                    en: "The name is $$$",
+                    nl: "De naam is $$$",
+                    fr: "Le nom est $$$"
+                }),
+                noname: new T({
+                    en: "This area has no name",
+                    nl: "Dit gebied heeft geen naam",
+                    fr: "Cette zone n'a pas de nom"
+                })
+            }
+        },
         image: {
             addPicture: new T({ en: 'Add picture', nl: 'Voeg foto toe', fr: 'TODO: fr' }),
             uploadingPicture: new T({
