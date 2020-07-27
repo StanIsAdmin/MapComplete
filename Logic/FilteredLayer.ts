@@ -80,6 +80,13 @@ export class FilteredLayer {
                 }
             }
         })
+
+        if(this.layerDef.data) {
+            this.layerDef.data.then(data => {
+                this.RenderLayer({type: 'FeatureCollection', features: data['features']});
+            })
+            
+        }
     }
     
     static fromDefinition(
@@ -228,12 +235,11 @@ export class FilteredLayer {
                 }
                 let eventSource = self._storage.addOrGetElement(feature);
                 const uiElement = self._showOnPopup(eventSource, feature, {lat: eventSource.data._lat, lon: eventSource.data._lon});
-                const popup = L.popup({}, marker).setContent(uiElement.Render());
-                marker.bindPopup(popup)
-                    .on("popupopen", (popup) => {
-                        uiElement.Activate();   
-                        uiElement.Update();
-                    });
+                marker.bindPopup(L.popup({}, marker)).on("popupopen", (e) => {
+                    e.popup.setContent(uiElement.Render());
+                    uiElement.Activate();   
+                    uiElement.Update();
+                });
                 return marker;
             },
 
@@ -272,7 +278,7 @@ export class FilteredLayer {
             }
         });
 
-        if (this.isDisplayed.data) {
+        if (this.layerDef.data || this.isDisplayed.data) {
             this._geolayer.addTo(this._map.map);
         }
     }
