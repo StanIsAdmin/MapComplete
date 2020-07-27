@@ -3,9 +3,19 @@
   "version": "0.0.1",
   "description": "A small website to edit OSM easily",
   "main": "index.js",
+  "staticFiles": {
+    "staticPath": [
+      {
+        "staticPath": "tiles",
+        "staticOutDir": "tiles/"
+      }
+    ]
+  },
   "scripts": {
-    "start": "parcel index.html land.html test.html assets/test.json assets/**/* UI/* Logic/** vendor/*",
-    "build": "rm -rf dist/ && parcel build --public-url ./ index.html land.html assets/* assets/*/*",
+    "start": "parcel *.html UI/** Logic/** assets/**/* vendor/* vendor/*/*",
+    "generate": "ts-node createLayouts.ts",
+    "build": "rm -rf dist/ && parcel build --public-url ./ *.html assets/* assets/*/* vendor/* vendor/*/*",
+    "clean": "./clean.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -15,15 +25,26 @@
   "author": "pietervdvn",
   "license": "MIT",
   "dependencies": {
-    "fs": "0.0.1-security",
-    "jquery": "^3.5.1",
+    "codegrid-js": "git://github.com/hlaw/codegrid-js.git",
+    "email-validator": "^2.0.4",
+    "jquery": "latest",
     "leaflet": "^1.6.0",
+    "libphonenumber": "0.0.10",
+    "libphonenumber-js": "^1.7.55",
     "osm-auth": "^1.0.2",
     "osmtogeojson": "^3.0.0-beta.4",
     "parcel": "^1.12.4",
     "turf": "^3.0.14"
   },
   "devDependencies": {
-    "typescript": "^3.9.7"
+    "typescript": "^3.9.7",
+    "@babel/polyfill": "^7.10.4",
+    "@types/node": "^7.0.5",
+    "fs": "0.0.1-security",
+    "marked": "^1.1.1",
+    "parcel-plugin-static-files-copy": "^2.4.3",
+    "promise-svg2img": "^0.2.0",
+    "read-file": "^0.2.0",
+    "write-file": "^1.0.0"
   }
 }

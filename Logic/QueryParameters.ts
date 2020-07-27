@@ -5,17 +5,21 @@ import {UIEventSource} from "../UI/UIEventSource";
 
 export class QueryParameters {
 
-    private static order: string [] = ["layout","test","zoom","lat","lon"];
+    private static order: string [] = ["layout","test","z","lat","lon"];
     private static knownSources = QueryParameters.init();
     
     private static addOrder(key){
         if(this.order.indexOf(key) < 0){
+            console.log("Adding order", key)
             this.order.push(key)
         }
     }
 
     private static init() {
         const knownSources = {}
+        if(window === undefined){
+            return;
+        }
         if (window.location.search) {
             const params = window.location.search.substr(1).split("&");
             for (const param of params) {
@@ -39,7 +43,6 @@ export class QueryParameters {
             }
             parts.push(encodeURIComponent(key) + "=" + encodeURIComponent(QueryParameters.knownSources[key].data))
         }
-        parts.sort();
         history.replaceState(null, "", "?" + parts.join("&"));
 
     }

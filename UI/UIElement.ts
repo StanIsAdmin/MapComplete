@@ -1,6 +1,7 @@
 import {UIEventSource} from "./UIEventSource";
+import {TagDependantUIElement} from "../Customizations/UIElementConstructor";
 
-export abstract class UIElement {
+export abstract class UIElement extends UIEventSource<string>{
     
     private static nextId: number = 0;
 
@@ -8,8 +9,12 @@ export abstract class UIElement {
     public readonly _source: UIEventSource<any>;
     
     private _hideIfEmpty = false;
+    
+    // WOrkaround as document is not defined
+    public static runningFromConsole = false;
 
     protected constructor(source: UIEventSource<any>) {
+        super("");
         this.id = "ui-element-" + UIElement.nextId;
         this._source = source;
         UIElement.nextId++;
@@ -37,12 +42,17 @@ export abstract class UIElement {
     }
     
     Update(): void {
+        if(UIElement.runningFromConsole){
+            return;
+        }
+        
         let element = document.getElementById(this.id);
         if (element === undefined || element === null) {
             // The element is not painted
             return;
         }
-        element.innerHTML = this.InnerRender();
+        this.setData(this.InnerRender());
+        element.innerHTML = this.data;
         if (this._hideIfEmpty) {
             if (element.innerHTML === "") {
                 element.parentElement.style.display = "none";
@@ -54,10 +64,12 @@ export abstract class UIElement {
         if (this._onClick !== undefined) {
             const self = this;
             element.onclick = (e) => {
+                // @ts-ignore
                 if(e.consumed){
                     return;
                 }
                 self._onClick();
+                // @ts-ignore
                 e.consumed = true;
             }
             element.style.pointerEvents = "all";

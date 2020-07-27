@@ -4,7 +4,7 @@ import {LicenseInfo} from "../../Logic/Wikimedia";
 import {Imgur} from "../../Logic/Imgur";
 
 
-export class ImgurImage extends UIElement {
+export class    ImgurImage extends UIElement {
 
 
     /***
@@ -32,7 +32,7 @@ export class ImgurImage extends UIElement {
       
     }
 
-    protected InnerRender(): string {
+    InnerRender(): string {
         const image = "<img src='" + this._imageLocation + "' " + "alt='' >";
         
         if(this._imageMeta.data === null){

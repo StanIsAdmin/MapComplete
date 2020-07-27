@@ -1,9 +1,10 @@
 import {LayerDefinition} from "../LayerDefinition";
-import L from "leaflet";
 import {And, Or, Tag} from "../../Logic/TagsFilter";
 import {TagRenderingOptions} from "../TagRendering";
 import {NameInline} from "../Questions/NameInline";
 import {ImageCarouselWithUploadConstructor} from "../../UI/Image/ImageCarouselWithUpload";
+import Translations from "../../UI/i18n/Translations";
+import T from "../../UI/i18n/Translation";
 
 export class Bookcases extends LayerDefinition {
 
@@ -16,36 +17,38 @@ export class Bookcases extends LayerDefinition {
         this.overpassFilter = new Tag("amenity", "public_bookcase");
         this.minzoom = 11;
 
-        this.title = new NameInline("ruilboekenkastje");
+        const Tr = Translations.t;
+        const Trq = Tr.bookcases.questions;
+        this.title = new NameInline(Translations.t.bookcases.bookcase);
         this.elementsToShow = [
             new ImageCarouselWithUploadConstructor(),
             new TagRenderingOptions({
-                question: "Heeft dit boekenruilkastje een naam?",
+                question: Trq.hasName,
                 freeform: {
                     key: "name",
-                    template: "De naam is $$$",
+                    template: "$$$",
                     renderTemplate: "", // We don't actually render it, only ask
                     placeholder: "",
-                    extraTags: new Tag("noname","")
+                    extraTags: new Tag("noname", "")
                 },
                 mappings: [
-                    {k: new Tag("noname", "yes"), txt: "Neen, er is geen naam aangeduid op het boekenruilkastje"},
+                    {k: new Tag("noname", "yes"), txt: Trq.noname},
                 ]
             }),
             
             new TagRenderingOptions(
                 {
-                    question: "Hoeveel boeken passen in dit boekenruilkastje?",
+                    question: Trq.capacity,
                     freeform: {
-                        renderTemplate: "Er passen {capacity} boeken in dit boekenruilkastje",
-                        template:  "Er passen $$$ boeken in dit boekenruilkastje",
+                        renderTemplate: Trq.capacityRender,
+                        template: Trq.capacityInput,
                         key: "capacity",
                         placeholder: "aantal"
                     },
                 }
             ),
             new TagRenderingOptions({
-                question: "Wat voor soort boeken heeft dit boekenruilkastje?",
+                question: Trq.bookkinds,
                 mappings: [
                     {k: new Tag("books", "children"), txt: "Voornamelijk kinderboeken"},
                     {k: new Tag("books", "adults"), txt: "Voornamelijk boeken voor volwassenen"},
@@ -159,10 +162,12 @@ export class Bookcases extends LayerDefinition {
 
         this.style = function (tags) {
             return {
-                icon: new L.icon({
+                icon: {
                     iconUrl: "assets/bookcase.svg",
-                    iconSize: [40, 40]
-                }),
+                    iconSize: [40, 40],
+                    iconAnchor: [20,20],
+                    popupAnchor: [0, -15]
+                },
                 color: "#0000ff"
             };
         }

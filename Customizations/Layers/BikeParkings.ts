@@ -1,13 +1,13 @@
 import {LayerDefinition} from "../LayerDefinition";
 import {And, Or, Tag} from "../../Logic/TagsFilter";
 import {OperatorTag} from "../Questions/OperatorTag";
-import * as L from "leaflet";
 import FixedText from "../Questions/FixedText";
 import ParkingType from "../Questions/bike/ParkingType";
 import {ImageCarouselWithUploadConstructor} from "../../UI/Image/ImageCarouselWithUpload";
 import BikeStationOperator from "../Questions/bike/StationOperator";
 import Translations from "../../UI/i18n/Translations";
 import ParkingOperator from "../Questions/bike/ParkingOperator";
+import {TagRenderingOptions} from "../TagRendering";
 
 
 export default class BikeParkings extends LayerDefinition {
@@ -27,7 +27,15 @@ export default class BikeParkings extends LayerDefinition {
         this.elementsToShow = [
             new ImageCarouselWithUploadConstructor(),
             //new ParkingOperator(),
-            new ParkingType()
+            new ParkingType(),
+            new TagRenderingOptions({
+                question: "How many bicycles fit in this bicycle parking?",
+                freeform: {
+                    key: "capacity",
+                    renderTemplate: "Place for {capacity} bikes",
+                    template: "$nat$ bikes fit in here"
+                }
+            })
         ];
         this.wayHandling = LayerDefinition.WAYHANDLING_CENTER_AND_WAY;
 
@@ -38,11 +46,11 @@ export default class BikeParkings extends LayerDefinition {
         return function (properties: any) {
             return {
                 color: "#00bb00",
-                icon: L.icon({
+                icon: {
                     iconUrl: self.icon,
                     iconSize: [50, 50],
                     iconAnchor: [25,50]
-                })
+                }
             };
         };
     }

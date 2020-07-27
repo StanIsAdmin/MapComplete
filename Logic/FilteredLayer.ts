@@ -1,13 +1,14 @@
-import { Basemap } from "./Basemap";
-import { TagsFilter, TagUtils } from "./TagsFilter";
-import { UIEventSource } from "../UI/UIEventSource";
-import { ElementStorage } from "./ElementStorage";
-import { Changes } from "./Changes";
+import {Basemap} from "./Basemap";
+import {TagsFilter, TagUtils} from "./TagsFilter";
+import {UIEventSource} from "../UI/UIEventSource";
+import {ElementStorage} from "./ElementStorage";
+import {Changes} from "./Changes";
 import L from "leaflet"
-import { GeoOperations } from "./GeoOperations";
-import { UIElement } from "../UI/UIElement";
-import { LayerDefinition } from "../Customizations/LayerDefinition";
-
+import {GeoOperations} from "./GeoOperations";
+import {UIElement} from "../UI/UIElement";
+import {LayerDefinition} from "../Customizations/LayerDefinition";
+import {UserDetails} from "./OsmConnection";
+import codegrid from "codegrid-js";
 /***
  * A filtered layer is a layer which offers a 'set-data' function
  * It is initialized with a tagfilter.
@@ -26,7 +27,7 @@ export class FilteredLayer {
     private readonly _map: Basemap;
     private readonly _maxAllowedOverlap: number;
 
-    private readonly _style: (properties) => { color: string, icon: any };
+    private readonly _style: (properties) => { color: string, icon: { iconUrl: string, iconSize? : number[], popupAnchor?: number[], iconAnchor?:number[] } };
 
     private readonly _storage: ElementStorage;
 
@@ -44,12 +45,14 @@ export class FilteredLayer {
     private _selectedElement: UIEventSource<{ feature: any }>;
     private _showOnPopup: (tags: UIEventSource<any>, feature: any, clickLocation: { lat: number, lon: number }) => UIElement;
 
+    private static readonly grid = codegrid.CodeGrid();
+
     constructor(
         layerDef: LayerDefinition,
         map: Basemap, storage: ElementStorage,
         changes: Changes,
         selectedElement: UIEventSource<{ feature: any }>,
-        showOnPopup: ((tags: UIEventSource<any>, feature: any, clickLocation: { lat: number, lon: number }) => UIElement)
+        showOnPopup: ((tags: UIEventSource<any>, feature: any) => UIElement)
     ) {
         this.layerDef = layerDef;
 
@@ -59,7 +62,7 @@ export class FilteredLayer {
         this._style = layerDef.style;
         if (this._style === undefined) {
             this._style = function () {
-                return {icon: "", color: "#000000"};
+                return {icon: {iconUrl: "./assets/bug.svg"}, color: "#000000"};
             }
         }
         this.name = name;
@@ -78,6 +81,20 @@ export class FilteredLayer {
             }
         })
     }
+    
+    static fromDefinition(
+        definition,
+        basemap: Basemap, allElements: ElementStorage, changes: Changes, userDetails: UIEventSource<UserDetails>,
+                 selectedElement: UIEventSource<{feature: any}>,
+                 showOnPopup: (tags: UIEventSource<any>, feature: any, clickLocation: { lat: number, lon: number }) => UIElement):
+        FilteredLayer {
+        return new FilteredLayer(
+            definition,
+            basemap, allElements, changes,
+            selectedElement,
+            showOnPopup);
+
+    }
 
 
     /**
@@ -91,12 +108,23 @@ export class FilteredLayer {
             // feature.properties contains all the properties
             var tags = TagUtils.proprtiesToKV(feature.properties);
             if (this.filters.matches(tags)) {
+                const centerPoint = GeoOperations.centerpoint(feature);
                 feature.properties["_surface"] = GeoOperations.surfaceAreaInSqMeters(feature);
+                const lat = centerPoint.geometry.coordinates[1];
+                const lon = centerPoint.geometry.coordinates[0]
+                feature.properties["_lon"] = lat;
+                feature.properties["_lat"] = lon;
+                FilteredLayer.grid.getCode(lat, lon, (error, code) => {
+                    if (error === null) {
+                        feature.properties["_country"] = code;
+                    }
+                })
+
                 if (feature.geometry.type !== "Point") {
                     if (this._wayHandling === LayerDefinition.WAYHANDLING_CENTER_AND_WAY) {
-                        selfFeatures.push(GeoOperations.centerpoint(feature));
+                        selfFeatures.push(centerPoint);
                     } else if (this._wayHandling === LayerDefinition.WAYHANDLING_CENTER_ONLY) {
-                        feature = GeoOperations.centerpoint(feature);
+                        feature = centerPoint;
                     }
                 }
                 selfFeatures.push(feature);
@@ -186,10 +214,26 @@ export class FilteredLayer {
                     });
 
                 } else {
+                    if(style.icon.iconSize === undefined){
+                        style.icon.iconSize = [50,50]
+                    }if(style.icon.iconAnchor === undefined){
+                        style.icon.iconAnchor = [style.icon.iconSize[0] / 2,style.icon.iconSize[1]]
+                    }
+                    if (style.icon.popupAnchor === undefined) {
+                        style.icon.popupAnchor = [0, 8 - (style.icon.iconSize[1])]
+                    }
                     marker = L.marker(latLng, {
-                        icon: style.icon
+                        icon: new L.icon(style.icon),
                     });
                 }
+                let eventSource = self._storage.addOrGetElement(feature);
+                const uiElement = self._showOnPopup(eventSource, feature, {lat: eventSource.data._lat, lon: eventSource.data._lon});
+                const popup = L.popup({}, marker).setContent(uiElement.Render());
+                marker.bindPopup(popup)
+                    .on("popupopen", (popup) => {
+                        uiElement.Activate();   
+                        uiElement.Update();
+                    });
                 return marker;
             },
 
@@ -197,23 +241,26 @@ export class FilteredLayer {
                 let eventSource = self._storage.addOrGetElement(feature);
                 eventSource.addCallback(function () {
                     if (layer.setIcon) {
-                        layer.setIcon(self._style(feature.properties).icon)
+                        layer.setIcon(L.icon(self._style(feature.properties).icon))
                     } else {
-                        console.log("UPdating", layer);
-
                         self._geolayer.setStyle(function (feature) {
                             return self._style(feature.properties);
                         });
                     }
                 });
 
-
                 layer.on("click", function (e) {
-                    console.log("Selected ", feature)
                     self._selectedElement.setData({ feature: feature });
+                    if (feature.geometry.type === "Point") {
+                        return; // Points bind there own popups
+                    }
+
                     const clickLocation = { lat: e.latlng.lat, lon: e.latlng.lng };
                     const uiElement = self._showOnPopup(eventSource, feature, clickLocation);
-                    const popup = L.popup()
+
+                    const popup = L.popup({
+                        autoPan: true,
+                    })
                         .setContent(uiElement.Render())
                         .setLatLng(e.latlng)
                         .openOn(self._map.map);

@@ -1,12 +1,14 @@
-import { UIElement } from "./UIElement";
-import { UIEventSource } from "./UIEventSource";
-import { Tag } from "../Logic/TagsFilter";
-import { FilteredLayer } from "../Logic/FilteredLayer";
-import { Changes } from "../Logic/Changes";
-import { FixedUiElement } from "./Base/FixedUiElement";
-import { Button } from "./Base/Button";
-import { UserDetails } from "../Logic/OsmConnection";
-import { Route } from "../Logic/Route";
+import {UIElement} from "./UIElement";
+import {UIEventSource} from "./UIEventSource";
+import {Tag} from "../Logic/TagsFilter";
+import {FilteredLayer} from "../Logic/FilteredLayer";
+import {Changes} from "../Logic/Changes";
+import {FixedUiElement} from "./Base/FixedUiElement";
+import {Button} from "./Base/Button";
+import {UserDetails} from "../Logic/OsmConnection";
+import {Route} from "../Logic/Route";
+import Translations from "./i18n/Translations";
+import Combine from "./Base/Combine";
 
 /**
  * Asks to add a feature at the last clicked location, at least if zoom is sufficient
@@ -48,7 +50,7 @@ export class SimpleAddUI extends UIElement {
             // <button type='button'> looks SO retarded
             // the default type of button is 'submit', which performs a POST and page reload
             const button =
-                new Button(new FixedUiElement("Add a " + option.name.Render() + " here"),
+                new Button(Translations.t.general.add.addNew.Subs({category: option.name}),
                     this.CreatePoint(option));
             this._addButtons.push(button);
         }
@@ -74,21 +76,18 @@ export class SimpleAddUI extends UIElement {
     }
 
     InnerRender(): string {
-        const header = "<h2>No data here</h2>" +
+        const header = Translations.t.general.add.header.Render() + this._addToRouteButton.Render() + "<br/>";
 
-
-            "You clicked somewhere where no data is known yet.<br/>" +
-            this._addToRouteButton.Render() + "<br/>";
         if (!this._userDetails.data.loggedIn) {
-            return header + "<a class='activate-osm-authentication'>Please log in to add a new point</a>"
+            return new Combine([header, Translations.t.general.add.pleaseLogin]).Render()
         }
 
         if (this._zoomlevel.data.zoom < 19) {
-            return header + "Zoom in further to add a point.";
+            return new Combine([header, Translations.t.general.add.zoomInFurther]).Render()
         }
 
         if (this._dataIsLoading.data) {
-            return header + "The data is still loading. Please wait a bit before you add a new point";
+            return new Combine([header, Translations.t.general.add.stillLoading]).Render()
         }
 
         var html = "";

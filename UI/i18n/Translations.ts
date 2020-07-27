@@ -14,14 +14,14 @@ export default class Translations {
     static t = {
         cyclofix: {
             title: new T({
-                en: 'Cyclofix bicycle infrastructure',
-                nl: 'Cyclofix fietsinfrastructuur',
+                en: 'Cyclofix - an open map for cyclists',
+                nl: 'Cyclofix - een open kaart voor fietsers',
                 fr: 'TODO: FRENCH TRANSLATION'
             }),
             description: new T({
-                en: "On this map we want to collect data about the whereabouts of bicycle pumps and public racks in Brussels." +
+                en: "On this map we want to collect data about the whereabouts of bicycle pumps and public racks in Brussels and everywhere else." +
                     "As a result, cyclists will be able to quickly find the nearest infrastructure for their needs.",
-                nl: "Op deze kaart willen we gegevens verzamelen over de locatie van fietspompen en openbare stelplaatsen in Brussel." +
+                nl: "Op deze kaart willen we gegevens verzamelen over de locatie van fietspompen en openbare stelplaatsen in Brussel en overal ter wereld." +
                     "Hierdoor kunnen fietsers snel de dichtstbijzijnde infrastructuur vinden die voldoet aan hun behoeften.",
                 fr: "Sur cette carte, nous voulons collecter des données sur la localisation des pompes à vélo et des supports publics à Bruxelles." +
                     "Les cyclistes pourront ainsi trouver rapidement l'infrastructure la plus proche de leurs besoins."
@@ -184,18 +184,19 @@ export default class Translations {
                         fr: 'TODO: fr'
                     }),
                     pump: new T({
-                        en: 'There is only a pump available',
-                        nl: 'Er is enkel een pomp beschikbaar',
+                        // Note: this previously read: a pump is available. It is not because the pump is present, that it is available (e.g. broken)
+                        en: 'There is only a pump present',
+                        nl: 'Er is enkel een pomp aanwezig',
                         fr: 'TODO: fr'
                     }),
                     tools: new T({
-                        en: 'There are only tools (screwdrivers, pliers...) available',
-                        nl: 'Er is enkel gereedschap beschikbaar (schroevendraaier, tang...)',
+                        en: 'There are only tools (screwdrivers, pliers...) aanwezig',
+                        nl: 'Er is enkel gereedschap aanwezig (schroevendraaier, tang...)',
                         fr: 'TODO: fr'
                     }),
                     both: new T({
-                        en: 'There are both tools and a pump available',
-                        nl: 'Er is zowel een pomp als gereedschap beschikbaar',
+                        en: 'There are both tools and a pump present',
+                        nl: 'Er is zowel een pomp als gereedschap aanwezig',
                         fr: 'TODO: fr'
                     }),
                 },
@@ -292,9 +293,21 @@ export default class Translations {
                     only: new T({en: 'This shop only sells second-hand bikes', nl: 'Deze winkel verkoopt enkel tweedehands fietsen', fr: 'TODO: fr'}),
                 },
                 diy: {
-                    question: new T({en: 'Are there tools here to repair your own bike?', nl: 'Biedt deze winkel gereedschap aan om je fiets zelf te herstellen?', fr: 'TODO: fr'}),
-                    yes: new T({en: 'This shop offers tools for DIY repair', nl: 'Deze winkel biedt gereedschap aan om je fiets zelf te herstellen', fr: 'TODO: fr'}),
-                    no: new T({en: 'This shop doesn\'t offer tools for DIY repair', nl: 'Deze winkel biedt geen gereedschap aan om je fiets zelf te herstellen', fr: 'TODO: fr'}),
+                    question: new T({
+                        en: 'Are there tools here to repair your own bike?',
+                        nl: 'Biedt deze winkel gereedschap aan om je fiets zelf te herstellen?',
+                        fr: 'TODO: fr'
+                    }),
+                    yes: new T({
+                        en: 'This shop offers tools for DIY repair',
+                        nl: 'Deze winkel biedt gereedschap aan om je fiets zelf te herstellen',
+                        fr: 'TODO: fr'
+                    }),
+                    no: new T({
+                        en: 'This shop doesn\'t offer tools for DIY repair',
+                        nl: 'Deze winkel biedt geen gereedschap aan om je fiets zelf te herstellen',
+                        fr: 'TODO: fr'
+                    }),
                 }
             },
             drinking_water: {
@@ -304,6 +317,51 @@ export default class Translations {
                 })
             }
         },
+        bookcases: {
+            title: new T({en: "Open Bookcase Map", nl: "Open Boekenkastjes kaart"}),
+            description: new T({
+                    en: "Search a bookcase near you and add information about them in the biggest shared map of the world.",
+                    nl: "Help mee met het creëeren van een volledige kaart met alle boekenruilkastjes!" +
+                        "Een boekenruilkastje is een vaste plaats in publieke ruimte waar iedereen een boek in kan zetten of uit kan meenemen." +
+                        "Meestal een klein kastje of doosje dat op straat staat, maar ook een oude telefooncellen of een schap in een station valt hieronder."
+                }
+            ),
+            bookcase: new T({
+                nl: "Boekenruilkastje",
+                en: "Public bookcase"
+            }),
+            questions: {
+                hasName: new T(
+                    {
+                        nl: "Heeft dit boekenruilkastje een naam?",
+                        en: "Does this bookcase have a name?"
+                    }),
+                noname: new T({
+                        nl: "Neen, er is geen naam aangeduid op het boekenruilkastje",
+                        en: "No, there is no clearly visible name on the public bookcase"
+                    },
+                ),
+                capacity: new T({
+                    nl: "Hoeveel boeken passen in dit boekenruilkastje?",
+                    en: "How much books fit into this public bookcase?"
+                }),
+                capacityRender: new T({
+                    nl: "Er passen {capacity} boeken in dit boekenruilkastje",
+                    en: "{capacity} books fit in this bookcase"
+                }),
+                capacityInput: new T({
+                    nl: "Er passen $nat$ boeken in dit boekenruilkastje",
+                    en: "$nat$ books fit into this public bookcase"
+                }),
+                bookkinds: new T({
+                    nl: "Wat voor soort boeken heeft dit boekenruilkastje?",
+                    en: "What kind of books can be found in this public bookcase"
+                })
+            }
+
+
+        },
+
         image: {
             addPicture: new T({en: 'Add picture', nl: 'Voeg foto toe', fr: 'TODO: fr'}),
             uploadingPicture: new T({
@@ -386,8 +444,68 @@ export default class Translations {
             skippedQuestions: new T({
                 en: "Some questions are skipped",
                 nl: "Sommige vragen zijn overgeslaan"
-            })
-        }   
+            }),
+            number: new T({
+                en: "number",
+                nl: "getal"
+            }),
+
+            osmLinkTooltip: new T({
+               en: "See this object on OpenStreetMap for history and more editing options",
+                nl: "Bekijk dit object op OpenStreetMap waar geschiedenis en meer aanpasopties zijn"
+            }),
+            
+            add: {
+
+                addNew: new T({
+                    en: "Add a new {category} here",
+                    nl: "Voeg hier een {category} toe"
+                }),
+                header: new T({
+                    en: "<h2>No data</h2>You clicked somewhere where no data is known yet.<br/>",
+                    nl: "<h2>Geen selectie</h2>Je klikte ergens waar er nog geen data is.<br/>"
+                }),
+                pleaseLogin: new T({
+                    en: "<a class='activate-osm-authentication'>Please log in to add a new point</a>",
+                    nl: "<a class='activate-osm-authentication'>Gelieve je aan te melden om een punt to te voegen</a>"
+                }),
+                zoomInFurther: new T({
+                    en: "Zoom in further to add a point.",
+                    nl: "Gelieve verder in te zoomen om een punt toe te voegen"
+                }),
+                stillLoading: new T({
+                    en: "The data is still loading. Please wait a bit before you add a new point",
+                    nl: "De data wordt nog geladen. Nog even geduld en dan kan je een punt toevoegen."
+                })
+            },
+            pickLanguage: new T({
+                en: "Choose a language",
+                nl: "Kies je taal"
+            }),
+            about: new T({
+                en: "Easily edit and add OpenStreetMap for a certain theme",
+                nl: "Easily edit and add OpenStreetMap for a certain theme"
+
+            }),
+            nameInlineQuestion: new T({
+              nl:  "De naam van dit {category} is $$$"
+            }),
+            noNameCategory: new T({
+                nl: "{category} zonder naam"
+            }),
+            questions: {
+                phoneNumberOf: new T({
+                    en: "What is the phone number of {category}?",
+                    nl: "Wat is het telefoonnummer van {category}?"
+
+                }),
+                phoneNumberIs: new T({
+                    en: "The phone number of this {category} is <a href='tel:{phone}' target='_blank'>{phone}</a>",
+                    nl: "Het telefoonnummer van {category} is <a href='tel:{phone}' target='_blank'>{phone}</a>"
+                })
+
+            }
+        }
     }
 
     public static W(s: string | UIElement): UIElement {
@@ -395,6 +513,37 @@ export default class Translations {
             return s;
         }
         return new FixedUiElement(s);
+    }
+
+    public static CountTranslations() {
+        const queue: any = [Translations.t];
+        const tr: Translation[] = [];
+        while (queue.length > 0) {
+            const item = queue.pop();
+            if (item instanceof Translation || item.translations !== undefined) {
+                tr.push(item);
+            } else {
+                for (const t in item) {
+                    const x = item[t];
+                    queue.push(x)
+                }
+            }
+        }
+
+        const langaugeCounts = {};
+        for (const translation of tr) {
+            for (const language in translation.translations) {
+                if (langaugeCounts[language] === undefined) {
+                    langaugeCounts[language] = 1
+                } else {
+                    langaugeCounts[language]++;
+                }
+            }
+        }
+        for (const language in langaugeCounts) {
+            console.log("Total translations in ", language, langaugeCounts[language], "/", tr.length)
+        }
+
     }
 
 }

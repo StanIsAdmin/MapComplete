@@ -123,7 +123,7 @@ export class FeatureInfoBox extends UIElement {
                 info.push(infobox);
             } else if (infobox.IsQuestioning()) {
                 questions.push(infobox);
-            } else {
+            } else if(infobox.IsSkipped()){
                 // This question is neither known nor questioning -> it was skipped
                 skippedQuestions++;
             }
@@ -166,9 +166,7 @@ export class FeatureInfoBox extends UIElement {
             questionsHtml +
             this._addToRouteButton.Render();
 
-        "</div>" +
-            "" +
-            "</div>";
+       
     }
 
 }
