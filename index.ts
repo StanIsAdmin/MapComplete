@@ -1,31 +1,34 @@
-import {OsmConnection} from "./Logic/OsmConnection";
-import {Changes} from "./Logic/Changes";
-import {ElementStorage} from "./Logic/ElementStorage";
-import {UIEventSource} from "./UI/UIEventSource";
-import {UserBadge} from "./UI/UserBadge";
-import {Basemap} from "./Logic/Basemap";
-import {PendingChanges} from "./UI/PendingChanges";
-import {CenterMessageBox} from "./UI/CenterMessageBox";
-import {Helpers} from "./Helpers";
-import {Tag, TagUtils} from "./Logic/TagsFilter";
-import {FilteredLayer} from "./Logic/FilteredLayer";
-import {LayerUpdater} from "./Logic/LayerUpdater";
-import {UIElement} from "./UI/UIElement";
-import {FullScreenMessageBoxHandler} from "./UI/FullScreenMessageBoxHandler";
-import {FeatureInfoBox} from "./UI/FeatureInfoBox";
-import {GeoLocationHandler} from "./Logic/GeoLocationHandler";
-import {StrayClickHandler} from "./Logic/StrayClickHandler";
-import {SimpleAddUI} from "./UI/SimpleAddUI";
-import {VariableUiElement} from "./UI/Base/VariableUIElement";
-import {SearchAndGo} from "./UI/SearchAndGo";
-import {CollapseButton} from "./UI/Base/CollapseButton";
-import {AllKnownLayouts} from "./Customizations/AllKnownLayouts";
-import {CheckBox} from "./UI/Base/CheckBox";
+import { OsmConnection } from "./Logic/OsmConnection";
+import { Changes } from "./Logic/Changes";
+import { ElementStorage } from "./Logic/ElementStorage";
+import { UIEventSource } from "./UI/UIEventSource";
+import { UserBadge } from "./UI/UserBadge";
+import { Basemap, BaseLayers } from "./Logic/Basemap";
+import { PendingChanges } from "./UI/PendingChanges";
+import { CenterMessageBox } from "./UI/CenterMessageBox";
+import { Helpers } from "./Helpers";
+import { Tag, TagUtils } from "./Logic/TagsFilter";
+import { FilteredLayer } from "./Logic/FilteredLayer";
+import { LayerUpdater } from "./Logic/LayerUpdater";
+import { UIElement } from "./UI/UIElement";
+import { FullScreenMessageBoxHandler } from "./UI/FullScreenMessageBoxHandler";
+import { FeatureInfoBox } from "./UI/FeatureInfoBox";
+import { GeoLocationHandler } from "./Logic/GeoLocationHandler";
+import { StrayClickHandler } from "./Logic/StrayClickHandler";
+import { SimpleAddUI } from "./UI/SimpleAddUI";
+import { VariableUiElement } from "./UI/Base/VariableUIElement";
+import { SearchAndGo } from "./UI/SearchAndGo";
+import { CollapseButton } from "./UI/Base/CollapseButton";
+import { AllKnownLayouts } from "./Customizations/AllKnownLayouts";
+import { CheckBox } from "./UI/Base/CheckBox";
 import Translations from "./UI/i18n/Translations";
 import Locale from "./UI/i18n/Locale";
-import {Layout, WelcomeMessage} from "./Customizations/Layout";
-import {DropDown} from "./UI/Input/DropDown";
-import {FixedUiElement} from "./UI/Base/FixedUiElement";
+import { Layout, WelcomeMessage } from "./Customizations/Layout";
+import { DropDown } from "./UI/Input/DropDown";
+import { FixedUiElement } from "./UI/Base/FixedUiElement";
+import { LayerSelection } from "./UI/LayerSelection";
+import Combine from "./UI/Base/Combine";
+import { Img } from "./UI/Img";
 
 
 // --------------------- Read the URL parameters -----------------
@@ -115,7 +118,7 @@ const secondsTillChangesAreSaved = new UIEventSource<number>(0);
 const fullScreenMessage = new UIEventSource<UIElement>(undefined);
 
 // The latest element that was selected - used to generate the right UI at the right place
-const selectedElement = new UIEventSource<{feature: any}>(undefined);
+const selectedElement = new UIEventSource<{ feature: any }>(undefined);
 
 
 const locationControl = new UIEventSource<{ lat: number, lon: number, zoom: number }>({
@@ -202,29 +205,53 @@ for (const layer of layoutToUse.layers) {
     flayers.push(flayer);
 
     console.log(flayers);
-    
+
 }
 
 const layerUpdater = new LayerUpdater(bm, minZoom, flayers);
 
 
+// --------------- Setting up filter ui --------
+
+// buttons 
+
+const closedFilterButton = `<button id="filter__button" class="filter__button filter__button--shadow">${Img.closedFilterButton}</button>`;
+
+const openFilterButton = `
+<button id="filter__button" class="filter__button">${Img.openFilterButton}</button>`;
+
+// basemap dropdown
+
+let baseLayerOptions = [];
+
+for (const key in BaseLayers.baseLayers) {
+    baseLayerOptions.push({ value: { name: key, layer: BaseLayers.baseLayers[key] }, shown: key });
+}
+
+if (flayers.length > 1) {
+    new CheckBox(new Combine([`<p class="filter__label">Maplayers</p>`, new LayerSelection(flayers), new DropDown(`Background map`, baseLayerOptions, bm.CurrentLayer), openFilterButton]), closedFilterButton).AttachTo("filter__selection");
+} else {
+    new CheckBox(new Combine([new DropDown(`Background map`, baseLayerOptions, bm.CurrentLayer), openFilterButton]), closedFilterButton).AttachTo("filter__selection");
+}
+
+
 // ------------------ Setup various UI elements ------------
 
 let languagePicker = new DropDown(" ", layoutToUse.supportedLanguages.map(lang => {
-        return {value: lang, shown: lang}
-    }
+    return { value: lang, shown: lang }
+}
 ), Locale.language).AttachTo("language-select");
 
 
 new StrayClickHandler(bm, selectedElement, fullScreenMessage, () => {
-        return new SimpleAddUI(bm.Location,
-            bm.LastClickLocation,
-            changes,
-            selectedElement,
-            layerUpdater.runningQuery,
-            osmConnection.userDetails,
-            addButtons);
-    }
+    return new SimpleAddUI(bm.Location,
+        bm.LastClickLocation,
+        changes,
+        selectedElement,
+        layerUpdater.runningQuery,
+        osmConnection.userDetails,
+        addButtons);
+}
 );
 
 /**
@@ -252,12 +279,12 @@ selectedElement.addCallback((feature) => {
             break;
         }
     }
-    }
+}
 );
 
 
 const pendingChanges = new PendingChanges(
-    changes, secondsTillChangesAreSaved,);
+    changes, secondsTillChangesAreSaved);
 
 new UserBadge(osmConnection.userDetails,
     pendingChanges,
@@ -303,5 +330,3 @@ new GeoLocationHandler(bm).AttachTo("geolocate-button");
 // --------------- Send a ping to start various action --------
 
 locationControl.ping();
-
-
