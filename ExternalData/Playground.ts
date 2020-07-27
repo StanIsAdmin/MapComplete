@@ -6,6 +6,7 @@ import { UIEventSource } from "../UI/UIEventSource";
 import { FixedUiElement } from "../UI/Base/FixedUiElement";
 import { TagRenderingOptions } from "../Customizations/TagRendering";
 import Translation from "../UI/i18n/Translation";
+import Translations from "../UI/i18n/Translations";
 
 
 export class Playground {
@@ -34,6 +35,8 @@ export class Playground {
         }
     }
 
+    private readonly translations = Translations.t.walkbybrussels.playgrounds;
+
     constructor(basemap: Basemap) {
         let parser = new Parser("https://cors-anywhere.herokuapp.com/https://wfs.environnement.brussels/belb?SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAME=playground&SRSNAME=EPSG:31370", this.config);
         parser.parse()
@@ -49,16 +52,16 @@ export class Playground {
                             })
                         });
                     }
-                }).bindPopup(function (layer) {
+                }).bindPopup((layer) => {
                     let renderedTags = [
-                        new TagRenderingOptions({ freeform: { key: "name", renderTemplate: new Translation({ nl: "Naam: {name}", fr: "Nom : {name}" }), template: "" } }),
-                        new TagRenderingOptions({ freeform: { key: "nl_description", renderTemplate: new Translation({ nl: "Descriptie: {nl_description}", fr: "Description : {fr_description}" }), template: "" }, }),
-                        new TagRenderingOptions({ freeform: { key: "street", renderTemplate: new Translation({ nl: "Straat: {street}", fr: "Rue : {street}" }), template: "" } }),
-                        new TagRenderingOptions({ freeform: { key: "zipCode", renderTemplate: new Translation({ nl: "Postcode: {zipCode}", fr: "Code postal : {zipCode}" }), template: "" } }),
-                        new TagRenderingOptions({ freeform: { key: "nl_municipality", renderTemplate: new Translation({ nl: "Gemeente: {nl_municipality}", fr: "Commune :  {fr_municipality}" }), template: "" } }),
-                        new TagRenderingOptions({ freeform: { key: "nl_age", renderTemplate: new Translation({ nl: "Leeftijd: {nl_age}", fr: "Age : {fr_age}" }), template: "" } }),
+                        new TagRenderingOptions({ freeform: { key: "name", renderTemplate: this.translations.name, template: "" } }),
+                        new TagRenderingOptions({ freeform: { key: "nl_description", renderTemplate: this.translations.description, template: "" }, }),
+                        new TagRenderingOptions({ freeform: { key: "street", renderTemplate: this.translations.street, template: "" } }),
+                        new TagRenderingOptions({ freeform: { key: "zipCode", renderTemplate: this.translations.zipCode, template: "" } }),
+                        new TagRenderingOptions({ freeform: { key: "nl_municipality", renderTemplate: this.translations.municipality, template: "" } }),
+                        new TagRenderingOptions({ freeform: { key: "nl_age", renderTemplate: this.translations.age, template: "" } }),
                     ];
-                    return new FeatureInfoBox(undefined, layer.feature, new UIEventSource(layer.feature.properties), new TagRenderingOptions({ freeform: { key: 'name', renderTemplate: new Translation({ nl: "Speelplaats", fr: "Terrain de jeux" }), template: '' } }), renderedTags, undefined, undefined, undefined).Render();
+                    return new FeatureInfoBox(undefined, layer.feature, new UIEventSource(layer.feature.properties), new TagRenderingOptions({ freeform: { key: 'name', renderTemplate: this.translations.title, template: '' } }), renderedTags, undefined, undefined, undefined).Render();
                 }).addTo(basemap.map);
             });
 
