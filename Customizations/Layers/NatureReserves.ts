@@ -9,6 +9,7 @@ import { DescriptionQuestion } from "../Questions/DescriptionQuestion";
 import { ImageCarouselWithUploadConstructor } from "../../UI/Image/ImageCarouselWithUpload";
 import Translations from "../../UI/i18n/Translations";
 import FixedText from "../Questions/FixedText";
+import Combine from "../../UI/Base/Combine";
 
 export class NatureReserves extends LayerDefinition {
 
@@ -55,13 +56,14 @@ export class NatureReserves extends LayerDefinition {
                 question: to.website.question,
                 freeform: {
                     key: "website",
-                    renderTemplate: "<a href='{website}' target='_blank'>" + to.website.more_info + "</a>",
+                    renderTemplate: new Combine(["<a href='{website}' target='_blank'>", to.website.more_info, "</a>"]),
                     template: "$$$"
                 }
             }),
             new TagRenderingOptions({
-                question: to.curator.question + "<br>" +
-                    "<span class='question-subtext'>" + to.curator.question_subtext + "</span>",
+                question: new Combine([
+                    to.curator.question, "<br><span class='question-subtext'>", to.curator.question_subtext, "</span>"
+                ]),
                 freeform: {
                     renderTemplate: to.curator.template,
                     template: "$$$",
@@ -70,8 +72,8 @@ export class NatureReserves extends LayerDefinition {
             }),
             new TagRenderingOptions(
                 {
-                    question: to.administrator.question + "<br>" +
-                        "<span class='question-subtext'>" + to.administrator.question_subtext + "</span>",
+                    question: new Combine([
+                        to.administrator.question, "<br><span class='question-subtext'>", to.administrator.question_subtext, "</span>"]),
                     freeform: {
                         renderTemplate: to.administrator.template,
                         template: "$$$",
@@ -80,8 +82,7 @@ export class NatureReserves extends LayerDefinition {
                 }),
             new TagRenderingOptions(
                 {
-                    question: to.phone.question + "<br>" +
-                        "<span class='question-subtext'>" + to.phone.question_subtext + "</span>",
+                    question: new Combine([to.phone.question, "<br><span class='question-subtext'>", to.phone.question_subtext, "</span>"]),
                     freeform: {
                         renderTemplate: to.phone.template,
                         template: "$$$",
