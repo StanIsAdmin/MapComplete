@@ -3,13 +3,18 @@ import { And, Or, Tag } from "../../Logic/TagsFilter";
 import { OperatorTag } from "../Questions/OperatorTag";
 import * as L from "leaflet";
 import FixedText from "../Questions/FixedText";
+import { TagRenderingOptions } from "../TagRendering";
+import { ImageCarouselWithUploadConstructor } from "../../UI/Image/ImageCarouselWithUpload";
+import ArtworkType from "../Questions/walkbybrussels/ArtworkType";
+import Translations from "../../UI/i18n/Translations";
 
 export class ArtworkWBB extends LayerDefinition {
 
     constructor() {
         super();
-        this.name = "artwork";
-        this.icon = "./assets/bug.svg";
+        const to = Translations.t.walkbybrussels.artwork;
+        this.name = to.name;
+        this.icon = "./assets/walkbybrussels/streetart.svg";
 
         this.overpassFilter = new Or([
             new And([
@@ -25,11 +30,11 @@ export class ArtworkWBB extends LayerDefinition {
 
         this.minzoom = 13;
         this.style = this.generateStyleFunction();
-        this.title = new FixedText("Artworks");
+        this.title = new FixedText(to.title);
         this.elementsToShow = [
-            new OperatorTag(),
+            new ImageCarouselWithUploadConstructor(),
+            new ArtworkType()
         ];
-        this.elementsToShow = [];
 
     }
 

@@ -1,17 +1,19 @@
-import {LayerDefinition} from "../LayerDefinition";
-import {And, Or, Tag} from "../../Logic/TagsFilter";
-import {OperatorTag} from "../Questions/OperatorTag";
+import { LayerDefinition } from "../LayerDefinition";
+import { And, Or, Tag } from "../../Logic/TagsFilter";
+import { OperatorTag } from "../Questions/OperatorTag";
 import * as L from "leaflet";
 import FixedText from "../Questions/FixedText";
-import {TagRenderingOptions} from "../TagRendering";
-import {ImageCarouselWithUploadConstructor} from "../../UI/Image/ImageCarouselWithUpload";
+import { TagRenderingOptions } from "../TagRendering";
+import { ImageCarouselWithUploadConstructor } from "../../UI/Image/ImageCarouselWithUpload";
+import Translations from "../../UI/i18n/Translations";
 
 export class DrinkingWater extends LayerDefinition {
 
     constructor() {
         super();
-        this.name = "drinking water";
-        this.icon = "./assets/bike/drinking_water.svg";
+        const to = Translations.t.walkbybrussels.drinking_water;
+        this.name = to.name;
+        this.icon = "./assets/walkbybrussels/waterpoint_black.svg";
 
         this.overpassFilter = new Or([
             new And([
@@ -28,19 +30,19 @@ export class DrinkingWater extends LayerDefinition {
 
         this.minzoom = 13;
         this.style = this.generateStyleFunction();
-        this.title = new FixedText("Drinking water");
+        this.title = new FixedText(to.title);
         this.elementsToShow = [
             new OperatorTag(),
         ];
         this.elementsToShow = [
             new ImageCarouselWithUploadConstructor(),
             new TagRenderingOptions({
-            question: "How easy is it to fill water bottles?",
-            mappings: [
-                { k: new Tag("bottle", "yes"), txt: "It is easy to refill water bottles" },
-                { k: new Tag("bottle", "no"), txt: "Water bottles may not fit" }
-            ],
-        })];
+                question: to.bottle.question,
+                mappings: [
+                    { k: new Tag("bottle", "yes"), txt: to.bottle.yes },
+                    { k: new Tag("bottle", "no"), txt: to.bottle.no }
+                ],
+            })];
 
     }
 
@@ -54,7 +56,7 @@ export class DrinkingWater extends LayerDefinition {
                 icon: new L.icon({
                     iconUrl: self.icon,
                     iconSize: [50, 50],
-                    iconAnchor: [25,50]
+                    iconAnchor: [25, 50]
                 })
             };
         };

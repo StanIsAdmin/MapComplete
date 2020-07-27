@@ -6,12 +6,14 @@ import { Bench } from "../Layers/Bench";
 import { Artwork } from "../Layers/Artwork";
 import { Viewpoint } from "../Layers/Viewpoint";
 import { ArtworkWBB } from "../Layers/ArtworkWBB";
+import Translations from "../../UI/i18n/Translations";
 
 export class WalkByBrussels extends Layout {
     constructor() {
+        const to = Translations.t.walkbybrussels;
         super("walkbybrussels",
-            ["en","fr","nl"],
-            "Drinking Water Spots",
+            ["en", "fr", "nl"],
+            to.title,
             [new Park(), new NatureReserves(), new Viewpoint(), new Bench(), new DrinkingWater(), new ArtworkWBB()],
             10,
             50.8435,

@@ -5,13 +5,15 @@ import * as L from "leaflet";
 import FixedText from "../Questions/FixedText";
 import { TagRenderingOptions } from "../TagRendering";
 import { ImageCarouselWithUploadConstructor } from "../../UI/Image/ImageCarouselWithUpload";
+import Translations from "../../UI/i18n/Translations";
 
 export class Bench extends LayerDefinition {
 
     constructor() {
         super();
-        this.name = "bench";
-        this.icon = "./assets/bug.svg";
+        const to = Translations.t.walkbybrussels.bench;
+        this.name = to.name;
+        this.icon = "./assets/walkbybrussels/bench_black.svg";
 
         this.overpassFilter = new Or([
             new And([
@@ -27,7 +29,7 @@ export class Bench extends LayerDefinition {
 
         this.minzoom = 13;
         this.style = this.generateStyleFunction();
-        this.title = new FixedText("Benches");
+        this.title = new FixedText(to.title);
         this.elementsToShow = [
             new OperatorTag(),
         ];
