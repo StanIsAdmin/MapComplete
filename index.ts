@@ -189,7 +189,7 @@ route.ping();
 // ------------- Setup the layers -------------------------------
 
 let playgrounds = new Playground(bm);
-//let rm = new RemarkableTree(bm);
+let rm = new RemarkableTree(bm);
 
 const addButtons: {
     name: UIElement,

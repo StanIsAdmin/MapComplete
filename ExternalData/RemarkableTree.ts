@@ -15,15 +15,16 @@ export class RemarkableTree {
         fetch("https://gis.urban.brussels/geoserver/ows?service=wfs&version=2.0.0&request=GetFeature&typeName=BDU_DMS_PROT:Arbres_remarquables&srsName=EPSG:4326&outputFormat=json").then(res => res.json())
             .then(fc => {
                 L.geoJSON(fc, {
-                    style: function (feature) {
-                        return {
-                            icon: new L.icon({
-                                iconUrl: "assets/bookcase.svg",
-                                iconSize: [40, 40]
-                            }),
-                            color: "#0000ff"
-                        }
-                    },
+                    pointToLayer: function (feature, latlng) {
+                        return L.marker(latlng, {
+                            icon: new L.Icon({
+                                iconSize: [27, 27],
+                                iconAnchor: [13, 27],
+                                popupAnchor: [-1, -27],
+                                iconUrl: "./assets/walkbybrussels/tree.svg",
+                            })
+                        });
+                    }
                 }).bindPopup(function (layer) {
                     let titles = new TagRenderingOptions({freeform: {key: "NOM_NL", renderTemplate: new Translation({nl: "Opmerkelijke boom", fr: "Arbre remarquable"}), template: ""}, });
 
