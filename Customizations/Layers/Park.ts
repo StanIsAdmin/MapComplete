@@ -61,7 +61,7 @@ export class Park extends LayerDefinition {
 
         this.minzoom = 13;
         this.style = this.generateStyleFunction();
-        this.title = new FixedText(to.name);
+        this.title = new FixedText(to.title);
         this.elementsToShow = [
             new ImageCarouselWithUploadConstructor(),
             new NameQuestion(),

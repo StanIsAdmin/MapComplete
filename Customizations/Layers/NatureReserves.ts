@@ -1,27 +1,30 @@
-import {LayerDefinition} from "../LayerDefinition";
-import {Or, Tag} from "../../Logic/TagsFilter";
-import {TagRenderingOptions} from "../TagRendering";
-import {AccessTag} from "../Questions/AccessTag";
-import {OperatorTag} from "../Questions/OperatorTag";
-import {NameQuestion} from "../Questions/NameQuestion";
-import {NameInline} from "../Questions/NameInline";
-import {DescriptionQuestion} from "../Questions/DescriptionQuestion";
-import {ImageCarouselWithUploadConstructor} from "../../UI/Image/ImageCarouselWithUpload";
+import { LayerDefinition } from "../LayerDefinition";
+import { Or, Tag } from "../../Logic/TagsFilter";
+import { TagRenderingOptions } from "../TagRendering";
+import { AccessTag } from "../Questions/AccessTag";
+import { OperatorTag } from "../Questions/OperatorTag";
+import { NameQuestion } from "../Questions/NameQuestion";
+import { NameInline } from "../Questions/NameInline";
+import { DescriptionQuestion } from "../Questions/DescriptionQuestion";
+import { ImageCarouselWithUploadConstructor } from "../../UI/Image/ImageCarouselWithUpload";
+import Translations from "../../UI/i18n/Translations";
+import FixedText from "../Questions/FixedText";
 
 export class NatureReserves extends LayerDefinition {
-    
+
     constructor(moreQuests: boolean = false) {
         super();
-        this.name = "natuurgebied";
+        const to = Translations.t.walkbybrussels.nature_reserve;
+        this.name = to.name;
         this.icon = "./assets/tree_white_background.svg";
         this.overpassFilter =
             new Or([new Tag("leisure", "nature_reserve"), new Tag("boundary", "protected_area")]);
         this.maxAllowedOverlapPercentage = 10;
 
         this.newElementTags = [new Tag("leisure", "nature_reserve"),
-            new Tag("fixme", "Toegevoegd met MapComplete, geometry nog uit te tekenen")]
+        new Tag("fixme", "Toegevoegd met MapComplete, geometry nog uit te tekenen")]
         this.minzoom = 13;
-        this.title = new NameInline("natuurreservaat");
+        this.title = new FixedText(to.name);
         this.style = this.generateStyleFunction();
         this.elementsToShow = [
             new ImageCarouselWithUploadConstructor(),
@@ -41,54 +44,50 @@ export class NatureReserves extends LayerDefinition {
 
         const extraRenderings = [
             new TagRenderingOptions({
-                question: "Mogen honden in dit natuurgebied?",
+                question: to.dogs.question,
                 mappings: [
-                    {k: new Tag("dog", "leashed"), txt: "Honden moeten aan de leiband"},
-                    {k: new Tag("dog", "no"), txt: "Honden zijn niet toegestaan"},
-                    {k: new Tag("dog", "yes"), txt: "Honden zijn welkom"},
+                    { k: new Tag("dog", "leashed"), txt: to.dogs.leashed },
+                    { k: new Tag("dog", "no"), txt: to.dogs.no },
+                    { k: new Tag("dog", "yes"), txt: to.dogs.yes },
                 ]
             }).OnlyShowIf(new Tag("access", "yes")),
             new TagRenderingOptions({
-                question: "Op welke website kunnen we meer informatie vinden over dit natuurgebied?",
+                question: to.website.question,
                 freeform: {
-                    key:"website",
-                    renderTemplate: "<a href='{website}' target='_blank'>Meer informatie</a>",
+                    key: "website",
+                    renderTemplate: "<a href='{website}' target='_blank'>" + to.website.more_info + "</a>",
                     template: "$$$"
                 }
             }),
             new TagRenderingOptions({
-                question: "Wie is de conservator van dit gebied?<br>" +
-                    "<span class='question-subtext'>Geef de naam van de conservator énkel als die duidelijk online staat gepubliceerd.</span>",
+                question: to.curator.question + "<br>" +
+                    "<span class='question-subtext'>" + to.curator.question_subtext + "</span>",
                 freeform: {
-                    renderTemplate: "De conservator van dit gebied is {curator}",
+                    renderTemplate: to.curator.template,
                     template: "$$$",
                     key: "curator"
                 }
             }),
             new TagRenderingOptions(
                 {
-                    question: "Wat is het email-adres van de beheerder?<br>" +
-                        "<span class='question-subtext'>Geef bij voorkeur het emailadres van de Natuurpunt-afdeling; geef enkel een email-adres van de conservator als dit duidelijk is gepubliceerd</span>",
+                    question: to.administrator.question + "<br>" +
+                        "<span class='question-subtext'>" + to.administrator.question_subtext + "</span>",
                     freeform: {
-                        renderTemplate: "Bij problemen of vragen, de conservator kan bereikt worden via " +
-                            "<a href='mailto:{email}'>{email}</a>",
+                        renderTemplate: to.administrator.template,
                         template: "$$$",
                         key: "email"
                     }
                 }),
             new TagRenderingOptions(
                 {
-                    question: "Wat is het telefoonnummer van de beheerder?<br>" +
-                        "<span class='question-subtext'>Geef bij voorkeur het telefoonnummer van de Natuurpunt-afdeling; geef enkel een email-adres van de conservator als dit duidelijk is gepubliceerd</span>",
+                    question: to.phone.question + "<br>" +
+                        "<span class='question-subtext'>" + to.phone.question_subtext + "</span>",
                     freeform: {
-                        renderTemplate: "Bij problemen of vragen, de {conservator} kan bereikt worden via " +
-                            "<a href='tel:{phone}'>{phone}</a>",
+                        renderTemplate: to.phone.template,
                         template: "$$$",
                         key: "phone"
                     }
-
                 }),
-
 
         ];
 
@@ -106,7 +105,7 @@ export class NatureReserves extends LayerDefinition {
         return function (properties: any) {
             let questionSeverity = 0;
             for (const qd of self.elementsToShow) {
-                if(qd instanceof DescriptionQuestion){
+                if (qd instanceof DescriptionQuestion) {
                     continue;
                 }
                 if (qd.IsQuestioning(properties)) {
@@ -133,5 +132,5 @@ export class NatureReserves extends LayerDefinition {
             };
         };
     }
-    
+
 }

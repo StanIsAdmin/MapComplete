@@ -367,12 +367,98 @@ export default class Translations {
                     })
                 }
             },
+            nature_reserve: {
+                name: new T({ en: 'nature reserve', nl: "natuurreservaat", fr: "réserve naturelle" }),
+                title: new T({ en: 'Nature reserve', nl: 'Natuurreservaat', fr: "Réserve naturelle" }),
+                dogs: {
+                    question: new T({
+                        en: "Are dogs allowed in this nature reserve?",
+                        nl: "Mogen honden in dit natuurgebied?",
+                        fr: "Les chiens sont-ils permis dans cette réserve naturelle?"
+                    }),
+                    leashed: new T({
+                        en: "Dogs must be kept on a leash",
+                        nl: "Honden moeten aan de leiband",
+                        fr: "Les chiens doivent être tenus en laisse"
+                    }),
+                    no: new T({
+                        en: "Dogs are not allowed",
+                        nl: "Honden zijn niet toegestaan",
+                        fr: "Les chiens ne sont pas autorisés"
+                    }),
+                    yes: new T({
+                        en: "Dogs are welcome",
+                        nl: "Honden zijn welkom",
+                        fr: "Les chiens sont les bienvenus"
+                    })
+                },
+                website: {
+                    question: new T({
+                        en: "On which website can we find more information about this nature reserve?",
+                        nl: "Op welke website kunnen we meer informatie vinden over dit natuurgebied?",
+                        fr: "Sur quel site pouvons-nous trouver plus d'informations sur cette réserve naturelle?"
+                    }),
+                    more_info: new T({
+                        en: "More information",
+                        nl: "Meer informatie",
+                        fr: "Plus d'informations"
+                    })
+                },
+                curator: {
+                    question: new T({
+                        en: "Who is the curator of this area?",
+                        nl: "Wie is de conservator van dit gebied?",
+                        fr: "Qui est le conservateur de cet espace?"
+                    }),
+                    question_subtext: new T({
+                        en: "Only give the name of the curator if it is clearly published online",
+                        nl: "Geef de naam van de conservator énkel als die duidelijk online staat gepubliceerd",
+                        fr: "Ne donnez le nom du conservateur que s'il est clairement publié en ligne"
+                    }),
+                    template: new T({
+                        en: "The curator of this area is {curator}",
+                        nl: "De conservator van dit gebied is {curator}",
+                        fr: "Le conservateur de cet estpace est {curator}"
+                    })
+                },
+                administrator: {
+                    question: new T({
+                        en: "What is the administrator's email address?",
+                        nl: "Wat is het email-adres van de beheerder?",
+                        fr: "Quelle est l'adresse e-mail de l'administrateur?"
+                    }),
+                    question_subtext: new T({
+                        en: "Preferably give the email address of the Natuurpunt department; only give an email address of the curator if it is clearly published",
+                        nl: "Geef bij voorkeur het emailadres van de Natuurpunt-afdeling; geef enkel een email-adres van de conservator als dit duidelijk is gepubliceerd",
+                        fr: "Indiquez de préférence l'adresse e-mail du service Natuurpunt; ne donnez l'adresse e-mail du conservateur que si celle-ci est clairement publiée"
+                    }),
+                    template: new T({
+                        en: "In case of problems or questions, the curator can be reached via <a href='mailto:{email}'>{email}</a>",
+                        nl: "Bij problemen of vragen, de conservator kan bereikt worden via <a href='mailto:{email}'>{email}</a>",
+                        fr: "En cas de problèmes ou de questions, le conservateur est joignable via <a href='mailto:{email}'>{email}</a>"
+                    })
+                },
+                phone: {
+                    question: new T({
+                        en: "What is the administrator's phone number?",
+                        nl: "Wat is het telefoonnummer van de beheerder?",
+                        fr: "Quel est le numéro de téléphone de l'administrateur?"
+                    }),
+                    question_subtext: new T({
+                        en: "Preferably give the telephone number of the Natuurpunt department; only give a telephone number of the curator if this is clearly published",
+                        nl: "Geef bij voorkeur het telefoonnummer van de Natuurpunt-afdeling; geef enkel een telefoonnumber van de conservator als dit duidelijk is gepubliceerd",
+                        fr: "Indiquez de préférence le numéro de téléphone du département Natuurpunt; ne donnez le numéro de téléphone du conservateur que si elle est clairement publiée"
+                    }),
+                    template: new T({
+                        en: "If you have any problems or questions, the {conservator} can be reached via <a href='tel:{phone}'>{phone}</a>",
+                        nl: "Bij problemen of vragen, de {conservator} kan bereikt worden via <a href='tel:{phone}'>{phone}</a>",
+                        fr: "Si vous avez des problèmes ou des questions, le {conservator} peut être joint via <a href='tel:{phone}'>{phone}</a>",
+                    })
+                }
+            },
             park: {
-                name: new T({
-                    en: "park",
-                    nl: "park",
-                    fr: "parc"
-                }),
+                name: new T({ en: "park", nl: "park", fr: "parc" }),
+                title: new T({ en: "Park", nl: "Park", fr: "Parc" }),
                 operator: {
                     question: new T({
                         en: 'Who manages this park?',
