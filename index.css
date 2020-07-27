@@ -56,13 +56,11 @@ form {
     padding-bottom: 0.15em;
 }
 
-
 .activate-osm-authentication {
     cursor: pointer;
     color: blue;
     text-decoration: underline;
 }
-
 
 /**************** USER BADGE ****************/
 
@@ -95,11 +93,10 @@ form {
     color: black;
 }
 
-
 #usertext {
     width: auto;
     margin:0;
-    
+
     padding: 0.9em;
     padding-left: 4.7em; /* Should be half of profile-pic's width + actual padding (same as padding-right)*/
     padding-right: 1.5em;
@@ -431,13 +428,13 @@ form {
 }
 
 #to-the-map h2{
-    
+
     position: absolute;
     height: 4em;
-    
+
     padding: 0.5em;
     margin: 0;
-    
+
     padding-right: 2em;
     padding-top: 1em;
     text-align: center;
@@ -445,7 +442,7 @@ form {
     color: white;
     background-color: #7ebc6f;
     cursor: pointer;
-    
+
 }
 
 
@@ -486,7 +483,6 @@ form {
 
 
     text-align: center;
-    horiz-align: center;
     font-weight: bold;
 }
 
@@ -565,7 +561,7 @@ form {
     right: 0;
     transform: translate(0, -50%);
     border-radius: 1em;
-    
+
 
     z-index: 5060;
 

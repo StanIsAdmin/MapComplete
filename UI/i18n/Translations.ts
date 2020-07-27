@@ -301,9 +301,9 @@ export default class Translations {
         },
         walkbybrussels: {
             title: new T({
-                en: 'WalkByBrussels points of interest',
+                en: 'WalkByBrussels',
                 nl: 'WalkByBrussels',
-                fr: "Points d'intérêt pour WalkByBrussels"
+                fr: "WalkByBrussels"
             }),
             description: new T({
                 en: "This map displays different categories of points of interest for Brussels walkers to discover." +
@@ -366,6 +366,74 @@ export default class Translations {
                         fr: "Pas adapté pour remplir des bouteilles d'eau"
                     })
                 }
+            },
+            park: {
+                operator: {
+                    question: new T({
+                        en: 'Who manages this park?',
+                        nl: 'Wie beheert dit park?',
+                        fr: 'Qui gère ce parc?'
+                    }),
+                    freeform: new T({
+                        en: 'This park is managed by {operator}',
+                        nl: 'Dit park wordt beheerd door {operator}',
+                        fr: 'Ce parc est géré par {operator}'
+                    }),
+                    template: new T({
+                        en: 'The municipality manages this park',
+                        nl: 'De gemeente beheert dit park',
+                        fr: 'La commune gère ce parc'
+                    })
+                },
+                accessibility: {
+                    question: new T({
+                        en: 'Is this park publicly accessible?',
+                        nl: 'Is dit park publiek toegankelijk?',
+                        fr: 'Ce parc est-il accessible au public ?'
+                    }),
+                    yes: new T({
+                        en: 'Publicly accessible',
+                        nl: 'Publiek toegankelijk',
+                        fr: 'Accessible au public'
+                    }),
+                    empty: new T({
+                        en: 'Publicly accessible',
+                        nl: 'Publiek toegankelijk',
+                        fr: 'Accessible au public'
+                    }),
+                    no: new T({
+                        en: 'Not publicly accessible',
+                        nl: 'Niet publiek toegankelijk',
+                        fr: 'Pas accessible au public'
+                    }),
+                    private: new T({
+                        en: 'Not publicly accessible, because private',
+                        nl: 'Niet publiek toegankelijk, want privaat',
+                        fr: 'Pas accessible au public car privé'
+                    }),
+                    guided: new T({
+                        en: 'Only accessible with a guide or on an activity',
+                        nl: 'Enkel toegankelijk met een gids of op een activiteit',
+                        fr: "Accessible accompagné d'un guide ou lors d'activités"
+                    }),
+                    freeform: new T({
+                        en: 'This park is not accessible: {access}',
+                        nl: 'Dit park is niet toegankelijk: {access}',
+                        fr: "Ce parc n'est pas accessible: {access}"
+                    }),
+                    template: new T({
+                        en: 'The accessibility of this park is: $$$',
+                        nl: 'De toegankelijkheid van dit park is: $$$',
+                        fr: "L'accessibilité au parc est: $$$"
+                    })
+                },
+                description: {
+                    question: new T({
+                        en: 'Are there any details we should know about this ',
+                        nl: 'Zijn er bijzonderheden die we moeten weten over dit ',
+                        fr: 'Y a-t-il des détails que nous devrions connaître à ce sujet '
+                    })
+                }
             }
         },
         image: {
@@ -373,86 +441,99 @@ export default class Translations {
             uploadingPicture: new T({
                 en: 'Uploading your picture...',
                 nl: 'Bezig met een foto te uploaden...',
-                fr: 'TODO: fr'
+                fr: 'Photo en téléchargement...'
             }),
             pleaseLogin: new T({
                 en: 'Please login to add a picure or to answer questions',
                 nl: 'Gelieve je aan te melden om een foto toe te voegen of vragen te beantwoorden',
-                fr: 'TODO: fr'
+                fr: "Veuillez vous identifier pour ajouter des images ou répondre à des questions"
             }),
             willBePublished: new T({
                 en: 'Your picture will be published: ',
                 nl: 'Jouw foto wordt gepubliceerd: ',
-                fr: 'TODO: fr'
+                fr: 'Votre photo sera publiée: '
             }),
-            cco: new T({ en: 'in the public domain', nl: 'in het publiek domein', fr: 'TODO: fr' }),
-            ccbs: new T({ en: 'under the CC-BY-SA-license', nl: 'onder de CC-BY-SA-licentie', fr: 'TODO: fr' }),
-            ccb: new T({ en: 'under the CC-BY-license', nl: 'onder de CC-BY-licentie', fr: 'TODO: fr' })
+            cco: new T({ en: 'in the public domain', nl: 'in het publiek domein', fr: 'dans le domaine public' }),
+            ccbs: new T({ en: 'under the CC-BY-SA-license', nl: 'onder de CC-BY-SA-licentie', fr: 'sous la licence CC-BY-SA' }),
+            ccb: new T({ en: 'under the CC-BY-license', nl: 'onder de CC-BY-licentie', fr: 'sous la licence CC-BY' })
         },
         centerMessage: {
-            loadingData: new T({ en: 'Loading data...', nl: 'Data wordt geladen...', fr: 'TODO: fr' }),
+            loadingData: new T({ en: 'Loading data...', nl: 'Data wordt geladen...', fr: 'Chargement des données...' }),
             zoomIn: new T({
                 en: 'Zoom in to view or edit the data',
                 nl: 'Zoom in om de data te zien en te bewerken',
-                fr: 'TODO: fr'
+                fr: 'Agrandir pour visualiser ou modifier les données'
             }),
-            ready: new T({ en: 'Done!', nl: 'Klaar!', fr: 'TODO: fr' }),
+            ready: new T({ en: 'Done!', nl: 'Klaar!', fr: 'Terminé!' }),
         },
         general: {
-            loginWithOpenStreetMap: new T({ en: "Login with OpenStreetMap", nl: "Aanmelden met OpenStreetMap" }),
+            loginWithOpenStreetMap: new T({ en: "Login with OpenStreetMap", nl: "Aanmelden met OpenStreetMap", fr: "Identifiez-vous avec OpenStreetMap" }),
             getStarted: new T({
                 en: "<span class='activate-osm-authentication'>Login with OpenStreetMap</span> or <a href='https://www.openstreetmap.org/user/new' target='_blank'>make a free account to get started</a>",
-                nl: "<span class='activate-osm-authentication'>Meld je aan met je OpenStreetMap-account</span> of <a href='https://www.openstreetmap.org/user/new' target='_blank'>maak snel en gratis een account om te beginnen/a>",
+                nl: "<span class='activate-osm-authentication'>Meld je aan met je OpenStreetMap-account</span> of <a href='https://www.openstreetmap.org/user/new' target='_blank'>maak snel en gratis een account om te beginnen</a>",
+                fr: "<span class='activate-osm-authentication'>Identifiez-vous avec votre compte OpenStreetMap</span> ou <a href='https://www.openstreetmap.org/user/new' target='_blank'>créez un compte gratuit pour commencer</a>"
             }),
             welcomeBack: new T({
                 en: "You are logged in, welcome back!",
-                nl: "Je bent aangemeld. Welkom terug!"
+                nl: "Je bent aangemeld. Welkom terug!",
+                fr: "Vous êtes connecté.e, bienvenu.e !"
             }),
             search: {
                 search: new Translation({
                     en: "Search a location",
-                    nl: "Zoek naar een locatie"
+                    nl: "Zoek naar een locatie",
+                    fr: "Rechercher un emplacement"
                 }),
                 searching: new Translation({
                     en: "Searching...",
-                    nl: "Aan het zoeken..."
+                    nl: "Aan het zoeken...",
+                    fr: "En recherche..."
                 }),
                 nothing: new Translation({
                     en: "Nothing found...",
-                    nl: "Niet gevonden..."
+                    nl: "Niet gevonden...",
+                    fr: "Aucun résultat..."
                 }),
                 error: new Translation({
                     en: "Something went wrong...",
-                    nl: "Niet gelukt..."
+                    nl: "Niet gelukt...",
+                    fr: "Une erreur est survenue..."
                 })
 
             },
             returnToTheMap: new T({
                 en: "Return to the map",
-                nl: "Naar de kaart"
+                nl: "Naar de kaart",
+                fr: "Retourner à la carte"
             }),
             save: new T({
                 en: "Save",
-                nl: "Opslaan"
+                nl: "Opslaan",
+                fr: "Sauvegarder"
             }),
             cancel: new T({
                 en: "Cancel",
-                nl: "Annuleren"
+                nl: "Annuleren",
+                fr: "Annuler"
             }),
             skip: new T({
                 en: "Skip this question",
-                nl: "Vraag overslaan"
+                nl: "Vraag overslaan",
+                fr: "Sauter cette question"
             }),
             oneSkippedQuestion: new T({
                 en: "One question is skipped",
-                nl: "Een vraag is overgeslaan"
+                nl: "Een vraag is overgeslaan",
+                fr: "Une question est sautée"
             }),
             skippedQuestions: new T({
                 en: "Some questions are skipped",
-                nl: "Sommige vragen zijn overgeslaan"
+                nl: "Sommige vragen zijn overgeslaan",
+                fr: "Certaines questions ont été sautées"
             })
         }
     }
+
 
     public static W(s: string | UIElement): UIElement {
         if (s instanceof UIElement) {

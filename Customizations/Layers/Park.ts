@@ -1,48 +1,50 @@
-import {LayerDefinition} from "../LayerDefinition";
-import {Quests} from "../../Quests";
-import {And, Or, Tag} from "../../Logic/TagsFilter";
-import {AccessTag} from "../Questions/AccessTag";
-import {OperatorTag} from "../Questions/OperatorTag";
-import {TagRenderingOptions} from "../TagRendering";
-import {NameQuestion} from "../Questions/NameQuestion";
-import {NameInline} from "../Questions/NameInline";
-import {DescriptionQuestion} from "../Questions/DescriptionQuestion";
-import {ImageCarouselWithUploadConstructor} from "../../UI/Image/ImageCarouselWithUpload";
+import { LayerDefinition } from "../LayerDefinition";
+import { Quests } from "../../Quests";
+import { And, Or, Tag } from "../../Logic/TagsFilter";
+import { AccessTag } from "../Questions/AccessTag";
+import { OperatorTag } from "../Questions/OperatorTag";
+import { TagRenderingOptions } from "../TagRendering";
+import { NameQuestion } from "../Questions/NameQuestion";
+import { NameInline } from "../Questions/NameInline";
+import { DescriptionQuestion } from "../Questions/DescriptionQuestion";
+import { ImageCarouselWithUploadConstructor } from "../../UI/Image/ImageCarouselWithUpload";
+import Translations from "../../UI/i18n/Translations";
+
 
 export class Park extends LayerDefinition {
 
 
     private accessByDefault = new TagRenderingOptions({
-        question: "Is dit park publiek toegankelijk?",
+        question: Translations.t.walkbybrussels.park.accessibility.question,
         mappings: [
-            {k: new Tag("access", "yes"), txt: "Publiek toegankelijk"},
-            {k: new Tag("access", ""), txt: "Publiek toegankelijk"},
-            {k: new Tag("access", "no"), txt: "Niet publiek toegankelijk"},
-            {k: new Tag("access", "private"), txt: "Niet publiek toegankelijk, want privaat"},
-            {k: new Tag("access", "guided"), txt: "Enkel toegankelijk met een gids of op een activiteit"},
+            { k: new Tag("access", "yes"), txt: Translations.t.walkbybrussels.park.accessibility.yes },
+            { k: new Tag("access", ""), txt: Translations.t.walkbybrussels.park.accessibility.empty },
+            { k: new Tag("access", "no"), txt: Translations.t.walkbybrussels.park.accessibility.no },
+            { k: new Tag("access", "private"), txt: Translations.t.walkbybrussels.park.accessibility.private },
+            { k: new Tag("access", "guided"), txt: Translations.t.walkbybrussels.park.accessibility.guided },
         ],
         freeform: {
             key: "access",
-            renderTemplate: "Dit park is niet toegankelijk: {access}",
-            template: "De toegankelijkheid van dit park is: $$$"
+            renderTemplate: Translations.t.walkbybrussels.park.accessibility.freeform,
+            template: Translations.t.walkbybrussels.park.accessibility.template
         },
         priority: 20
     })
 
     private operatorByDefault = new
 
-    TagRenderingOptions({
-        question: "Wie beheert dit park?",
-        freeform: {
-            key: "operator",
-            renderTemplate: "Dit park wordt beheerd door {operator}",
-            template: "$$$",
-        },
-        mappings: [{
-            k: null, txt: "De gemeente beheert dit park"
-        }],
-        priority: 15
-    });
+        TagRenderingOptions({
+            question: Translations.t.walkbybrussels.park.operator.question,
+            freeform: {
+                key: "operator",
+                renderTemplate: Translations.t.walkbybrussels.park.operator.freeform,
+                template: "$$$",
+            },
+            mappings: [{
+                k: null, txt: Translations.t.walkbybrussels.park.operator.template
+            }],
+            priority: 15
+        });
 
 
     constructor() {
@@ -52,7 +54,7 @@ export class Park extends LayerDefinition {
         this.overpassFilter =
             new Or([new Tag("leisure", "park"), new Tag("landuse", "village_green")]);
         this.newElementTags = [new Tag("leisure", "park"),
-            new Tag("fixme", "Toegevoegd met MapComplete, geometry nog uit te tekenen")];
+        new Tag("fixme", "Toegevoegd met MapComplete, geometry nog uit te tekenen")];
         this.maxAllowedOverlapPercentage = 25;
 
         this.minzoom = 13;
