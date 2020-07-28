@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "A small website to edit OSM easily",
   "main": "index.js",
-  "homepage": "https://osoc20.github.io/walkbybrussels",
+  "homepage": "https://osoc20.github.io/MapComplete",
   "staticFiles": {
     "staticPath": [
       {
