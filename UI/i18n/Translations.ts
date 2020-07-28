@@ -319,67 +319,68 @@ export default class Translations {
         walkbybrussels: {
             title: new T({
                 en: 'WalkByBrussels points of interest',
-                nl: 'WalkByBrussels',
+                nl: 'WalkByBrussels bezienswaardigheden',
                 fr: "Points d'intérêt pour WalkByBrussels"
             }),
             description: new T({
                 en: "This map displays different categories of points of interest for Brussels walkers to discover." +
                     "It also allows you to add a point to any category, and automatically adds it to OpenStreetMaps.",
-                nl: "TODO: nl",
+                nl: "Deze kaart toont verschillende categorieën van bezienswaardigheden die Brusselse wandelaars kunnen ontdekken." +
+                    "Het laat je ook toe om een punt toe te voegen aan elke categorie, en voegt het automatisch toe aan OpenStreetMaps.",
                 fr: "Cette carte répertorie différentes catégories de points d'intérêt à découvrir par les promeneurs de Bruxelles." +
                     "Elle vous permet aussi d'ajouter des points à n'importe quelle catégorie, ceux-ci sont automatiquement ajoutés à OpenStreetMaps."
             }),
             freeFormPlaceholder: new T({ en: 'specify', nl: 'specifieer', fr: 'TODO: fr' }),
             artwork: {
-                name: new T({ en: 'artwork', nl: 'TODO: nl', fr: "oeuvre d'art" }),
-                title: new T({ en: 'Artwork', nl: 'TODO: nl', fr: "Oeuvre d'art" }),
+                name: new T({ en: 'artwork', nl: 'kunstwerk', fr: "oeuvre d'art" }),
+                title: new T({ en: 'Artwork', nl: 'Kunstwerk', fr: "Oeuvre d'art" }),
                 type: {
                     render: new T({
                         en: 'This is artwork of the type: {artwork_type}',
-                        nl: 'TODO: nl',
+                        nl: 'Dit is een kunstwerk van het type: {artwork_type}',
                         fr: "Ceci est un travail d'art de type: {artwork_type}"
                     }),
                     template: new T({ en: 'Some other type: $$$', nl: 'Een ander type: $$$', fr: 'Un autre type: $$$' }),
                     question: new T({
                         en: 'What is the type of this artwork?',
-                        nl: 'TODO: nl?',
+                        nl: 'Wat voor type kunstwerk is dit?',
                         fr: "Quel est le type de cette oeuvre d'art?"
                     }),
-                    architecture: new T({ en: "architecture", nl: "TODO: nl", fr: "architecture" }),
-                    mural: new T({ en: "mural", nl: "TODO: nl", fr: "mural" }),
-                    painting: new T({ en: "painting", nl: "TODO: nl", fr: "peinture" }),
-                    sculpture: new T({ en: "sculpture", nl: "TODO: nl", fr: "sculpture" }),
-                    statue: new T({ en: "statue", nl: "TODO: nl", fr: "statue" }),
-                    bust: new T({ en: "bust", nl: "TODO: nl", fr: "buste" }),
-                    stone: new T({ en: "stone", nl: "TODO: nl", fr: "rocher" }),
-                    installation: new T({ en: "installation", nl: "TODO: nl", fr: "installation" }),
-                    graffiti: new T({ en: "graffiti", nl: "TODO: nl", fr: "graffiti" }),
-                    relief: new T({ en: "relief", nl: "TODO: nl", fr: "relief" }),
-                    azulejo: new T({ en: "azulejo", nl: "TODO: nl", fr: "azulejo" }),
-                    tilework: new T({ en: "tilework", nl: "TODO: nl", fr: "carrelage" })
+                    architecture: new T({ en: "architecture", nl: "architectuur", fr: "architecture" }),
+                    mural: new T({ en: "mural", nl: "muurschildering", fr: "mural" }),
+                    painting: new T({ en: "painting", nl: "schilderij", fr: "peinture" }),
+                    sculpture: new T({ en: "sculpture", nl: "beeldhouwwerk", fr: "sculpture" }),
+                    statue: new T({ en: "statue", nl: "standbeeld", fr: "statue" }),
+                    bust: new T({ en: "bust", nl: "buste", fr: "buste" }),
+                    stone: new T({ en: "stone", nl: "steen", fr: "rocher" }),
+                    installation: new T({ en: "installation", nl: "installatie", fr: "installation" }),
+                    graffiti: new T({ en: "graffiti", nl: "graffiti", fr: "graffiti" }),
+                    relief: new T({ en: "relief", nl: "verlichting", fr: "relief" }),
+                    azulejo: new T({ en: "azulejo", nl: "azulejo", fr: "azulejo" }),
+                    tilework: new T({ en: "tilework", nl: "tegelwerk", fr: "carrelage" })
                 },
             },
             bench: {
-                name: new T({ en: 'bench', nl: 'TODO: nl', fr: "banc" }),
-                title: new T({ en: 'Bench', nl: 'TODO: nl', fr: "Banc" })
+                name: new T({ en: 'bench', nl: 'bank', fr: "banc" }),
+                title: new T({ en: 'Bench', nl: 'Bank', fr: "Banc" })
             },
             drinking_water: {
-                name: new T({ en: 'drinking water', nl: 'TODO: nl', fr: "eau potable" }),
-                title: new T({ en: 'Drinking water', nl: 'TODO: nl', fr: "Eau potable" }),
+                name: new T({ en: 'drinking water', nl: 'drinkwater', fr: "eau potable" }),
+                title: new T({ en: 'Drinking water', nl: 'Drinkwater', fr: "Eau potable" }),
                 bottle: {
                     question: new T({
                         en: "How easy is it to fill water bottles?",
-                        nl: 'TODO: nl',
+                        nl: 'Hoe gemakkelijk is het om waterflessen te vullen',
                         fr: "Est-ce facile d'y remplir des bouteilles d'eau?"
                     }),
                     yes: new T({
                         en: "It is easy to refill water bottles",
-                        nl: "TODO: nl",
+                        nl: "Waterflessen zijn gemakkelijk bij te vullen",
                         fr: "Adapté pour remplir des bouteilles d'eau"
                     }),
                     no: new T({
                         en: "Water bottles may not fit",
-                        nl: "TODO: nl",
+                        nl: "Waterflessen passen mogelijk niet",
                         fr: "Pas adapté pour remplir des bouteilles d'eau"
                     }),
                 }
@@ -387,7 +388,7 @@ export default class Translations {
             playgrounds: {
                 title: new T({ nl: "Speelplaats", fr: "Terrain de jeux", en: "Playground" }),
                 name: new T({ nl: "Naam: {name}", fr: "Nom : {name}" }),
-                description: new T({ nl: "Descriptie: {nl_description}", fr: "Description : {fr_description}" }),
+                description: new T({ nl: "Beschrijving: {nl_description}", fr: "Description : {fr_description}" }),
                 age: new T({ nl: "Leeftijd: {nl_age}", fr: "Age : {fr_age}" }),
                 street: new T({ nl: "Straat: {street}", fr: "Rue : {street}" }),
                 zipCode: new T({ nl: "Postcode: {zipCode}", fr: "Code postal : {zipCode}" }),
