@@ -38,31 +38,6 @@ export class RemarkableTree extends BaseLayerDefinition {
         ];
 
         this.data = this.getData();
-        // fetch("https://gis.urban.brussels/geoserver/ows?service=wfs&version=2.0.0&request=GetFeature&typeName=BDU_DMS_PROT:Arbres_remarquables&srsName=EPSG:4326&outputFormat=json").then(res => res.json())
-        //     .then(fc => {
-        //         L.geoJSON(fc, {
-        //             pointToLayer: function (feature, latlng) {
-        //                 return L.marker(latlng, {
-        //                     icon: new L.Icon({
-        //                         iconSize: [27, 27],
-        //                         iconAnchor: [13, 27],
-        //                         popupAnchor: [-1, -27],
-        //                         iconUrl: "./assets/walkbybrussels/tree.svg",
-        //                     })
-        //                 });
-        //             }
-        //         }).bindPopup((layer) => {
-        //             let titles = new TagRenderingOptions({ freeform: { key: "NOM_NL", renderTemplate: this.translations.title, template: "" }, });
-
-        //             let renderedTags = [
-        //                 new TagRenderingOptions({ freeform: { key: "FIRSTIMAGE", renderTemplate: new SimpleImageElement(new UIEventSource("{FIRSTIMAGE}")), template: "" }, }),
-        //                 new TagRenderingOptions({ freeform: { key: "NOM_NL", renderTemplate: this.translations.name, template: "" }, }),
-        //                 new TagRenderingOptions({ freeform: { key: "CIRCONFERENCE", renderTemplate: this.translations.circumference, template: "" }, }),
-        //             ]
-
-        //             return new FeatureInfoBox(undefined, layer.feature, new UIEventSource(layer.feature.properties), titles, renderedTags, undefined, undefined, undefined).Render();
-        //         }).addTo(basemap.map);
-        //     });
 
     }
 

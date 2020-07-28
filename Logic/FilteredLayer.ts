@@ -80,14 +80,6 @@ export class FilteredLayer {
                 }
             }
         })
-
-        // Fetch and render non overpass datasets
-        // if(this.layerDef.data) {
-        //     this.layerDef.data.then(data => {
-        //         this.RenderLayer({type: 'FeatureCollection', features: data['features']});
-        //     })
-            
-        // }
     }
     
     static fromDefinition(
