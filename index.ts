@@ -363,4 +363,3 @@ new GeoLocationHandler(bm).AttachTo("geolocate-button");
 
 
 locationControl.ping()
-
