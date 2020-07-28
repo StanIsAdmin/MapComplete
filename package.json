@@ -38,7 +38,6 @@
     "turf": "^3.0.14"
   },
   "devDependencies": {
-    "typescript": "^3.9.7",
     "@babel/polyfill": "^7.10.4",
     "@types/node": "^7.0.5",
     "fs": "0.0.1-security",
@@ -46,6 +45,7 @@
     "parcel-plugin-static-files-copy": "^2.4.3",
     "promise-svg2img": "^0.2.0",
     "read-file": "^0.2.0",
+    "typescript": "^3.9.7",
     "write-file": "^1.0.0"
   }
 }

@@ -4,28 +4,27 @@ import { NatureReserves } from "../Layers/NatureReserves";
 import { Park } from "../Layers/Park";
 import { Playground } from "../../ExternalData/Playground";
 import { RemarkableTree } from "../../ExternalData/RemarkableTree";
+import { Bench } from "../Layers/Bench";
+import { Artwork } from "../Layers/Artwork";
+import { Viewpoint } from "../Layers/Viewpoint";
+import { ArtworkWBB } from "../Layers/ArtworkWBB";
+import Translations from "../../UI/i18n/Translations";
 
 export class WalkByBrussels extends Layout {
     constructor() {
+        const to = Translations.t.walkbybrussels;
         super("walkbybrussels",
-            ["en","fr","nl"],
-            "Drinking Water Spots",
-            [new DrinkingWater(), new Park(), new NatureReserves(), new Playground(), new RemarkableTree()],
+            ["en", "fr", "nl"],
+            to.title,
+            [new Park(), new NatureReserves(), new Viewpoint(), new Bench(), new DrinkingWater(), new ArtworkWBB(), new Playground(), new RemarkableTree()],
             14,
             50.8435,
             4.3688,
 
 
-            "        <h3>Drinking water</h3>\n" +
-            "\n" +
-            "<p>" +
+            "<h3>Drinking water</h3>\n" +
             "Help with creating a map of drinking water points!"
-
-            ,
-            "  <p>Start by <a href=\"https://www.openstreetmap.org/user/new\" target=\"_blank\">creating an account\n" +
-            "            </a> or by " +
-            "            <span onclick=\"authOsm()\" class=\"activate-osm-authentication\">logging in</span>.</p>",
-            "Start by clicking a pin and answering the questions");
+        );
     }
 
 }

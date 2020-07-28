@@ -2,6 +2,7 @@ import Translation from "./Translation";
 import T from "./Translation";
 import { UIElement } from "../UIElement";
 import { FixedUiElement } from "../Base/FixedUiElement";
+import { isExternalModuleNameRelative } from "typescript"
 
 
 export default class Translations {
@@ -293,28 +294,95 @@ export default class Translations {
                     only: new T({ en: 'This shop only sells second-hand bikes', nl: 'Deze winkel verkoopt enkel tweedehands fietsen', fr: 'TODO: fr' }),
                 },
                 diy: {
+                    question: new T({ en: 'Are there tools here to repair your own bike?', nl: 'Biedt deze winkel gereedschap aan om je fiets zelf te herstellen?', fr: 'TODO: fr' }),
+                    yes: new T({ en: 'This shop offers tools for DIY repair', nl: 'Deze winkel biedt gereedschap aan om je fiets zelf te herstellen', fr: 'TODO: fr' }),
+                    no: new T({ en: 'This shop doesn\'t offer tools for DIY repair', nl: 'Deze winkel biedt geen gereedschap aan om je fiets zelf te herstellen', fr: 'TODO: fr' }),
+                },
+
+                question: new T({
+                    en: 'Are there tools here to repair your own bike?',
+                    nl: 'Biedt deze winkel gereedschap aan om je fiets zelf te herstellen?',
+                    fr: 'TODO: fr'
+                }),
+                yes: new T({
+                    en: 'This shop offers tools for DIY repair',
+                    nl: 'Deze winkel biedt gereedschap aan om je fiets zelf te herstellen',
+                    fr: 'TODO: fr'
+                }),
+                no: new T({
+                    en: 'This shop doesn\'t offer tools for DIY repair',
+                    nl: 'Deze winkel biedt geen gereedschap aan om je fiets zelf te herstellen',
+                    fr: 'TODO: fr'
+                })
+            }
+        },
+        walkbybrussels: {
+            title: new T({
+                en: 'WalkByBrussels points of interest',
+                nl: 'WalkByBrussels',
+                fr: "Points d'intérêt pour WalkByBrussels"
+            }),
+            description: new T({
+                en: "This map displays different categories of points of interest for Brussels walkers to discover." +
+                    "It also allows you to add a point to any category, and automatically adds it to OpenStreetMaps.",
+                nl: "TODO: nl",
+                fr: "Cette carte répertorie différentes catégories de points d'intérêt à découvrir par les promeneurs de Bruxelles." +
+                    "Elle vous permet aussi d'ajouter des points à n'importe quelle catégorie, ceux-ci sont automatiquement ajoutés à OpenStreetMaps."
+            }),
+            freeFormPlaceholder: new T({ en: 'specify', nl: 'specifieer', fr: 'TODO: fr' }),
+            artwork: {
+                name: new T({ en: 'artwork', nl: 'TODO: nl', fr: "oeuvre d'art" }),
+                title: new T({ en: 'Artwork', nl: 'TODO: nl', fr: "Oeuvre d'art" }),
+                type: {
+                    render: new T({
+                        en: 'This is artwork of the type: {artwork_type}',
+                        nl: 'TODO: nl',
+                        fr: "Ceci est un travail d'art de type: {artwork_type}"
+                    }),
+                    template: new T({ en: 'Some other type: $$$', nl: 'Een ander type: $$$', fr: 'Un autre type: $$$' }),
                     question: new T({
-                        en: 'Are there tools here to repair your own bike?',
-                        nl: 'Biedt deze winkel gereedschap aan om je fiets zelf te herstellen?',
-                        fr: 'TODO: fr'
+                        en: 'What is the type of this artwork?',
+                        nl: 'TODO: nl?',
+                        fr: "Quel est le type de cette oeuvre d'art?"
                     }),
-                    yes: new T({
-                        en: 'This shop offers tools for DIY repair',
-                        nl: 'Deze winkel biedt gereedschap aan om je fiets zelf te herstellen',
-                        fr: 'TODO: fr'
-                    }),
-                    no: new T({
-                        en: 'This shop doesn\'t offer tools for DIY repair',
-                        nl: 'Deze winkel biedt geen gereedschap aan om je fiets zelf te herstellen',
-                        fr: 'TODO: fr'
-                    }),
-                }
+                    architecture: new T({ en: "architecture", nl: "TODO: nl", fr: "architecture" }),
+                    mural: new T({ en: "mural", nl: "TODO: nl", fr: "mural" }),
+                    painting: new T({ en: "painting", nl: "TODO: nl", fr: "peinture" }),
+                    sculpture: new T({ en: "sculpture", nl: "TODO: nl", fr: "sculpture" }),
+                    statue: new T({ en: "statue", nl: "TODO: nl", fr: "statue" }),
+                    bust: new T({ en: "bust", nl: "TODO: nl", fr: "buste" }),
+                    stone: new T({ en: "stone", nl: "TODO: nl", fr: "rocher" }),
+                    installation: new T({ en: "installation", nl: "TODO: nl", fr: "installation" }),
+                    graffiti: new T({ en: "graffiti", nl: "TODO: nl", fr: "graffiti" }),
+                    relief: new T({ en: "relief", nl: "TODO: nl", fr: "relief" }),
+                    azulejo: new T({ en: "azulejo", nl: "TODO: nl", fr: "azulejo" }),
+                    tilework: new T({ en: "tilework", nl: "TODO: nl", fr: "carrelage" })
+                },
+            },
+            bench: {
+                name: new T({ en: 'bench', nl: 'TODO: nl', fr: "banc" }),
+                title: new T({ en: 'Bench', nl: 'TODO: nl', fr: "Banc" })
             },
             drinking_water: {
-                title: new T({
-                    en: 'Drinking water',
-                    nl: "Drinkbaar water"
-                })
+                name: new T({ en: 'drinking water', nl: 'TODO: nl', fr: "eau potable" }),
+                title: new T({ en: 'Drinking water', nl: 'TODO: nl', fr: "Eau potable" }),
+                bottle: {
+                    question: new T({
+                        en: "How easy is it to fill water bottles?",
+                        nl: 'TODO: nl',
+                        fr: "Est-ce facile d'y remplir des bouteilles d'eau?"
+                    }),
+                    yes: new T({
+                        en: "It is easy to refill water bottles",
+                        nl: "TODO: nl",
+                        fr: "Adapté pour remplir des bouteilles d'eau"
+                    }),
+                    no: new T({
+                        en: "Water bottles may not fit",
+                        nl: "TODO: nl",
+                        fr: "Pas adapté pour remplir des bouteilles d'eau"
+                    }),
+                }
             }
         },
         bookcases: {
