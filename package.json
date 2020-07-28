@@ -17,7 +17,7 @@
     "generate": "ts-node createLayouts.ts",
     "predeploy": "npm run build",
     "build": "rm -rf dist/ && parcel build --public-url ./ *.html assets/* assets/*/* vendor/* vendor/*/*",
-    "deploy": "gh-pages -d build",
+    "deploy": "gh-pages -d dist",
     "clean": "./clean.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
