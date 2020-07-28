@@ -98,7 +98,8 @@ export class LayerUpdater {
         this.runningQuery.setData(true);
 
         for (let layer of this._layers) {
-            if (layer.layerDef.data) {
+            if (layer.layerDef.data && !layer.isRendered()) {
+                console.log("Hello")
                 setTimeout(function () {layer.layerDef.data.then(data => layer.SetApplicableData(data))}, delay);
                 delay += 100;
             }

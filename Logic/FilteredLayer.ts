@@ -111,7 +111,7 @@ export class FilteredLayer {
      */
     public SetApplicableData(geojson: any): any {
         if(this.layerDef.data) {
-            this.RenderLayer({type: 'FeatureCollection', features: geojson['features']});
+            if(!this._geolayer) this.RenderLayer({type: 'FeatureCollection', features: geojson['features']});
             return;
         }
         const leftoverFeatures = [];
@@ -290,5 +290,8 @@ export class FilteredLayer {
         }
     }
 
+    isRendered() {
+        return !!this._geolayer;
+    }
 
 }
