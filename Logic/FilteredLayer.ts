@@ -82,12 +82,12 @@ export class FilteredLayer {
         })
 
         // Fetch and render non overpass datasets
-        if(this.layerDef.data) {
-            this.layerDef.data.then(data => {
-                this.RenderLayer({type: 'FeatureCollection', features: data['features']});
-            })
+        // if(this.layerDef.data) {
+        //     this.layerDef.data.then(data => {
+        //         this.RenderLayer({type: 'FeatureCollection', features: data['features']});
+        //     })
             
-        }
+        // }
     }
     
     static fromDefinition(
@@ -110,6 +110,10 @@ export class FilteredLayer {
      * The data that is NOT used by this layer, is returned as a geojson object; the other data is rendered
      */
     public SetApplicableData(geojson: any): any {
+        if(this.layerDef.data) {
+            this.RenderLayer({type: 'FeatureCollection', features: geojson['features']});
+            return;
+        }
         const leftoverFeatures = [];
         const selfFeatures = [];
         for (let feature of geojson.features) {
@@ -212,7 +216,7 @@ export class FilteredLayer {
                 return self._style(feature.properties);
             },
 
-            pointToLayer: function (feature, latLng) {
+            pointToLayer: (feature, latLng) => {
                 const style = self._style(feature.properties);
                 let marker;
                 if (style.icon === undefined) {
@@ -234,17 +238,18 @@ export class FilteredLayer {
                         icon: new L.icon(style.icon),
                     });
                 }
-                let eventSource = self._storage.addOrGetElement(feature);
+                let eventSource = this.layerDef.data ? new UIEventSource<any>(feature.properties) : self._storage.addOrGetElement(feature);
                 const uiElement = self._showOnPopup(eventSource, feature, {lat: eventSource.data._lat, lon: eventSource.data._lon});
                 marker.bindPopup(L.popup({}, marker)).on("popupopen", (e) => {
                     e.popup.setContent(uiElement.Render());
-                    uiElement.Activate();   
+                    uiElement.Activate();
                     uiElement.Update();
                 });
                 return marker;
             },
 
-            onEachFeature: function (feature, layer) {
+            onEachFeature: (feature, layer) => {
+                if(this.layerDef.data) return;
                 let eventSource = self._storage.addOrGetElement(feature);
                 eventSource.addCallback(function () {
                     if (layer.setIcon) {

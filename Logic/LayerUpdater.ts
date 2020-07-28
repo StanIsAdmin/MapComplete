@@ -1,15 +1,15 @@
-import {Basemap} from "./Basemap";
-import {Overpass} from "./Overpass";
-import {Or, TagsFilter} from "./TagsFilter";
-import {UIEventSource} from "../UI/UIEventSource";
-import {FilteredLayer} from "./FilteredLayer";
+import { Basemap } from "./Basemap";
+import { Overpass } from "./Overpass";
+import { Or, TagsFilter } from "./TagsFilter";
+import { UIEventSource } from "../UI/UIEventSource";
+import { FilteredLayer } from "./FilteredLayer";
 
 export class LayerUpdater {
     private _map: Basemap;
     private _layers: FilteredLayer[];
 
     public readonly runningQuery: UIEventSource<boolean> = new UIEventSource<boolean>(false);
-    
+
     /**
      * The previous bounds for which the query has been run
      */
@@ -25,14 +25,14 @@ export class LayerUpdater {
      * @param layers
      */
     constructor(map: Basemap,
-                minzoom: number,
-                layers: FilteredLayer[]) {
+        minzoom: number,
+        layers: FilteredLayer[]) {
         this._map = map;
         this._layers = layers;
         this._minzoom = minzoom;
         var filters: TagsFilter[] = [];
         for (const layer of layers) {
-            if(layer.layerDef.data) continue;
+            if (layer.layerDef.data) continue;
             filters.push(layer.filters);
         }
         this._overpass = new Overpass(new Or(filters));
@@ -56,7 +56,7 @@ export class LayerUpdater {
                 }
                 return;
             }
-            if(layers[0].layerDef.data) return renderLayers(layers.slice(1, layers.length));
+            if (layers[0].layerDef.data) return renderLayers(layers.slice(1, layers.length));
             window.setTimeout(() => {
                 const layer = layers[0];
                 const rest = layers.slice(1, layers.length);
@@ -76,7 +76,7 @@ export class LayerUpdater {
         const self = this;
         this._failCount++;
         window?.setTimeout(
-            function(){self.update()}, this._failCount * 1000
+            function () { self.update() }, this._failCount * 1000
         )
     }
 
@@ -85,7 +85,7 @@ export class LayerUpdater {
         if (this.IsInBounds()) {
             return;
         }
-        console.log("Zoom level: ",this._map.map.getZoom(), "Least needed zoom:", this._minzoom)
+        console.log("Zoom level: ", this._map.map.getZoom(), "Least needed zoom:", this._minzoom)
         if (this._map.map.getZoom() < this._minzoom || this._map.Location.data.zoom < this._minzoom) {
             return;
         }
@@ -93,6 +93,17 @@ export class LayerUpdater {
         if (this.runningQuery.data) {
             console.log("Still running a query, skip");
         }
+
+        let delay: number = 0;
+        this.runningQuery.setData(true);
+
+        for (let layer of this._layers) {
+            if (layer.layerDef.data) {
+                setTimeout(function () {layer.layerDef.data.then(data => layer.SetApplicableData(data))}, delay);
+                delay += 100;
+            }
+        }
+
         var bbox = this.buildBboxFor();
         this.runningQuery.setData(true);
         const self = this;
@@ -109,14 +120,14 @@ export class LayerUpdater {
 
     private buildBboxFor(): string {
         const b = this._map.map.getBounds();
-        const diff =0.07;
-        
-        const n = b.getNorth() + diff;
-        const e = b.getEast() +  diff;
-        const s = b.getSouth() - diff;
-        const w = b.getWest() -  diff;
+        const diff = 0.07;
 
-        this.previousBounds = {north: n, east: e, south: s, west: w};
+        const n = b.getNorth() + diff;
+        const e = b.getEast() + diff;
+        const s = b.getSouth() - diff;
+        const w = b.getWest() - diff;
+
+        this.previousBounds = { north: n, east: e, south: s, west: w };
 
         return "[bbox:" + s + "," + w + "," + n + "," + e + "]";
     }

@@ -3,14 +3,15 @@ import { DrinkingWater } from "../Layers/DrinkingWater";
 import { NatureReserves } from "../Layers/NatureReserves";
 import { Park } from "../Layers/Park";
 import { Playground } from "../../ExternalData/Playground";
+import { RemarkableTree } from "../../ExternalData/RemarkableTree";
 
 export class WalkByBrussels extends Layout {
     constructor() {
         super("walkbybrussels",
             ["en","fr","nl"],
             "Drinking Water Spots",
-            [new DrinkingWater(), new Park(), new NatureReserves(), new Playground()],
-            10,
+            [new DrinkingWater(), new Park(), new NatureReserves(), new Playground(), new RemarkableTree()],
+            14,
             50.8435,
             4.3688,
 
