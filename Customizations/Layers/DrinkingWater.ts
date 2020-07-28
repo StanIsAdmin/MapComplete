@@ -13,7 +13,7 @@ export class DrinkingWater extends LayerDefinition {
         super();
         const to = Translations.t.walkbybrussels.drinking_water;
         this.name = to.name;
-        this.icon = "./assets/walkbybrussels/waterpoint_black.svg";
+        this.icon = "./assets/bike/drinking_water.svg";
 
         this.overpassFilter = new Or([
             new And([

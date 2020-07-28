@@ -383,6 +383,23 @@ export default class Translations {
                         fr: "Pas adapté pour remplir des bouteilles d'eau"
                     }),
                 }
+            },
+            playgrounds: {
+                title: new T({ nl: "Speelplaats", fr: "Terrain de jeux", en: "Playground" }),
+                name: new T({ nl: "Naam: {name}", fr: "Nom : {name}" }),
+                description: new T({ nl: "Descriptie: {nl_description}", fr: "Description : {fr_description}" }),
+                age: new T({ nl: "Leeftijd: {nl_age}", fr: "Age : {fr_age}" }),
+                street: new T({ nl: "Straat: {street}", fr: "Rue : {street}" }),
+                zipCode: new T({ nl: "Postcode: {zipCode}", fr: "Code postal : {zipCode}" }),
+                municipality: new T({ nl: "Gemeente: {nl_municipality}", fr: "Commune :  {fr_municipality}" })
+
+            },
+            remarkableTrees: {
+                title: new T({
+                    nl: "Opmerkelijke boom", fr: "Arbre remarquable", en: 'Remarkable tree'
+                }),
+                name: new T({ nl: "Naam: {NOM_NL}", fr: "Nom : {NOM_FR}" }),
+                circumference: new T({ nl: "Omtrek: {CIRCONFERENCE}", fr: "Circonférence : {CIRCONFERENCE}", en: "Circumference: {CIRCONFERENCE}" })
             }
         },
         bookcases: {
@@ -426,8 +443,6 @@ export default class Translations {
                     en: "What kind of books can be found in this public bookcase"
                 })
             }
-
-
         },
 
         image: {
@@ -572,25 +587,6 @@ export default class Translations {
                     nl: "Het telefoonnummer van {category} is <a href='tel:{phone}' target='_blank'>{phone}</a>"
                 })
 
-            }
-        },
-        walkbybrussels: {
-            playgrounds: {
-                title: new T({ nl: "Speelplaats", fr: "Terrain de jeux", en: "Playground" }),
-                name: new T({ nl: "Naam: {name}", fr: "Nom : {name}" }),
-                description: new T({ nl: "Descriptie: {nl_description}", fr: "Description : {fr_description}" }),
-                age: new T({ nl: "Leeftijd: {nl_age}", fr: "Age : {fr_age}" }),
-                street: new T({ nl: "Straat: {street}", fr: "Rue : {street}" }),
-                zipCode: new T({ nl: "Postcode: {zipCode}", fr: "Code postal : {zipCode}" }),
-                municipality: new T({ nl: "Gemeente: {nl_municipality}", fr: "Commune :  {fr_municipality}" })
-
-            },
-            remarkableTrees: {
-                title: new T({
-                    nl: "Opmerkelijke boom", fr: "Arbre remarquable", en: 'Remarkable tree'
-                }),
-                name: new T({ nl: "Naam: {NOM_NL}", fr: "Nom : {NOM_FR}" }),
-                circumference: new T({ nl: "Omtrek: {CIRCONFERENCE}", fr: "Circonférence : {CIRCONFERENCE}", en: "Circumference: {CIRCONFERENCE}" })
             }
         }
     }

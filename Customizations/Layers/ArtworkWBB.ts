@@ -45,10 +45,10 @@ export class ArtworkWBB extends LayerDefinition {
 
             return {
                 color: "#00bb00",
-                icon: new L.icon({
+                icon: {
                     iconUrl: self.icon,
                     iconSize: [40, 40]
-                })
+                }
             };
         };
     }

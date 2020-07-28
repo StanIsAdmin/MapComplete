@@ -16,7 +16,7 @@ export class WalkByBrussels extends Layout {
         super("walkbybrussels",
             ["en", "fr", "nl"],
             to.title,
-            [new Park(), new NatureReserves(), new Viewpoint(), new Bench(), new DrinkingWater(), new ArtworkWBB(), new Playground(), new RemarkableTree()],
+            [new Park(), new NatureReserves(), new Viewpoint(), new Bench(), new DrinkingWater(), new ArtworkWBB()/*, new Playground(), new RemarkableTree()*/],
             14,
             50.8435,
             4.3688,
