@@ -21,6 +21,7 @@ Furthermore, it shows images present in the `image` tag or, if a `wikidata` or `
 - [Cyclofix](https://pietervdvn.github.io/MapComplete/index.html?quests=pomp), further development on [Open Summer of Code](https://summerofcode.be/) funded by [Brussels Mobility](https://mobilite-mobiliteit.brussels/en)
 - [Bookcases](https://pietervdvn.github.io/MapComplete/index.html?quests=bookcases#element) cause I like to collect them.
 - [Map of Maps](https://pietervdvn.github.io/MapComplete/index.html?layout=metamap#element), after a tweet
+- [WalkByBrussels](https://osoc20.github.io/MapComplete/index.html?layout=walkbybrussels), ...
 
 Have a theme idea? Drop it in the [issues](https://github.com/pietervdvn/MapComplete/issues)
 
