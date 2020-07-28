@@ -2,7 +2,7 @@ import Translation from "./Translation";
 import T from "./Translation";
 import { UIElement } from "../UIElement";
 import { FixedUiElement } from "../Base/FixedUiElement";
-import { isExternalModuleNameRelative } from "typescript";
+import { isExternalModuleNameRelative } from "typescript"
 
 
 export default class Translations {
@@ -383,16 +383,33 @@ export default class Translations {
                         fr: "Pas adapté pour remplir des bouteilles d'eau"
                     }),
                 }
+            },
+            playgrounds: {
+                title: new T({ nl: "Speelplaats", fr: "Terrain de jeux", en: "Playground" }),
+                name: new T({ nl: "Naam: {name}", fr: "Nom : {name}" }),
+                description: new T({ nl: "Descriptie: {nl_description}", fr: "Description : {fr_description}" }),
+                age: new T({ nl: "Leeftijd: {nl_age}", fr: "Age : {fr_age}" }),
+                street: new T({ nl: "Straat: {street}", fr: "Rue : {street}" }),
+                zipCode: new T({ nl: "Postcode: {zipCode}", fr: "Code postal : {zipCode}" }),
+                municipality: new T({ nl: "Gemeente: {nl_municipality}", fr: "Commune :  {fr_municipality}" })
+
+            },
+            remarkableTrees: {
+                title: new T({
+                    nl: "Opmerkelijke boom", fr: "Arbre remarquable", en: 'Remarkable tree'
+                }),
+                name: new T({ nl: "Naam: {NOM_NL}", fr: "Nom : {NOM_FR}" }),
+                circumference: new T({ nl: "Omtrek: {CIRCONFERENCE}", fr: "Circonférence : {CIRCONFERENCE}", en: "Circumference: {CIRCONFERENCE}" })
             }
         },
         bookcases: {
-            title: new T({en: "Open Bookcase Map", nl: "Open Boekenkastjes kaart"}),
+            title: new T({ en: "Open Bookcase Map", nl: "Open Boekenkastjes kaart" }),
             description: new T({
-                    en: "Search a bookcase near you and add information about them in the biggest shared map of the world.",
-                    nl: "Help mee met het creëeren van een volledige kaart met alle boekenruilkastjes!" +
-                        "Een boekenruilkastje is een vaste plaats in publieke ruimte waar iedereen een boek in kan zetten of uit kan meenemen." +
-                        "Meestal een klein kastje of doosje dat op straat staat, maar ook een oude telefooncellen of een schap in een station valt hieronder."
-                }
+                en: "Search a bookcase near you and add information about them in the biggest shared map of the world.",
+                nl: "Help mee met het creëeren van een volledige kaart met alle boekenruilkastjes!" +
+                    "Een boekenruilkastje is een vaste plaats in publieke ruimte waar iedereen een boek in kan zetten of uit kan meenemen." +
+                    "Meestal een klein kastje of doosje dat op straat staat, maar ook een oude telefooncellen of een schap in een station valt hieronder."
+            }
             ),
             bookcase: new T({
                 nl: "Boekenruilkastje",
@@ -405,9 +422,9 @@ export default class Translations {
                         en: "Does this bookcase have a name?"
                     }),
                 noname: new T({
-                        nl: "Neen, er is geen naam aangeduid op het boekenruilkastje",
-                        en: "No, there is no clearly visible name on the public bookcase"
-                    },
+                    nl: "Neen, er is geen naam aangeduid op het boekenruilkastje",
+                    en: "No, there is no clearly visible name on the public bookcase"
+                },
                 ),
                 capacity: new T({
                     nl: "Hoeveel boeken passen in dit boekenruilkastje?",
@@ -426,8 +443,6 @@ export default class Translations {
                     en: "What kind of books can be found in this public bookcase"
                 })
             }
-
-
         },
 
         image: {
@@ -519,10 +534,10 @@ export default class Translations {
             }),
 
             osmLinkTooltip: new T({
-               en: "See this object on OpenStreetMap for history and more editing options",
+                en: "See this object on OpenStreetMap for history and more editing options",
                 nl: "Bekijk dit object op OpenStreetMap waar geschiedenis en meer aanpasopties zijn"
             }),
-            
+
             add: {
 
                 addNew: new T({
@@ -556,7 +571,7 @@ export default class Translations {
 
             }),
             nameInlineQuestion: new T({
-              nl:  "De naam van dit {category} is $$$"
+                nl: "De naam van dit {category} is $$$"
             }),
             noNameCategory: new T({
                 nl: "{category} zonder naam"

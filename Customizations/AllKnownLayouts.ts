@@ -7,11 +7,12 @@ import Cyclofix from "./Layouts/Cyclofix";
 import { WalkByBrussels } from "./Layouts/WalkByBrussels";
 import { All } from "./Layouts/All";
 import { Layout } from "./Layout";
-import {MetaMap} from "./Layouts/MetaMap";
-import {Widths} from "./Layers/Widths";
-import {StreetWidth} from "./Layouts/StreetWidth";
-import {NatureReserves} from "./Layers/NatureReserves";
-import {Natuurpunt} from "./Layouts/Natuurpunt";
+import { MetaMap } from "./Layouts/MetaMap";
+import { Widths } from "./Layers/Widths";
+import { StreetWidth } from "./Layouts/StreetWidth";
+import { NatureReserves } from "./Layers/NatureReserves";
+import { Natuurpunt } from "./Layouts/Natuurpunt";
+import { LayerDefinition } from "./LayerDefinition";
 
 export class AllKnownLayouts {
     public static allSets = AllKnownLayouts.AllLayouts();
@@ -36,11 +37,13 @@ export class AllKnownLayouts {
         const knownKeys = []
         for (const layout of layouts) {
             for (const layer of layout.layers) {
-                const key = layer.overpassFilter.asOverpass().join("");
-                if (knownKeys.indexOf(key) >= 0) {
-                    continue;
+                if (!layer.data) {
+                    const key = layer.overpassFilter.asOverpass().join("");
+                    if (knownKeys.indexOf(key) >= 0) {
+                        continue;
+                    }
+                    knownKeys.push(key);
                 }
-                knownKeys.push(key);
                 all.layers.push(layer);
             }
         }

@@ -13,13 +13,22 @@ export class Bench extends LayerDefinition {
         super();
         const to = Translations.t.walkbybrussels.bench;
         this.name = to.name;
-        this.icon = "./assets/walkbybrussels/bench_black.svg";
+        this.icon = "assets/walkbybrussels/bench_black.svg";
 
         this.overpassFilter = new Or([
             new And([
                 new Tag("amenity", "bench")
             ])
         ]);
+
+        this.style = tags => {
+            return {
+                color: "#00bb00", icon: {
+                    iconUrl: "assets/walkbybrussels/bench_black.svg",
+                    iconSize: [20, 20]
+                }
+            }
+        }
 
 
         this.newElementTags = [
@@ -28,7 +37,6 @@ export class Bench extends LayerDefinition {
         this.maxAllowedOverlapPercentage = 10;
 
         this.minzoom = 13;
-        this.style = this.generateStyleFunction();
         this.title = new FixedText(to.title);
         this.elementsToShow = [
             new OperatorTag(),
@@ -36,20 +44,4 @@ export class Bench extends LayerDefinition {
         this.elementsToShow = [];
 
     }
-
-
-    private generateStyleFunction() {
-        const self = this;
-        return function (properties: any) {
-
-            return {
-                color: "#00bb00",
-                icon: new L.icon({
-                    iconUrl: self.icon,
-                    iconSize: [40, 40]
-                })
-            };
-        };
-    }
-
 }

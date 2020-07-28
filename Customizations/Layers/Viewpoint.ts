@@ -12,12 +12,12 @@ export class Viewpoint extends LayerDefinition {
             name: "Bezienswaardigheid",
             description: "Wil je een foto toevoegen van iets dat geen park, bos of natuurgebied is? Dit kan hiermee",
             newElementTags: [new Tag("tourism", "viewpoint"), new Tag("fixme", "Added with mapcomplete. This viewpoint should probably me merged with some existing feature")],
-            icon: "assets/viewpoint.svg",
+            icon: "assets/walkbybrussels/viewpoint.svg",
             wayHandling: LayerDefinition.WAYHANDLING_CENTER_ONLY,
             style: tags => {
                 return {
                     color: undefined, icon:{
-                        iconUrl: "assets/viewpoint.svg",
+                        iconUrl: "assets/walkbybrussels/viewpoint.svg",
                         iconSize: [20, 20]
                     }
                 }

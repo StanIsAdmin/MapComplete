@@ -1,41 +1,42 @@
-import {OsmConnection} from "./Logic/OsmConnection";
-import {Changes} from "./Logic/Changes";
-import {ElementStorage} from "./Logic/ElementStorage";
-import {UIEventSource} from "./UI/UIEventSource";
-import {UserBadge} from "./UI/UserBadge";
-import {BaseLayers, Basemap} from "./Logic/Basemap";
-import {PendingChanges} from "./UI/PendingChanges";
-import {CenterMessageBox} from "./UI/CenterMessageBox";
-import {Helpers} from "./Helpers";
-import {Tag, TagUtils} from "./Logic/TagsFilter";
-import {FilteredLayer} from "./Logic/FilteredLayer";
-import {LayerUpdater} from "./Logic/LayerUpdater";
-import {UIElement} from "./UI/UIElement";
-import {FullScreenMessageBoxHandler} from "./UI/FullScreenMessageBoxHandler";
-import {FeatureInfoBox} from "./UI/FeatureInfoBox";
-import {GeoLocationHandler} from "./Logic/GeoLocationHandler";
-import {StrayClickHandler} from "./Logic/StrayClickHandler";
-import {SimpleAddUI} from "./UI/SimpleAddUI";
-import {VariableUiElement} from "./UI/Base/VariableUIElement";
-import {SearchAndGo} from "./UI/SearchAndGo";
-import {AllKnownLayouts} from "./Customizations/AllKnownLayouts";
-import {CheckBox} from "./UI/Input/CheckBox";
+import { OsmConnection } from "./Logic/OsmConnection";
+import { Changes } from "./Logic/Changes";
+import { ElementStorage } from "./Logic/ElementStorage";
+import { UIEventSource } from "./UI/UIEventSource";
+import { UserBadge } from "./UI/UserBadge";
+import { BaseLayers, Basemap } from "./Logic/Basemap";
+import { PendingChanges } from "./UI/PendingChanges";
+import { CenterMessageBox } from "./UI/CenterMessageBox";
+import { Helpers } from "./Helpers";
+import { Tag, TagUtils } from "./Logic/TagsFilter";
+import { FilteredLayer } from "./Logic/FilteredLayer";
+import { LayerUpdater } from "./Logic/LayerUpdater";
+import { UIElement } from "./UI/UIElement";
+import { FullScreenMessageBoxHandler } from "./UI/FullScreenMessageBoxHandler";
+import { FeatureInfoBox } from "./UI/FeatureInfoBox";
+import { GeoLocationHandler } from "./Logic/GeoLocationHandler";
+import { StrayClickHandler } from "./Logic/StrayClickHandler";
+import { SimpleAddUI } from "./UI/SimpleAddUI";
+import { VariableUiElement } from "./UI/Base/VariableUIElement";
+import { SearchAndGo } from "./UI/SearchAndGo";
+import { AllKnownLayouts } from "./Customizations/AllKnownLayouts";
+import { CheckBox } from "./UI/Input/CheckBox";
 import Translations from "./UI/i18n/Translations";
 import Locale from "./UI/i18n/Locale";
-import {Layout, WelcomeMessage} from "./Customizations/Layout";
-import {DropDown} from "./UI/Input/DropDown";
-import {FixedUiElement} from "./UI/Base/FixedUiElement";
-import {RouteLayer} from "./Logic/RouteLayer";
-import {Route} from "./Logic/Route";
-import {GeoOperations} from "./Logic/GeoOperations";
-import {LayerSelection} from "./UI/LayerSelection";
+import { Layout, WelcomeMessage } from "./Customizations/Layout";
+import { DropDown } from "./UI/Input/DropDown";
+import { FixedUiElement } from "./UI/Base/FixedUiElement";
+import { RouteLayer } from "./Logic/RouteLayer";
+import { Route } from "./Logic/Route";
+import { GeoOperations } from "./Logic/GeoOperations";
+import { LayerSelection } from "./UI/LayerSelection";
 import Combine from "./UI/Base/Combine";
-import {Img} from "./UI/Img";
-import {QueryParameters} from "./Logic/QueryParameters";
-import {Utils} from "./Utils";
-import {LocalStorageSource} from "./Logic/LocalStorageSource";
-import {Button} from "./UI/Base/Button";
-
+import { Img } from "./UI/Img";
+import { QueryParameters } from "./Logic/QueryParameters";
+import { Utils } from "./Utils";
+import { LocalStorageSource } from "./Logic/LocalStorageSource";
+import { Playground } from './ExternalData/Playground';
+import { RemarkableTree } from './ExternalData/RemarkableTree';
+import { LayerDefinition } from "./Customizations/LayerDefinition";
 
 // --------------------- Special actions based on the parameters -----------------
 
@@ -83,7 +84,7 @@ defaultLayout = QueryParameters.GetQueryParameter("layout").data ?? defaultLayou
 
 const layoutToUse: Layout = AllKnownLayouts.allSets[defaultLayout] ?? AllKnownLayouts["all"];
 console.log("Using layout: ", layoutToUse.name);
-if(layoutToUse === undefined){
+if (layoutToUse === undefined) {
     console.log("Incorrect layout")
 }
 
@@ -121,8 +122,8 @@ const locationControl = new UIEventSource<{ lat: number, lon: number, zoom: numb
 
 locationControl.addCallback((latlonz) => {
     zoom.setData(latlonz.zoom.toString());
-    lat.setData(latlonz.lat.toString().substr(0,6));
-    lon.setData(latlonz.lon.toString().substr(0,6));
+    lat.setData(latlonz.lat.toString().substr(0, 6));
+    lon.setData(latlonz.lon.toString().substr(0, 6));
 })
 
 
@@ -177,7 +178,7 @@ const route = QueryParameters.GetQueryParameter("route").map(
     Route.RouteFromString,
     [],
     (route: Route) => {
-        if(route.waypoints.length == 0){
+        if (route.waypoints.length == 0) {
             return undefined;
         }
         return route?.WaypointsAsString()
@@ -187,6 +188,10 @@ new RouteLayer(route, bm);
 route.ping();
 
 // ------------- Setup the layers -------------------------------
+
+//let playgrounds = new Playground(bm);
+// let rm = new RemarkableTree(bm);
+
 const addButtons: {
     name: UIElement,
     icon: string,
@@ -231,7 +236,6 @@ for (const layer of layoutToUse.layers) {
 
 const layerUpdater = new LayerUpdater(bm, minZoom, flayers);
 
-
 // --------------- Setting up layer selection ui --------
 
 const closedFilterButton = `<button id="filter__button" class="filter__button shadow">${Img.closedFilterButton}</button>`;
@@ -239,7 +243,7 @@ const closedFilterButton = `<button id="filter__button" class="filter__button sh
 const openFilterButton = `
 <button id="filter__button" class="filter__button">${Img.openFilterButton}</button>`;
 
-let baseLayerOptions =  BaseLayers.baseLayers.map((layer) => {return {value: layer, shown: layer.name}});
+let baseLayerOptions = BaseLayers.baseLayers.map((layer) => { return { value: layer, shown: layer.name } });
 const backgroundMapPicker = new Combine([new DropDown(`Background map`, baseLayerOptions, bm.CurrentLayer), openFilterButton]);
 const layerSelection = new Combine([`<p class="filter__label">Maplayers</p>`, new LayerSelection(flayers)]);
 let layerControl = backgroundMapPicker;
@@ -284,7 +288,8 @@ selectedElement.addCallback((feature) => {
     // Which is the applicable set?
     for (const layer of layoutToUse.layers) {
 
-        const applicable = layer.overpassFilter.matches(TagUtils.proprtiesToKV(data));
+        let applicable = false;
+        if (!layer.data) applicable = layer.overpassFilter.matches(TagUtils.proprtiesToKV(data));
         if (applicable) {
             // This layer is the layer that gives the questions
             const featureCenter = GeoOperations.centerpoint(feature.feature).geometry.coordinates;
@@ -317,10 +322,10 @@ new UserBadge(osmConnection.userDetails,
 
 new SearchAndGo(bm).AttachTo("searchbox");
 
-const welcome = new WelcomeMessage(layoutToUse, 
+const welcome = new WelcomeMessage(layoutToUse,
     Locale.CreateLanguagePicker(layoutToUse, Translations.t.general.pickLanguage),
     osmConnection).onClick(() => {
-});
+    });
 
 const help = new FixedUiElement(`<div class='collapse-button-img'><img src='assets/help.svg'  alt='help'></div>`);
 const close = new FixedUiElement(`<div class='collapse-button-img'><img src='assets/close.svg'  alt='close'></div>`);

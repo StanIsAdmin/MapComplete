@@ -210,7 +210,7 @@ class TagRendering extends UIElement implements TagDependantUIElement {
         this.ListenTo(this._questionSkipped);
         this.ListenTo(this._editMode);
 
-        this._userDetails = changes.login.userDetails;
+        this._userDetails = changes && changes.login.userDetails;
         this.ListenTo(this._userDetails);
 
        
@@ -519,7 +519,7 @@ class TagRendering extends UIElement implements TagDependantUIElement {
             }
             const html = answer.Render();
             let editButton = "";
-            if (this._userDetails.data.loggedIn && this._question !== undefined) {
+            if (this._userDetails && this._userDetails.data.loggedIn && this._question !== undefined) {
                 editButton = this._editButton.Render();
             }
 
