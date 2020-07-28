@@ -330,9 +330,9 @@ export default class Translations {
                 fr: "Cette carte répertorie différentes catégories de points d'intérêt à découvrir par les promeneurs de Bruxelles." +
                     "Elle vous permet aussi d'ajouter des points à n'importe quelle catégorie, ceux-ci sont automatiquement ajoutés à OpenStreetMaps."
             }),
-            freeFormPlaceholder: new T({ en: 'specify', nl: 'specifieer', fr: 'TODO: fr' }),
+            freeFormPlaceholder: new T({ en: 'specify', nl: 'specifieer', fr: 'spécifier' }),
             artwork: {
-                name: new T({ en: 'artwork', nl: 'kunstwerk', fr: "oeuvre d'art" }),
+                name: new T({ en: 'Artwork', nl: 'Kunstwerk', fr: "Oeuvre d'art" }),
                 title: new T({ en: 'Artwork', nl: 'Kunstwerk', fr: "Oeuvre d'art" }),
                 type: {
                     render: new T({
@@ -361,11 +361,11 @@ export default class Translations {
                 },
             },
             bench: {
-                name: new T({ en: 'bench', nl: 'bank', fr: "banc" }),
+                name: new T({ en: 'Bench', nl: 'Bank', fr: "Banc" }),
                 title: new T({ en: 'Bench', nl: 'Bank', fr: "Banc" })
             },
             drinking_water: {
-                name: new T({ en: 'drinking water', nl: 'drinkwater', fr: "eau potable" }),
+                name: new T({ en: 'Drinking water', nl: 'Drinkwater', fr: "Eau potable" }),
                 title: new T({ en: 'Drinking water', nl: 'Drinkwater', fr: "Eau potable" }),
                 bottle: {
                     question: new T({

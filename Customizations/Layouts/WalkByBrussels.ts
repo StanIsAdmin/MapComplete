@@ -9,6 +9,7 @@ import { Artwork } from "../Layers/Artwork";
 import { Viewpoint } from "../Layers/Viewpoint";
 import { ArtworkWBB } from "../Layers/ArtworkWBB";
 import Translations from "../../UI/i18n/Translations";
+import Combine from "../../UI/Base/Combine";
 
 export class WalkByBrussels extends Layout {
     constructor() {
@@ -20,10 +21,7 @@ export class WalkByBrussels extends Layout {
             14,
             50.8435,
             4.3688,
-
-
-            "<h3>Drinking water</h3>\n" +
-            "Help with creating a map of drinking water points!"
+            new Combine(["<h3>",Translations.t.walkbybrussels.title,"</h3>", Translations.t.walkbybrussels.description])
         );
     }
 
