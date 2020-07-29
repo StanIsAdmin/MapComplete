@@ -447,124 +447,144 @@ export default class Translations {
         },
 
         image: {
-            addPicture: new T({ en: 'Add picture', nl: 'Voeg foto toe', fr: 'TODO: fr' }),
+            addPicture: new T({ en: 'Add picture', nl: 'Voeg foto toe', fr: 'Ajouter une photo' }),
             uploadingPicture: new T({
                 en: 'Uploading your picture...',
                 nl: 'Bezig met een foto te uploaden...',
-                fr: 'TODO: fr'
+                fr: 'Téléchargement de votre photo...'
             }),
             pleaseLogin: new T({
                 en: 'Please login to add a picure or to answer questions',
                 nl: 'Gelieve je aan te melden om een foto toe te voegen of vragen te beantwoorden',
-                fr: 'TODO: fr'
+                fr: 'Veuillez vous connecter pour ajouter une photo ou répondre aux questions'
             }),
             willBePublished: new T({
                 en: 'Your picture will be published: ',
                 nl: 'Jouw foto wordt gepubliceerd: ',
-                fr: 'TODO: fr'
+                fr: 'Votre photo sera publiée:'
             }),
-            cco: new T({ en: 'in the public domain', nl: 'in het publiek domein', fr: 'TODO: fr' }),
-            ccbs: new T({ en: 'under the CC-BY-SA-license', nl: 'onder de CC-BY-SA-licentie', fr: 'TODO: fr' }),
-            ccb: new T({ en: 'under the CC-BY-license', nl: 'onder de CC-BY-licentie', fr: 'TODO: fr' })
+            cco: new T({ en: 'in the public domain', nl: 'in het publiek domein', fr: 'dans le domaine public' }),
+            ccbs: new T({ en: 'under the CC-BY-SA-license', nl: 'onder de CC-BY-SA-licentie', fr: 'sous la license CC-BY-SA' }),
+            ccb: new T({ en: 'under the CC-BY-license', nl: 'onder de CC-BY-licentie', fr: 'sous la license CC-BY' })
         },
         centerMessage: {
-            loadingData: new T({ en: 'Loading data...', nl: 'Data wordt geladen...', fr: 'TODO: fr' }),
+            loadingData: new T({ en: 'Loading data...', nl: 'Data wordt geladen...', fr: 'Chargement des données...' }),
             zoomIn: new T({
                 en: 'Zoom in to view or edit the data',
                 nl: 'Zoom in om de data te zien en te bewerken',
-                fr: 'TODO: fr'
+                fr: 'Agrandissez pour afficher ou modifier les données'
             }),
-            ready: new T({ en: 'Done!', nl: 'Klaar!', fr: 'TODO: fr' }),
+            ready: new T({ en: 'Done!', nl: 'Klaar!', fr: 'Terminé!' }),
         },
         general: {
-            loginWithOpenStreetMap: new T({ en: "Login with OpenStreetMap", nl: "Aanmelden met OpenStreetMap" }),
+            loginWithOpenStreetMap: new T({ en: "Login with OpenStreetMap", nl: "Aanmelden met OpenStreetMap", fr: "Se connecter avec OpenStreetMap" }),
             getStarted: new T({
                 en: "<span class='activate-osm-authentication'>Login with OpenStreetMap</span> or <a href='https://www.openstreetmap.org/user/new' target='_blank'>make a free account to get started</a>",
                 nl: "<span class='activate-osm-authentication'>Meld je aan met je OpenStreetMap-account</span> of <a href='https://www.openstreetmap.org/user/new' target='_blank'>maak snel en gratis een account om te beginnen</a>",
+                fr: "<span class='activate-osm-authentication'>Se connecter avec OpenStreetMap</span> of <a href='https://www.openstreetmap.org/user/new' target='_blank'>créez un compte gratuit pour commencer</a>",
             }),
             welcomeBack: new T({
                 en: "You are logged in, welcome back!",
-                nl: "Je bent aangemeld. Welkom terug!"
+                nl: "Je bent aangemeld. Welkom terug!",
+                fr: "Vous êtes connecté, bienvenu.e !"
             }),
             search: {
                 search: new Translation({
                     en: "Search a location",
-                    nl: "Zoek naar een locatie"
+                    nl: "Zoek naar een locatie",
+                    fr: "Cherchez un endroit"
                 }),
                 searching: new Translation({
                     en: "Searching...",
-                    nl: "Aan het zoeken..."
+                    nl: "Aan het zoeken...",
+                    fr: "Recherche..."
                 }),
                 nothing: new Translation({
                     en: "Nothing found...",
-                    nl: "Niet gevonden..."
+                    nl: "Niet gevonden...",
+                    fr: "Aucun résultat..."
                 }),
                 error: new Translation({
                     en: "Something went wrong...",
-                    nl: "Niet gelukt..."
+                    nl: "Niet gelukt...",
+                    fr: "Une erreur est survenue..."
                 })
 
             },
             returnToTheMap: new T({
                 en: "Return to the map",
-                nl: "Naar de kaart"
+                nl: "Naar de kaart",
+                fr: "Retour vers la carte"
             }),
             save: new T({
                 en: "Save",
-                nl: "Opslaan"
+                nl: "Opslaan",
+                fr: "Sauvegarder"
             }),
             cancel: new T({
                 en: "Cancel",
-                nl: "Annuleren"
+                nl: "Annuleren",
+                fr: "Annuler"
             }),
             skip: new T({
                 en: "Skip this question",
-                nl: "Vraag overslaan"
+                nl: "Vraag overslaan",
+                fr: "Sauter la question"
             }),
             oneSkippedQuestion: new T({
                 en: "One question is skipped",
-                nl: "Een vraag is overgeslaan"
+                nl: "Een vraag is overgeslaan",
+                fr: "Une question a été sautée"
             }),
             skippedQuestions: new T({
                 en: "Some questions are skipped",
-                nl: "Sommige vragen zijn overgeslaan"
+                nl: "Sommige vragen zijn overgeslaan",
+                fr: "Certaines questions ont été sautées"
             }),
             number: new T({
                 en: "number",
-                nl: "getal"
+                nl: "getal",
+                fr: "nombre"
             }),
 
             osmLinkTooltip: new T({
                 en: "See this object on OpenStreetMap for history and more editing options",
-                nl: "Bekijk dit object op OpenStreetMap waar geschiedenis en meer aanpasopties zijn"
+                nl: "Bekijk dit object op OpenStreetMap waar geschiedenis en meer aanpasopties zijn",
+                fr: "Voir cet object dans OpenStreetMap pour l'historique et plus d'options de modification"
             }),
 
             add: {
 
                 addNew: new T({
                     en: "Add a new {category} here",
-                    nl: "Voeg hier een {category} toe"
+                    nl: "Voeg hier een {category} toe",
+                    fr: "Ajouter un.e nouveau.elle {category} ici"
                 }),
                 header: new T({
                     en: "<h2>No data</h2>You clicked somewhere where no data is known yet.<br/>",
-                    nl: "<h2>Geen selectie</h2>Je klikte ergens waar er nog geen data is.<br/>"
+                    nl: "<h2>Geen selectie</h2>Je klikte ergens waar er nog geen data is.<br/>",
+                    fr: "<h2>Geen selectie</h2>Vous avez cliqué quelque part sans données connues.<br/>"
                 }),
                 pleaseLogin: new T({
                     en: "<a class='activate-osm-authentication'>Please log in to add a new point</a>",
-                    nl: "<a class='activate-osm-authentication'>Gelieve je aan te melden om een punt to te voegen</a>"
+                    nl: "<a class='activate-osm-authentication'>Gelieve je aan te melden om een punt to te voegen</a>",
+                    fr: "<a class='activate-osm-authentication'>Veuillez vous connecter pour ajouter un point</a>"
                 }),
                 zoomInFurther: new T({
-                    en: "Zoom in further to add a point.",
-                    nl: "Gelieve verder in te zoomen om een punt toe te voegen"
+                    en: "Zoom in further to add a point",
+                    nl: "Gelieve verder in te zoomen om een punt toe te voegen",
+                    fr: "Agrandissez encore pour ajouter un point"
                 }),
                 stillLoading: new T({
-                    en: "The data is still loading. Please wait a bit before you add a new point",
-                    nl: "De data wordt nog geladen. Nog even geduld en dan kan je een punt toevoegen."
+                    en: "The data is still loading. Please wait a bit before you add a new point.",
+                    nl: "De data wordt nog geladen. Nog even geduld en dan kan je een punt toevoegen.",
+                    fr: "Les données chargent. Veuillez patienter pour ajouter un nouveau point."
                 })
             },
             pickLanguage: new T({
                 en: "Choose a language",
-                nl: "Kies je taal"
+                nl: "Kies je taal",
+                fr: "Choisissez une langue"
             }),
             about: new T({
                 en: "Easily edit and add OpenStreetMap for a certain theme",
@@ -572,20 +592,25 @@ export default class Translations {
 
             }),
             nameInlineQuestion: new T({
-                nl: "De naam van dit {category} is $$$"
+                nl: "De naam van dit {category} is $$$",
+                fr: "Le nom du {category} est $$$"
             }),
             noNameCategory: new T({
-                nl: "{category} zonder naam"
+                en: "Unnamed {category}",
+                nl: "{category} zonder naam",
+                fr: "{category} sans nom"
             }),
             questions: {
                 phoneNumberOf: new T({
                     en: "What is the phone number of {category}?",
-                    nl: "Wat is het telefoonnummer van {category}?"
+                    nl: "Wat is het telefoonnummer van {category}?",
+                    fr: "Quel est le numéro de téléphone du {category}"
 
                 }),
                 phoneNumberIs: new T({
                     en: "The phone number of this {category} is <a href='tel:{phone}' target='_blank'>{phone}</a>",
-                    nl: "Het telefoonnummer van {category} is <a href='tel:{phone}' target='_blank'>{phone}</a>"
+                    nl: "Het telefoonnummer van {category} is <a href='tel:{phone}' target='_blank'>{phone}</a>",
+                    fr: "Le numéro de téléphone du {category} est <a href='tel:{phone}' target='_blank'>{phone}</a>"
                 })
 
             }
