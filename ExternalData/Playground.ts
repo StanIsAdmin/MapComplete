@@ -40,8 +40,9 @@ export class Playground extends BaseLayerDefinition {
 
     constructor() {
         super();
-        this.name = 'Playgrounds';
-        this.description = "Spots you could attend with your kids.";
+        const to = Translations.t.walkbybrussels.playgrounds;
+        this.name = to.title;
+        this.description = to.description;
         this.minzoom = 13;
         this.style = function (tags) {
             return {

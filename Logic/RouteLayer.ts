@@ -25,7 +25,11 @@ export class RouteLayer {
             if (self._layer) {
                 self._bm.map.removeLayer(self._layer);
             }
-            self._layer = L.geoJSON(geo);
+            self._layer = L.geoJSON(geo, {
+                pointToLayer: function (geoJsonPoint, latlng) {
+                    const icon = new L.icon({iconSize: [40,40], iconUrl: "assets/star.svg"})
+                    return L.marker(latlng, {icon: icon});
+                }});
             self._layer.addTo(self._bm.map)
         }, console.log);
     }

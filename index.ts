@@ -46,9 +46,9 @@ if (location.href.startsWith("http://buurtnatuur.be")) {
     window.location.replace("https://buurtnatuur.be");
 }
 
+// Set to true if testing and changes should NOT be saved
+const testing = QueryParameters.GetQueryParameter("test");
 if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-    // Set to true if testing and changes should NOT be saved
-    const testing = QueryParameters.GetQueryParameter("test");
     testing.setData(testing.data ?? "true")
     // If you have a testfile somewhere, enable this to spoof overpass
     // This should be hosted independantly, e.g. with `cd assets; webfsd -p 8080` + a CORS plugin to disable cors rules
@@ -58,7 +58,7 @@ if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
 
 // ----------------- SELECT THE RIGHT QUESTSET -----------------
 
-let defaultLayout = "all"
+let defaultLayout = "walkbybrussels"
 
 const path = window.location.pathname.split("/").slice(-1)[0];
 if (path !== "index.html") {
@@ -130,7 +130,7 @@ locationControl.addCallback((latlonz) => {
 // ----------------- Prepare the important objects -----------------
 
 const osmConnection = new OsmConnection(
-    QueryParameters.GetQueryParameter("test").data === "true"
+    testing.data === "true"
 );
 
 
@@ -245,7 +245,7 @@ const openFilterButton = `
 
 let baseLayerOptions = BaseLayers.baseLayers.map((layer) => { return { value: layer, shown: layer.name } });
 const backgroundMapPicker = new Combine([new DropDown(`Background map`, baseLayerOptions, bm.CurrentLayer), openFilterButton]);
-const layerSelection = new Combine([`<p class="filter__label">Maplayers</p>`, new LayerSelection(flayers)]);
+const layerSelection = new Combine([`<p class="filter__label">`, Translations.t.general.maplayers, `</p>`, new LayerSelection(flayers)]);
 let layerControl = backgroundMapPicker;
 if (flayers.length > 1) {
     layerControl = new Combine([layerSelection, backgroundMapPicker]);

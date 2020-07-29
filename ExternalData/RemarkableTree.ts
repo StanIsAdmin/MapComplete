@@ -16,8 +16,9 @@ export class RemarkableTree extends BaseLayerDefinition {
 
     constructor() {
         super();
-        this.name = 'Remarkable Trees';
-        this.description = "Outstanding trees, worth a look!";
+        const to = Translations.t.walkbybrussels.remarkableTrees;
+        this.name = to.title;
+        this.description = to.description;
         this.minzoom = 13;
         this.style = function (tags) {
             return {

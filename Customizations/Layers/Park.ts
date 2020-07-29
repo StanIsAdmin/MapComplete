@@ -7,23 +7,24 @@ import {NameQuestion} from "../Questions/NameQuestion";
 import {NameInline} from "../Questions/NameInline";
 import {DescriptionQuestion} from "../Questions/DescriptionQuestion";
 import {ImageCarouselWithUploadConstructor} from "../../UI/Image/ImageCarouselWithUpload";
+import Translations from "../../UI/i18n/Translations";
 
 export class Park extends LayerDefinition {
 
-
+    private static to = Translations.t.walkbybrussels.park;
     private accessByDefault = new TagRenderingOptions({
-        question: "Is dit park publiek toegankelijk?",
+        question: Park.to.accessibility.question,
         mappings: [
-            {k: new Tag("access", "yes"), txt: "Publiek toegankelijk"},
-            {k: new Tag("access", ""), txt: "Publiek toegankelijk"},
-            {k: new Tag("access", "no"), txt: "Niet publiek toegankelijk"},
-            {k: new Tag("access", "private"), txt: "Niet publiek toegankelijk, want privaat"},
-            {k: new Tag("access", "guided"), txt: "Enkel toegankelijk met een gids of op een activiteit"},
+            { k: new Tag("access", "yes"), txt: Park.to.accessibility.yes},
+            { k: new Tag("access", ""), txt: Park.to.accessibility.empty},
+            { k: new Tag("access", "no"), txt: Park.to.accessibility.no},
+            { k: new Tag("access", "private"), txt: Park.to.accessibility.private},
+            { k: new Tag("access", "guided"), txt: Park.to.accessibility.guided},
         ],
         freeform: {
             key: "access",
-            renderTemplate: "Dit park is niet toegankelijk: {access}",
-            template: "De toegankelijkheid van dit park is: $$$"
+            renderTemplate: Park.to.accessibility.freeform,
+            template: Park.to.accessibility.template
         },
         priority: 20
     })
@@ -31,14 +32,14 @@ export class Park extends LayerDefinition {
     private operatorByDefault = new
 
     TagRenderingOptions({
-        question: "Wie beheert dit park?",
+        question: Park.to.operator.question,
         freeform: {
             key: "operator",
-            renderTemplate: "Dit park wordt beheerd door {operator}",
+            renderTemplate: Park.to.operator.freeform,
             template: "$$$",
         },
         mappings: [{
-            k: null, txt: "De gemeente beheert dit park"
+            k: null, txt: Park.to.operator.template
         }],
         priority: 15
     });
@@ -46,8 +47,8 @@ export class Park extends LayerDefinition {
 
     constructor() {
         super();
-        this.name = "Park";
-        this.icon = undefined;
+        this.name = Park.to.name;
+        this.icon = "assets/walkbybrussels/park.svg";
         this.overpassFilter =
             new Or([new Tag("leisure", "park"), new Tag("landuse", "village_green")]);
         this.newElementTags = [new Tag("leisure", "park"),
@@ -56,7 +57,7 @@ export class Park extends LayerDefinition {
 
         this.minzoom = 13;
         this.style = this.generateStyleFunction();
-        this.title = new NameInline("park");
+        this.title = new NameInline(Park.to.name);
         this.elementsToShow = [
             new ImageCarouselWithUploadConstructor(),
             new NameQuestion(),
