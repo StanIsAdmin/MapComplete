@@ -331,6 +331,79 @@ export default class Translations {
                     "Elle vous permet aussi d'ajouter des points à n'importe quelle catégorie, ceux-ci sont automatiquement ajoutés à OpenStreetMaps."
             }),
             freeFormPlaceholder: new T({ en: 'specify', nl: 'specifieer', fr: 'spécifier' }),
+            park: {
+                name: new T({
+                    en: "Park",
+                    nl: "Park",
+                    fr: "Parc"
+                }),
+                operator: {
+                    question: new T({
+                        en: 'Who manages this park?',
+                        nl: 'Wie beheert dit park?',
+                        fr: 'Qui gère ce parc?'
+                    }),
+                    freeform: new T({
+                        en: 'This park is managed by {operator}',
+                        nl: 'Dit park wordt beheerd door {operator}',
+                        fr: 'Ce parc est géré par {operator}'
+                    }),
+                    template: new T({
+                        en: 'The municipality manages this park',
+                        nl: 'De gemeente beheert dit park',
+                        fr: 'La commune gère ce parc'
+                    })
+                },
+                accessibility: {
+                    question: new T({
+                        en: 'Is this park publicly accessible?',
+                        nl: 'Is dit park publiek toegankelijk?',
+                        fr: 'Ce parc est-il accessible au public ?'
+                    }),
+                    yes: new T({
+                        en: 'Publicly accessible',
+                        nl: 'Publiek toegankelijk',
+                        fr: 'Accessible au public'
+                    }),
+                    empty: new T({
+                        en: 'Publicly accessible',
+                        nl: 'Publiek toegankelijk',
+                        fr: 'Accessible au public'
+                    }),
+                    no: new T({
+                        en: 'Not publicly accessible',
+                        nl: 'Niet publiek toegankelijk',
+                        fr: 'Pas accessible au public'
+                    }),
+                    private: new T({
+                        en: 'Not publicly accessible, because private',
+                        nl: 'Niet publiek toegankelijk, want privaat',
+                        fr: 'Pas accessible au public car privé'
+                    }),
+                    guided: new T({
+                        en: 'Only accessible with a guide or on an activity',
+                        nl: 'Enkel toegankelijk met een gids of op een activiteit',
+                        fr: "Accessible accompagné d'un guide ou lors d'activités"
+                    }),
+                    freeform: new T({
+                        en: 'This park is not accessible: {access}',
+                        nl: 'Dit park is niet toegankelijk: {access}',
+                        fr: "Ce parc n'est pas accessible: {access}"
+                    }),
+                    template: new T({
+                        en: 'The accessibility of this park is: $$$',
+                        nl: 'De toegankelijkheid van dit park is: $$$',
+                        fr: "L'accessibilité au parc est: $$$"
+                    })
+                },
+                description: {
+                    question: new T({
+                        en: 'Are there any details we should know about this ',
+                        nl: 'Zijn er bijzonderheden die we moeten weten over dit ',
+                        fr: 'Y a-t-il des détails que nous devrions connaître à ce sujet '
+                    })
+                }
+            },
             artwork: {
                 name: new T({ en: 'Artwork', nl: 'Kunstwerk', fr: "Oeuvre d'art" }),
                 title: new T({ en: 'Artwork', nl: 'Kunstwerk', fr: "Oeuvre d'art" }),
