@@ -1,3 +1,56 @@
+# WalkByBrussels
+A walking application for citizens in the Brussels region to (re)discover different routes in their city and share the spots they love.
+
+Test it [here](https://osoc20.github.io/WalkByBrussels/index.html?layout=walkbybrussels).
+
+## The layout
+As define in MapComplete: A layout is a collection of settings of the global view (thus: welcome text, title, selection of layers). This concept helps creating apps in the app.
+The WalkByBrussels layout gathers layers that are interesting for a walker, e.g. artworks, playgrounds, benches, ...
+
+### Current layers
+- Artwork
+- Benches
+- Park
+- Playground
+- Remarkable tree 
+- Viewpoint
+- Water point
+
+## Datasources
+### OSM
+MapComplete has been build having in mind the usage of OSM data and do so via [overpass](https://overpass-turbo.eu/), adding layers using OSM as source is relatively easy (see how it's done in [Bench.ts](https://github.com/oSoc20/MapComplete/blob/master/Customizations/Layers/Bench.ts)).
+
+### Other datasets
+We worked on integrating [datastore.brussels](https://datastore.brussels/web/). This work serves as an example for other kind of datasources not called OSM. Find it under the folder: [ExternalData](https://github.com/oSoc20/MapComplete/tree/master/ExternalData) and [GeoJSON](https://github.com/oSoc20/MapComplete/tree/master/GeoJSON).
+
+#### GeoJSON
+The folder contains classes implemented after [The GeoJSON Specification (RFC 7946)](https://tools.ietf.org/html/rfc7946). Works fine for points geodata.
+
+#### ExternalData
+The folder contains a configurable parser (for parsing xml/gml data) and two layers [Playground](https://github.com/oSoc20/MapComplete/blob/master/ExternalData/Playground.ts) and [RemarkableTree](https://github.com/oSoc20/MapComplete/blob/master/ExternalData/RemarkableTree.ts)
+
+- The Playground case: data is provided in ```gml``` format. We use the prementioned parser to parse it into ```geojson```.
+- The RemarkableTree case: data is already in ```geojson``` no work needed there.
+
+The integration is far from being perfect see issues [#33](https://github.com/oSoc20/WalkByBrussels/issues/33) [#34](https://github.com/oSoc20/WalkByBrussels/issues/34)
+
+## Run and deploy
+
+Run locally:
+
+1. Install `npm`.
+2. Run `npm install` to install the dependencies
+3. Run `npm run start` to build and host a local testversion
+
+To deploy:
+
+1. `npm run build`
+2. `npm run deploy`
+
+<br />
+
+Following is the original MapComplete readme:
+
 # MapComplete
 
 > Let a thousand flowers bloom
@@ -21,6 +74,7 @@ Furthermore, it shows images present in the `image` tag or, if a `wikidata` or `
 - [Cyclofix](https://pietervdvn.github.io/MapComplete/index.html?quests=pomp), further development on [Open Summer of Code](https://summerofcode.be/) funded by [Brussels Mobility](https://mobilite-mobiliteit.brussels/en)
 - [Bookcases](https://pietervdvn.github.io/MapComplete/index.html?quests=bookcases#element) cause I like to collect them.
 - [Map of Maps](https://pietervdvn.github.io/MapComplete/index.html?layout=metamap#element), after a tweet
+- [WalkByBrussels](https://osoc20.github.io/WalkByBrussels/index.html?layout=walkbybrussels), ...
 
 Have a theme idea? Drop it in the [issues](https://github.com/pietervdvn/MapComplete/issues)
 
