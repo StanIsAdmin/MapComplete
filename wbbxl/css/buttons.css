@@ -2,7 +2,7 @@
 
 .button {
 	text-decoration: none;
-	background-color: #f14a3b;
+	background-color: #003B8B;
 	color: white;
 	font-family: "Montserrat", sans-serif;
 	padding: 0.7rem 0.95rem;
@@ -20,9 +20,9 @@
 
 .button--alt {
 	background-color: white;
-	border: 1px solid #f14a3b;
+	border: 1px solid #003B8B;
 	font-family: "Montserrat", sans-serif;
-	color: #f14a3b;
+	color: #003B8B;
 }
 
 	.button--alt:hover {

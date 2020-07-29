@@ -15,8 +15,9 @@ h6,
 .h4,
 .h5,
 .h6 {
-	font-family: "Montserrat", sans-serif;
-	color: #333;
+	font-family: "Open Sans", sans-serif;
+	color: #003B8B;
+	font-weight: 700;
 	margin-bottom: 0.5rem;
 }
 	@media only screen and (min-width: 48em) {
@@ -33,6 +34,7 @@ h6,
 		.h5,
 		.h6 {
 			margin-bottom: 1.5rem;
+			font-weight: 700;
 		}
 	}
 
@@ -121,7 +123,7 @@ h6,
 
 
 a {
-	color: #f14a3b;
+	color: #003B8B;
 }
 
 	h1 a,
@@ -136,7 +138,7 @@ a {
 	.h4 a,
 	.h5 a,
 	.h6 a {
-		font-family: "Montserrat", sans-serif;
+		font-family: "Open Sans", sans-serif;
 	}
 
 p {
@@ -147,6 +149,12 @@ p {
 
 strong {
 	font-weight: 700;
+}
+
+.subtitle {
+	font-size: 1.3rem;
+	font-weight: 700;
+	color: #003B8B;
 }
 
 code, tt, kbd, samp {

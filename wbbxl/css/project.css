@@ -6,7 +6,7 @@
 
 .project-image {
 	padding: 1rem;
-	border: 1px solid rgba(0,0,0,0.3);
+	/* border: 1px solid rgba(0,0,0,0.3); */
 	border-radius: 5px;
 	width: 100%;
 	background-color: rgba(0,0,0,0.03);
@@ -21,10 +21,10 @@
 	}
 
 	.project-image img {
-		border: 1px solid rgba(0,0,0,0.3);
+		/* border: 1px solid rgba(0,0,0,0.3); */
 		border-radius: 2px;
 		width: 100%;
-		background-color: white;
+		/* background-color: white; */
 	}
 
 /* team and partner section */
