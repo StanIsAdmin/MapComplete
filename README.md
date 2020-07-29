@@ -1,4 +1,34 @@
 # WalkByBrussels
+A walking application for citizens in the Brussels region to (re)discover different routes in their city and share the spots they love.
+
+## The layout
+As define in MapComplete: A layout is a collection of settings of the global view (thus: welcome text, title, selection of layers). This concept helps creating apps in the app.
+The WalkByBrussels layout gathers layers that are interesting for a walker, e.g. artworks, playgrounds, benches, ...
+
+### Current layers
+- Artwork
+- Benches
+- Park
+- Playground
+- Remarkable tree 
+- Viewpoint
+- Water point
+
+## Datasources
+### OSM
+MapComplete has been build having in mind the usage of OSM data and do so via [overpass](https://overpass-turbo.eu/), adding layers using OSM as source is relatively easy (see how it's done in [Bench.ts](https://github.com/oSoc20/MapComplete/blob/master/Customizations/Layers/Bench.ts)).
+
+### Other datasets
+We worked on integrating [datastore.brussels](https://datastore.brussels/web/). This work serves as an example for other kind of datasources not called OSM. Find it under the folder: [ExternalData](https://github.com/oSoc20/MapComplete/tree/master/ExternalData) and [GeoJSON](https://github.com/oSoc20/MapComplete/tree/master/GeoJSON).
+
+#### GeoJSON
+The folder contains classes implemented after [The GeoJSON Specification (RFC 7946)](https://tools.ietf.org/html/rfc7946). Works fine for points geodata.
+
+#### ExternalData
+The folder contains a configurable parser (for parsing xml/gml data) and two layers [Playground](https://github.com/oSoc20/MapComplete/blob/master/ExternalData/Playground.ts) and [RemarkableTree](https://github.com/oSoc20/MapComplete/blob/master/ExternalData/RemarkableTree.ts)
+
+- The Playground case: data is provided in ```gml``` format. We use the prementioned parser to parse it into ```geojson```.
+- The RemarkableTree case: data is already in ```geojson``` no work needed there.
 
 # MapComplete
 
