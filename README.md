@@ -8,13 +8,13 @@ As define in MapComplete: A layout is a collection of settings of the global vie
 The WalkByBrussels layout gathers layers that are interesting for a walker, e.g. artworks, playgrounds, benches, ...
 
 ### Current layers
-- Artwork
-- Benches
-- Park
-- Playground
-- Remarkable tree 
-- Viewpoint
-- Water point
+- Artwork (source: OSM)
+- Benches (source: OSM)
+- Park (source: OSM)
+- Playground (source: datastore.brussels)
+- Remarkable tree (source: datastore.brussels)
+- Viewpoint (source: OSM)
+- Water point (source: OSM)
 
 ## Datasources
 ### OSM
