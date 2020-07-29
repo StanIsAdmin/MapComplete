@@ -404,6 +404,35 @@ export default class Translations {
                     })
                 }
             },
+            naturereserve: {
+                name: new T({
+                    en: "Nature reserve",
+                    nl: "Natuurgebied",
+                    fr: "Réserve naturelle"
+                })
+            },
+            viewpoint: {
+                name: new T({
+                    en: "Viewpoint",
+                    nl: "Bezienswaardigheid",
+                    fr: "Point de vue"
+                }),
+                description: new T({
+                    en: "Do you want to add a photo of something that is not a park, forest or nature reserve?",
+                    nl: "Wil je een foto toevoegen van iets dat geen park, bos of natuurgebied is? Dit kan hiermee",
+                    fr: "Voulez-vous ajouter une photo de quelque chose qui n'est pas un parc, une forêt ou une réserve naturelle?"
+                }),
+                question: new T({
+                    en: "Are there any details you would like to add?",
+                    nl: "Zijn er bijzonderheden die je wilt toevoegen?",
+                    fr: "Y a-t-il des détails que vous aimeriez ajouter?"
+                }),
+                renderTemplate: new T({
+                    en: "<h3>Details</h3>{description:0}",
+                    nl: "<h3>Bijzonderheden</h3>{description:0}",
+                    fr: "<h3>Détails</h3>{description:0}"
+                })
+            },
             artwork: {
                 name: new T({ en: 'Artwork', nl: 'Kunstwerk', fr: "Oeuvre d'art" }),
                 title: new T({ en: 'Artwork', nl: 'Kunstwerk', fr: "Oeuvre d'art" }),
