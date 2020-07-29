@@ -7,13 +7,15 @@ import {NameQuestion} from "../Questions/NameQuestion";
 import {NameInline} from "../Questions/NameInline";
 import {DescriptionQuestion} from "../Questions/DescriptionQuestion";
 import {ImageCarouselWithUploadConstructor} from "../../UI/Image/ImageCarouselWithUpload";
+import Translations from "../../UI/i18n/Translations";
 
 export class NatureReserves extends LayerDefinition {
     
     constructor(moreQuests: boolean = false) {
         super();
-        this.name = "Natuurgebied";
-        this.icon = "";
+        const to = Translations.t.walkbybrussels.naturereserve;
+        this.name = to.name;
+        this.icon = "assets/walkbybrussels/park.svg";
         this.overpassFilter =
             new Or([new Tag("leisure", "nature_reserve"), new Tag("boundary", "protected_area")]);
         this.maxAllowedOverlapPercentage = 10;
@@ -21,7 +23,7 @@ export class NatureReserves extends LayerDefinition {
         this.newElementTags = [new Tag("leisure", "nature_reserve"),
             new Tag("fixme", "Toegevoegd met MapComplete, geometry nog uit te tekenen")]
         this.minzoom = 13;
-        this.title = new NameInline("natuurreservaat");
+        this.title = new NameInline(to.name);
         this.style = this.generateStyleFunction();
         this.elementsToShow = [
             new ImageCarouselWithUploadConstructor(),

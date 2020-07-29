@@ -502,6 +502,11 @@ export default class Translations {
                     nl: "Opmerkelijke boom", fr: "Arbre remarquable", en: 'Remarkable tree'
                 }),
                 name: new T({ nl: "Naam: {NOM_NL}", fr: "Nom : {NOM_FR}" }),
+                description: new T({
+                    en: "Outstanding trees, worth a look!",
+                    nl: 'Uitstekende bomen, een kijkje waard!',
+                    fr: "Des arbres exceptionnels, ils valent le coup d'oeil!"
+                }),
                 circumference: new T({ nl: "Omtrek: {CIRCONFERENCE}", fr: "Circonférence : {CIRCONFERENCE}", en: "Circumference: {CIRCONFERENCE}" })
             }
         },
