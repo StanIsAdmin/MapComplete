@@ -445,7 +445,6 @@ export default class Translations {
                 })
             }
         },
-
         image: {
             addPicture: new T({ en: 'Add picture', nl: 'Voeg foto toe', fr: 'Ajouter une photo' }),
             uploadingPicture: new T({
@@ -552,7 +551,11 @@ export default class Translations {
                 nl: "Bekijk dit object op OpenStreetMap waar geschiedenis en meer aanpasopties zijn",
                 fr: "Voir cet object dans OpenStreetMap pour l'historique et plus d'options de modification"
             }),
-
+            maplayers: new T({
+                en: "Map layers",
+                nl: "Kaartlagen",
+                fr: "Couches de la carte"
+            }),
             add: {
 
                 addNew: new T({

@@ -245,7 +245,7 @@ const openFilterButton = `
 
 let baseLayerOptions = BaseLayers.baseLayers.map((layer) => { return { value: layer, shown: layer.name } });
 const backgroundMapPicker = new Combine([new DropDown(`Background map`, baseLayerOptions, bm.CurrentLayer), openFilterButton]);
-const layerSelection = new Combine([`<p class="filter__label">Maplayers</p>`, new LayerSelection(flayers)]);
+const layerSelection = new Combine([`<p class="filter__label">`, Translations.t.general.maplayers, `</p>`, new LayerSelection(flayers)]);
 let layerControl = backgroundMapPicker;
 if (flayers.length > 1) {
     layerControl = new Combine([layerSelection, backgroundMapPicker]);
