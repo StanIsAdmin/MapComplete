@@ -30,6 +30,25 @@ The folder contains a configurable parser (for parsing xml/gml data) and two lay
 - The Playground case: data is provided in ```gml``` format. We use the prementioned parser to parse it into ```geojson```.
 - The RemarkableTree case: data is already in ```geojson``` no work needed there.
 
+The integration is far from being perfect see issues [#33](https://github.com/oSoc20/WalkByBrussels/issues/33) [#34](https://github.com/oSoc20/WalkByBrussels/issues/34)
+
+## Run and deploy
+
+Run locally:
+
+1. Install `npm`.
+2. Run `npm install` to install the dependencies
+3. Run `npm run start` to build and host a local testversion
+
+To deploy:
+
+1. `npm run build`
+2. `npm run deploy`
+
+<br />
+
+Following is the original MapComplete readme:
+
 # MapComplete
 
 > Let a thousand flowers bloom
